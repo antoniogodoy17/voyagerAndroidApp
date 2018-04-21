@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Voyager</string>
+    <string name="Voyager">Voyager</string>
+    <string name="LogoDescription">Voyager Logo</string>
+    <string name="txtEmailHint">Enter your email</string>
+    <string name="txtPasswordHint">Password</string>
 </resources>
