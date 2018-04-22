@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".LogInActivity"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/quicksand"
+                android:text="@string/Voyager"
+                android:textColor="@color/colorSecondaryDark"
+                android:textSize="50sp"/>
+
+            <EditText
+                android:id="@+id/txtNameSignIn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:hint="@string/Name"
+                android:inputType="textEmailAddress"
+                android:drawableStart="@drawable/ic_person_black_24dp"
+                android:drawablePadding="10dp"
+                android:textColor="@color/colorSecondary"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"/>
+
+            <EditText
+                android:id="@+id/txtEmailSignIn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:hint="@string/Enter_your_email"
+                android:inputType="textEmailAddress"
+                android:drawableStart="@drawable/ic_email_black_24dp"
+                android:drawablePadding="10dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"/>
+
+            <EditText
+                android:id="@+id/txtPasswordSignIn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:hint="@string/Password"
+                android:inputType="textPassword"
+                android:drawableStart="@drawable/ic_lock_black_24dp"
+                android:drawablePadding="10dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"/>
+
+            <EditText
+                android:id="@+id/txtBirthDateSignIn"
+                android:inputType="date"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:hint="@string/Birth_Date"
+                android:drawableStart="@drawable/ic_date_range_black_24dp"
+                android:drawablePadding="10dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"/>
+
+            <Spinner
+                android:id="@+id/sprNationalitySignIn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:drawableStart="@drawable/ic_email_black_24dp"
+                android:drawablePadding="10dp"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"/>
+
+            <Spinner
+                android:id="@+id/sprEstateSignIn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:drawableStart="@drawable/ic_email_black_24dp"
+                android:drawablePadding="10dp"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"/>
+
+            <Spinner
+                android:id="@+id/sprCitySignIn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:drawableStart="@drawable/ic_email_black_24dp"
+                android:drawablePadding="10dp"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"/>
+
+            <Button
+                android:id="@+id/btnSignIn_Signin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/quicksand"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/white"
+                android:text="@string/Sign_In"/>
+
+            <Button
+                android:id="@+id/btnLogIn_Signin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@android:color/transparent"
+                android:text="@string/Already_have_account"
+                android:textColor="@color/colorSecondary"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
