@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="LogoDescription">Logotipo de Voyager</string>
+    <string name="Log_In">Iniciar Sesión</string>
+    <string name="Enter_your_email">Ingresa tu correo electrónico</string>
+    <string name="Password">Contraseña</string>
+    <string name="Dont_have_account">¿No tienes una cuenta? Regístrate.</string>
+</resources>

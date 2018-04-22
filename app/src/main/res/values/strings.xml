@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">Voyager</string>
-    <string name="Voyager">Voyager</string>
+    <string name="app_name" translatable="false">Voyager</string>
+    <string name="Voyager" translatable="false">Voyager</string>
     <string name="LogoDescription">Voyager Logo</string>
-    <string name="txtEmailHint">Enter your email</string>
-    <string name="txtPasswordHint">Password</string>
+    <string name="Log_In">Log In</string>
+    <string name="Enter_your_email">Enter your email</string>
+    <string name="Password">Password</string>
+    <string name="Dont_have_account">Don\'t have an account? Sign In.</string>
 </resources>
