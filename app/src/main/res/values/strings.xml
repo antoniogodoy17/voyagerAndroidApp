@@ -10,4 +10,13 @@
     <string name="Birth_Date">Enter your birth date</string>
     <string name="Sign_In">Sign In</string>
     <string name="Already_have_account">Already have an account? Log In</string>
+    <string name="categories">Categories</string>
+    <string name="favorites">Favorites</string>
+    <string name="lists">My Lists</string>
+    <string name="switch_location">Switch Location</string>
+    <string name="logout">Logout</string>
+    <string name="open">Open</string>
+    <string name="close">close</string>
+    <string name="username">Username</string>
+    <string name="view_profile">View your profile</string>
 </resources>
