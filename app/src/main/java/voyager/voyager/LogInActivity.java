@@ -13,12 +13,13 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        btnSignIn = findViewById(R.id.btnSignIn_Login);
+        btnSignIn = findViewById(R.id.btnSignIn);
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent signin = new Intent(getApplicationContext(),SignInActivity.class);
                 startActivity(signin);
+                overridePendingTransition(R.anim.alpha_transition,R.anim.alpha_transition);
                 finish();
             }
         });

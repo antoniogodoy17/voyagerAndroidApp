@@ -21,12 +21,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
                 android:layout_gravity="center"
-                android:fontFamily="@font/quicksand"
+                android:layout_marginTop="50dp"
                 android:text="@string/Voyager"
                 android:textColor="@color/colorSecondaryDark"
-                android:textSize="50sp"/>
+                android:textSize="50sp" />
 
             <EditText
                 android:id="@+id/txtNameSignIn"
@@ -34,13 +33,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_person_black_24dp"
                 android:hint="@string/Name"
                 android:inputType="textEmailAddress"
-                android:drawableStart="@drawable/ic_person_black_24dp"
-                android:drawablePadding="10dp"
                 android:textColor="@color/colorSecondary"
-                android:backgroundTint="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"/>
+                android:textColorHint="@color/colorSecondaryLight" />
 
             <EditText
                 android:id="@+id/txtEmailSignIn"
@@ -48,13 +47,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_email_black_24dp"
                 android:hint="@string/Enter_your_email"
                 android:inputType="textEmailAddress"
-                android:drawableStart="@drawable/ic_email_black_24dp"
-                android:drawablePadding="10dp"
-                android:backgroundTint="@color/colorSecondary"
                 android:textColor="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"/>
+                android:textColorHint="@color/colorSecondaryLight" />
 
             <EditText
                 android:id="@+id/txtPasswordSignIn"
@@ -62,27 +61,27 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_lock_black_24dp"
                 android:hint="@string/Password"
                 android:inputType="textPassword"
-                android:drawableStart="@drawable/ic_lock_black_24dp"
-                android:drawablePadding="10dp"
-                android:backgroundTint="@color/colorSecondary"
                 android:textColor="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"/>
+                android:textColorHint="@color/colorSecondaryLight" />
 
             <EditText
                 android:id="@+id/txtBirthDateSignIn"
-                android:inputType="date"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:hint="@string/Birth_Date"
-                android:drawableStart="@drawable/ic_date_range_black_24dp"
-                android:drawablePadding="10dp"
                 android:backgroundTint="@color/colorSecondary"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_date_range_black_24dp"
+                android:hint="@string/Birth_Date"
+                android:inputType="date"
                 android:textColor="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"/>
+                android:textColorHint="@color/colorSecondaryLight" />
 
             <Spinner
                 android:id="@+id/sprNationalitySignIn"

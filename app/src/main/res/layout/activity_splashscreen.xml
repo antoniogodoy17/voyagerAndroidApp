@@ -18,10 +18,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="-50dp"
             android:layout_gravity="center"
-            android:fontFamily="@font/quicksand"
+            android:layout_marginBottom="-75dp"
+            android:layout_marginTop="50dp"
             android:text="@string/Voyager"
             android:textColor="@color/colorSecondaryDark"
             android:textSize="50sp" />
@@ -33,7 +32,7 @@
             android:layout_gravity="center"
             android:adjustViewBounds="false"
             android:contentDescription="@string/LogoDescription"
-            android:src="@drawable/logo512" />
+            android:src="@drawable/icon_transparent"/>
     </LinearLayout>
 
 
