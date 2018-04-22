@@ -8,12 +8,9 @@ import android.widget.Button;
 
 public class LogInActivity extends AppCompatActivity {
 
-<<<<<<< HEAD
-    Button btnSignIn;
 
-=======
     Button btnSignIn, btnLogin;
->>>>>>> d102f5f7d3fc6689fca34e443175aecb526f108a
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
