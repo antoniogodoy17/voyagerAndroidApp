@@ -18,17 +18,18 @@ public class splashScreenActivity extends AppCompatActivity {
         alphaAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_transition);
         l1.setAnimation(alphaAnim);
 
-        final Intent login = new Intent(this,LogInActivity.class);
         Thread timer = new Thread(){
+            @Override
             public void run(){
                 try{
                     sleep(2500);
+                    Intent login = new Intent(getApplicationContext(),LogInActivity.class);
+                    startActivity(login);
+                    finish();
+                    super.run();
                 }
                 catch (InterruptedException e){
                     e.printStackTrace();
-                }
-                finally {
-                    startActivity(login);
                 }
             }
         };
