@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/categoriesMenu"
+        android:title="@string/categories"
+        android:icon="@drawable/ic_view_carousel_black_24dp"/>
+    <item
+        android:id="@+id/favoritesMenu"
+        android:title="@string/favorites"
+        android:icon="@drawable/ic_view_carousel_black_24dp"/>
+    <item
+        android:id="@+id/listsMenu"
+        android:title="@string/lists"
+        android:icon="@drawable/ic_view_carousel_black_24dp"/>
+    <item
+        android:id="@+id/switchMenu"
+        android:title="@string/switch_location"
+        android:icon="@drawable/ic_view_carousel_black_24dp"/>
+    <item
+        android:id="@+id/logoutMenu"
+        android:title="@string/logout"
+        android:icon="@drawable/ic_view_carousel_black_24dp"/>
+</menu>

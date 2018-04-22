@@ -10,15 +10,19 @@ import android.widget.Spinner;
 
 public class SignInActivity extends AppCompatActivity {
 
+
     Button btnLogIn;
     Button btnSignIn;
     EditText txtname,txtemail,txtpassword,txtbirth_date;
     Spinner spnnationality,spnstate,spncity;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         btnLogIn = findViewById(R.id.btnLogIn_SignIn);
+        btnSignIn = findViewById(R.id.btnSignIn_Signin);
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,6 +31,7 @@ public class SignInActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         txtname = findViewById(R.id.txtNameSignIn);
         txtemail = findViewById(R.id.txtEmailSignIn);
         txtpassword = findViewById(R.id.txtPasswordSignIn);
@@ -45,5 +50,15 @@ public class SignInActivity extends AppCompatActivity {
 
     protected void register_user(){
         //Create Object user and register it to firebase, and create a user for authentication.
+
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent home = new Intent(getApplicationContext(),homeActivity.class);
+                startActivity(home);
+                finish();
+            }
+        });
+
     }
 }
