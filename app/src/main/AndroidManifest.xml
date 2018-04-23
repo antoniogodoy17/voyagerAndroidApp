@@ -22,8 +22,11 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".LogInActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".homeActivity"></activity>
+        <activity android:name=".SignInActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".homeActivity" />
+        <activity android:name=".ProfileActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
     </application>
 
 </manifest>
