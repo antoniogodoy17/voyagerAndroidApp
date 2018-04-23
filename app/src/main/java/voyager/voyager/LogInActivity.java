@@ -16,58 +16,63 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LogInActivity extends AppCompatActivity {
-
-
     Button btnSignIn, btnLogin;
     EditText txtEmail, txtPassword;
-    FirebaseAuth firebaseAuth;
     String email, password;
+
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        //Database reference
         firebaseAuth = FirebaseAuth.getInstance();
+
         //Hiding status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //Hiding action bar
         getSupportActionBar().hide();
 
+        //Elements initialization
         btnLogin = findViewById(R.id.btnLogIn);
         btnSignIn = findViewById(R.id.btnSignIn);
         txtEmail = findViewById(R.id.txtEmailLogin);
         txtPassword = findViewById(R.id.txtPasswordLogIn);
+
+        //Elements Listener
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = txtEmail.getText().toString().trim();
-                password = txtPassword.getText().toString().trim();
+                set_user_values();
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        //Animation to wait until authorization is completed
                         if(task.isSuccessful()){
-                            Toast.makeText(LogInActivity.this, "Usuario existente en la base de datos.", Toast.LENGTH_LONG).show();
                             Intent home = new Intent(getApplicationContext(),homeActivity.class);
                             startActivity(home);
                             finish();
                         }else{
-                            Toast.makeText(LogInActivity.this,"El usuario o la contrase;a son incorrectos", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LogInActivity.this,"El usuario o la contraseña son incorrectos", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-
             }
         });
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent signin = new Intent(getApplicationContext(),SignInActivity.class);
                 startActivity(signin);
-//                overridePendingTransition(R.anim.alpha_transition,R.anim.alpha_transition);
+    //          overridePendingTransition(R.anim.alpha_transition,R.anim.alpha_transition);
                 finish();
             }
         });
+    }
+
+    public void set_user_values(){
+        email = txtEmail.getText().toString().trim();
+        password = txtPassword.getText().toString().trim();
     }
 }

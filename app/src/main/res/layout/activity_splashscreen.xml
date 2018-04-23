@@ -7,6 +7,7 @@
     tools:context=".splashScreenActivity"
     android:background="@color/colorPrimaryLight">
 
+    <!-- Margin top: 40dp added due to hidden action and status bar-->
     <LinearLayout
         android:id="@+id/l1"
         android:layout_width="match_parent"
@@ -20,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="-75dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="90dp"
             android:text="@string/Voyager"
             android:textColor="@color/colorSecondaryDark"
             android:textSize="50sp" />
