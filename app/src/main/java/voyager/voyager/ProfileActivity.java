@@ -138,6 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
           txtNameProfile.setText(name +" "+ lastname);
           txtBirthDateProfile.setText(birth_date.toString());
           txtEmailProfile.setText(email);
+          viewMode();
     }
 
 
@@ -172,6 +173,7 @@ public class ProfileActivity extends AppCompatActivity {
         txtPasswordProfile.setEnabled(true);
 
         txtBirthDateProfile.setVisibility(View.VISIBLE);
+        txtPasswordProfile.setEnabled(true);
 
         txtLocationProfile.setVisibility(View.GONE);
 
@@ -186,17 +188,29 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     protected void viewMode(){
-        txtNameProfile.setEnabled(false);
+        if (txtNameProfile.getText().toString().isEmpty())
+            txtNameProfile.setVisibility(View.GONE);
+        else txtNameProfile.setEnabled(false);
 
-        txtEmailProfile.setEnabled(false);
+        if (txtEmailProfile.getText().toString().isEmpty())
+            txtEmailProfile.setVisibility(View.GONE);
+        else txtEmailProfile.setEnabled(false);
 
-        txtPhoneProfile.setEnabled(false);
+        if (txtPhoneProfile.getText().toString().isEmpty())
+            txtPhoneProfile.setVisibility(View.GONE);
+        else txtPhoneProfile.setEnabled(false);
 
-        txtPasswordProfile.setEnabled(false);
+        if (txtPasswordProfile.getText().toString().isEmpty())
+            txtPasswordProfile.setVisibility(View.GONE);
+        else txtPasswordProfile.setEnabled(false);
 
-        txtBirthDateProfile.setEnabled(false);
+        if (txtBirthDateProfile.getText().toString().isEmpty())
+            txtBirthDateProfile.setVisibility(View.GONE);
+        else txtBirthDateProfile.setEnabled(false);
 
-        txtLocationProfile.setVisibility(View.VISIBLE);
+        if (txtLocationProfile.getText().toString().isEmpty())
+            txtLocationProfile.setVisibility(View.GONE);
+        else txtLocationProfile.setEnabled(false);
 
         sprCountryProfile.setVisibility(View.GONE);
         sprStateProfile.setVisibility(View.GONE);
