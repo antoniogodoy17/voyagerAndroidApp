@@ -6,6 +6,11 @@
     <string name="Enter_your_email">Enter your email</string>
     <string name="Password">Password</string>
     <string name="Dont_have_account">Don\'t have an account? Sign In.</string>
+    <string name="Profile_picture">Profile picture</string>
+    <string name="Enter_your_phone">Enter your phone number</string>
+    <string name="Enter_your_location">Enter your location</string>
+    <string name="Save_Changes">Save changes</string>
+    <string name="Cancel">Cancel</string>
     <string name="Name">Enter your name</string>
     <string name="Birth_Date">Enter your birth date</string>
     <string name="Sign_In">Sign In</string>
