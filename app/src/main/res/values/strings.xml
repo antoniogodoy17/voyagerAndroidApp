@@ -29,4 +29,5 @@
     <string name="close">close</string>
     <string name="username">Username</string>
     <string name="view_profile">View your profile</string>
+    <string name="confirm_password">Confirm your passowrd</string>
 </resources>

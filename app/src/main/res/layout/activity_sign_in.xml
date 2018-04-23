@@ -42,6 +42,20 @@
                 android:textColorHint="@color/colorSecondaryLight" />
 
             <EditText
+                android:id="@+id/txtLastNameSignIn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_person_black_24dp"
+                android:hint="@string/Last_name"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight" />
+
+            <EditText
                 android:id="@+id/txtEmailSignIn"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
@@ -69,6 +83,20 @@
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight" />
 
+            <EditText
+                android:id="@+id/txtPasswordConfirmSignIn"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_lock_black_24dp"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight" />
+
             <TextView
                 android:id="@+id/txtBirthDateSignIn"
                 android:layout_width="300dp"
@@ -76,7 +104,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
+                android:paddingLeft="5dp"
                 android:drawablePadding="10dp"
+                android:textSize="18sp"
                 android:drawableStart="@drawable/ic_date_range_black_24dp"
                 android:hint="@string/Birth_Date"
                 android:textColor="@color/colorSecondary"

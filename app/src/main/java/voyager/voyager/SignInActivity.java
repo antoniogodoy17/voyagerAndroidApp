@@ -9,38 +9,24 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-<<<<<<< HEAD
 import android.widget.Toast;
+import android.widget.TextView;
+import java.util.Calendar;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-=======
-import android.widget.TextView;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
->>>>>>> 8c14a0da7f6fc4bc22b3ff134330ff3b2f44bd1e
 
 public class SignInActivity extends AppCompatActivity {
 
 
     Button btnLogIn;
     Button btnSignIn;
-<<<<<<< HEAD
-    EditText txtname,txtemail,txtpassword,txtbirth_date,txtlastname,txtpasswordconfirm;
+    EditText txtname,txtemail,txtpassword,txtlastname,txtpasswordconfirm;
     Spinner spnnationality,spnstate,spncity;
     DatabaseReference database;
     String name,lastname,email,password,passwordconfirm,nationality,state,city,birth_date;
-
-=======
-    EditText txtname,txtemail,txtpassword;
     TextView txtbirth_date;
-    Spinner spnnationality,spnstate,spncity;
     DatePickerDialog datePicker;
->>>>>>> 8c14a0da7f6fc4bc22b3ff134330ff3b2f44bd1e
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +36,10 @@ public class SignInActivity extends AppCompatActivity {
         btnLogIn = findViewById(R.id.btnLogIn_SignIn);
         btnSignIn = findViewById(R.id.btnSignIn_Signin);
         txtname = findViewById(R.id.txtNameSignIn);
+        //txtlastname = findViewById(R.id.txtLastname);
         txtemail = findViewById(R.id.txtEmailSignIn);
         txtpassword = findViewById(R.id.txtPasswordSignIn);
+        //txtpassword = findViewById(R.id.txtPasswordConfirm);
         txtbirth_date = findViewById(R.id.txtBirthDateSignIn);
         spnnationality = findViewById(R.id.sprNationalitySignIn);
         spnstate = findViewById(R.id.sprEstateSignIn);
@@ -67,18 +55,6 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
-        txtname = findViewById(R.id.txtNameSignIn);
-        //txtlastname = findViewById(R.id.txtLastname);
-        txtemail = findViewById(R.id.txtEmailSignIn);
-        txtpassword = findViewById(R.id.txtPasswordSignIn);
-        //txtpassword = findViewById(R.id.txtPasswordConfirm);
-        txtbirth_date = findViewById(R.id.txtBirthDateSignIn);
-        spnnationality = findViewById(R.id.sprNationalitySignIn);
-        spnstate = findViewById(R.id.sprEstateSignIn);
-        spncity = findViewById(R.id.sprCitySignIn);
-        btnSignIn = findViewById(R.id.btnSignIn_Signin);
-=======
         txtbirth_date.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -101,13 +77,13 @@ public class SignInActivity extends AppCompatActivity {
                 datePicker.show();
             }
         });
->>>>>>> 8c14a0da7f6fc4bc22b3ff134330ff3b2f44bd1e
+
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 set_user_values();
-                if (verify_data() == true) register_user();
-
+                if (verify_data() == true)
+                    register_user();
             }
         });
     }
@@ -118,71 +94,54 @@ public class SignInActivity extends AppCompatActivity {
         User user = new User(id,name,lastname,email,birth_date,nationality,nationality,city);
         database.child(id).setValue(user);
 
-<<<<<<< HEAD
-//        btnSignIn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent home = new Intent(getApplicationContext(),homeActivity.class);
-//                startActivity(home);
+//                Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
+//                startActivity(profile);
 //                finish();
-//            }
-//        });
-
     }
 
-    protected boolean verify_data(){
+    protected boolean verify_data() {
 
-        if(name.isEmpty()){
-            Toast.makeText(this,"@strings/Name",Toast.LENGTH_LONG).show();
+        if (name.isEmpty()) {
+            Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show();
             return false;
         }
 
 //        if(lastname.isEmpty()){
-//            Toast.makeText(this,"@strings/Last_name",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,R.string.Last_name,Toast.LENGTH_LONG).show();
 //            return false;
 //        }
 
-        if(email.isEmpty()){
-            Toast.makeText(this,"@strings/Enter_your_email",Toast.LENGTH_LONG).show();
+        if (email.isEmpty()) {
+            Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
             return false;
         }
 
-        if(password.isEmpty()){
-            Toast.makeText(this,"@strings/Enter_your_password",Toast.LENGTH_LONG).show();
+        if (password.isEmpty()) {
+            Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show();
             return false;
         }
 //
 //        if(passwordconfirm.isEmpty()){
-//            Toast.makeText(this,"@strings/Confirm_your_password",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,R.string.Confirm_your_password,Toast.LENGTH_LONG).show();
 //            return false;
 //        }
 
-        if(birth_date.isEmpty()){
-            Toast.makeText(this,"@strings/Birth_Date",Toast.LENGTH_LONG).show();
+        if (birth_date.isEmpty()) {
+            Toast.makeText(this, R.string.Birth_Date, Toast.LENGTH_LONG).show();
             return false;
         }
 
 //        if(nationality.isEmpty()){
-//            Toast.makeText(this,"@strings/Nationality",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,R.string.Nationality,Toast.LENGTH_LONG).show();
 //            return false;
 //        }
 
 //       if(!password.equals(passwordconfirm)) {
-//           Toast.makeText(this,"@strings/Password_match",Toast.LENGTH_LONG).show();
+//           Toast.makeText(this,R.string.Password_match,Toast.LENGTH_LONG).show();
 //           return false;
 //       }
-       return true;
+        return true;
     }
-=======
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
-                startActivity(profile);
-                finish();
-            }
-        });
->>>>>>> 8c14a0da7f6fc4bc22b3ff134330ff3b2f44bd1e
 
     protected void set_user_values(){
         name = txtname.getText().toString().trim();
