@@ -31,7 +31,6 @@ public class SignInActivity extends AppCompatActivity {
     String name,lastname,email,password,passwordconfirm,nationality,state,city,birth_date;
     TextView txtbirth_date;
     DatePickerDialog datePicker;
-    boolean created  = false;
 
     DatabaseReference database;
     private FirebaseAuth firebaseAuth;
@@ -102,7 +101,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 set_user_values();
                 if (verify_data())
-                    register_user();
+                    auth_register();
             }
         });
     }
@@ -121,47 +120,58 @@ public class SignInActivity extends AppCompatActivity {
 
     protected boolean verify_data() {
         if (name.isEmpty()) {
-            Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show(); return false;
+            Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show();
+            return false;
         }
         if (lastname.isEmpty()) {
-            Toast.makeText(this, R.string.Last_name, Toast.LENGTH_LONG).show(); return false;
+            Toast.makeText(this, R.string.Last_name, Toast.LENGTH_LONG).show();
+            return false;
         }
         if (email.isEmpty()) {
-            Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show(); return false;
+            Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
+            return false;
         }
         if (password.isEmpty()) {
-            Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show(); return false;
+            Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show();
+            return false;
         }
         if (passwordconfirm.isEmpty()) {
-            Toast.makeText(this, R.string.Confirm_your_password, Toast.LENGTH_LONG).show(); return false;
+            Toast.makeText(this, R.string.Confirm_your_password, Toast.LENGTH_LONG).show();
+            return false;
         }
         if (birth_date.isEmpty()) {
-            Toast.makeText(this, R.string.Birth_Date, Toast.LENGTH_LONG).show(); return false;
+            Toast.makeText(this, R.string.Birth_Date, Toast.LENGTH_LONG).show();
+            return false;
         }
 //        if(nationality.isEmpty()){
 //            Toast.makeText(this,R.string.Nationality,Toast.LENGTH_LONG).show();
+//            return false;
 //        }
         if (!password.equals(passwordconfirm)) {
-            Toast.makeText(this, R.string.Password_match, Toast.LENGTH_LONG).show(); return false;
+            Toast.makeText(this, R.string.Password_match, Toast.LENGTH_LONG).show();
+            return false;
         }
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            created = true;
-                            // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(SignInActivity.this, R.string.Succesfull, Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            Toast.makeText(SignInActivity.this, R.string.Error, Toast.LENGTH_LONG).show();
-                            // If sign in fails, display a message to the user.
-                        }
-                    }
-                });
-        return created;
+        return true;
     }
 
+    protected void auth_register(){
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        //                            register_user();
+                        //                            // Sign in success, update UI with the signed-in user's information
+                        Toast.makeText(SignInActivity.this, R.string.Succesfull, Toast.LENGTH_LONG).show();
+                        register_user();
+                    }
+                    else {
+                        Toast.makeText(SignInActivity.this, R.string.Error, Toast.LENGTH_LONG).show();
+                        // If sign in fails, display a message to the user.
+                    }
+                }
+            });
+    }
     protected void register_user(){
         //Create Object user and register it to firebase, and create a user for authentication.
         try {
@@ -169,6 +179,7 @@ public class SignInActivity extends AppCompatActivity {
             User user = new User(id,name,lastname,email,birth_date,nationality,nationality,city);
             database.child(id).setValue(user);
             //Email validation?
+
             //Return to log in view
             Intent login = new Intent(getApplicationContext(),LogInActivity.class);
             startActivity(login);
