@@ -36,10 +36,10 @@ public class SignInActivity extends AppCompatActivity {
         btnLogIn = findViewById(R.id.btnLogIn_SignIn);
         btnSignIn = findViewById(R.id.btnSignIn_Signin);
         txtname = findViewById(R.id.txtNameSignIn);
-        //txtlastname = findViewById(R.id.txtLastname);
+        txtlastname = findViewById(R.id.txtLastNameSignIn);
         txtemail = findViewById(R.id.txtEmailSignIn);
         txtpassword = findViewById(R.id.txtPasswordSignIn);
-        //txtpassword = findViewById(R.id.txtPasswordConfirm);
+        txtpasswordconfirm = findViewById(R.id.txtPasswordConfirmSignIn);
         txtbirth_date = findViewById(R.id.txtBirthDateSignIn);
         spnnationality = findViewById(R.id.sprNationalitySignIn);
         spnstate = findViewById(R.id.sprEstateSignIn);
@@ -94,9 +94,9 @@ public class SignInActivity extends AppCompatActivity {
         User user = new User(id,name,lastname,email,birth_date,nationality,nationality,city);
         database.child(id).setValue(user);
 
-//                Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
-//                startActivity(profile);
-//                finish();
+                Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
+                startActivity(profile);
+                finish();
     }
 
     protected boolean verify_data() {
@@ -106,10 +106,10 @@ public class SignInActivity extends AppCompatActivity {
             return false;
         }
 
-//        if(lastname.isEmpty()){
-//            Toast.makeText(this,R.string.Last_name,Toast.LENGTH_LONG).show();
-//            return false;
-//        }
+        if(lastname.isEmpty()){
+            Toast.makeText(this,R.string.Last_name,Toast.LENGTH_LONG).show();
+            return false;
+        }
 
         if (email.isEmpty()) {
             Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
@@ -120,11 +120,11 @@ public class SignInActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show();
             return false;
         }
-//
-//        if(passwordconfirm.isEmpty()){
-//            Toast.makeText(this,R.string.Confirm_your_password,Toast.LENGTH_LONG).show();
-//            return false;
-//        }
+
+        if(passwordconfirm.isEmpty()){
+            Toast.makeText(this,R.string.Confirm_your_password,Toast.LENGTH_LONG).show();
+            return false;
+        }
 
         if (birth_date.isEmpty()) {
             Toast.makeText(this, R.string.Birth_Date, Toast.LENGTH_LONG).show();
@@ -136,19 +136,19 @@ public class SignInActivity extends AppCompatActivity {
 //            return false;
 //        }
 
-//       if(!password.equals(passwordconfirm)) {
-//           Toast.makeText(this,R.string.Password_match,Toast.LENGTH_LONG).show();
-//           return false;
-//       }
+       if(password != passwordconfirm) {
+           Toast.makeText(this,R.string.Password_match,Toast.LENGTH_LONG).show();
+           return false;
+       }
         return true;
     }
 
     protected void set_user_values(){
         name = txtname.getText().toString().trim();
-        //lastname = txtlastname.getText().toString().trim();
+        lastname = txtlastname.getText().toString().trim();
         email = txtemail.getText().toString().trim();
         password = txtpassword.getText().toString().trim();
-        //passwordconfirm = txtpasswordconfirm.getText().toString().trim();
+        passwordconfirm = txtpasswordconfirm.getText().toString().trim();
         birth_date = txtbirth_date.getText().toString().trim();
         //nationality = spnnationality.getSelectedItem().toString().trim();
         //state = spnstate.getSelectedItem().toString();
