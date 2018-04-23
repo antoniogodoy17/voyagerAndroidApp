@@ -1,15 +1,19 @@
 package voyager.voyager;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Array;
+import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity {
     String[] data =
@@ -21,6 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button btnSaveChanges, btnCancel;
     ImageButton btnProfilePic, btnEditProfile;
     Spinner sprCountryProfile, sprStateProfile, sprCityProfile;
+    DatePickerDialog datePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,28 @@ public class ProfileActivity extends AppCompatActivity {
                 fillData();
             }
         });
+
+        txtBirthDateProfile.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                final Calendar c = Calendar.getInstance();
+                int selYear = c.get(Calendar.YEAR); // current year
+                int selMonth = c.get(Calendar.MONTH); // current month
+                int selDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePicker = new DatePickerDialog(ProfileActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        txtBirthDateProfile.setText(dayOfMonth + "/"+ (monthOfYear + 1) + "/" + year);
+                    }
+                }, selYear, selMonth, selDay);
+                c.add(Calendar.YEAR,-10);
+                datePicker.getDatePicker().setMaxDate(c.getTimeInMillis());
+                c.add(Calendar.YEAR, -100);
+                datePicker.getDatePicker().setMinDate(c.getTimeInMillis());
+                datePicker.show();
+            }
+        });
     }
 
     protected void fillData(){
@@ -91,7 +118,6 @@ public class ProfileActivity extends AppCompatActivity {
         txtPasswordProfile.setEnabled(true);
 
         txtBirthDateProfile.setVisibility(View.VISIBLE);
-        txtBirthDateProfile.setEnabled(true);
 
         txtLocationProfile.setVisibility(View.GONE);
 

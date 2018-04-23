@@ -107,9 +107,9 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
                 android:drawablePadding="10dp"
+                android:inputType="date"
                 android:drawableStart="@drawable/ic_date_range_black_24dp"
                 android:hint="@string/Birth_Date"
-                android:inputType="date"
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight"
                 android:enabled="false" />
