@@ -22,6 +22,7 @@ public class ProfileActivity extends AppCompatActivity {
 //            {"Name", "Email", "6643133393", "password", "12/11/96", "Tijuana"};
 
     EditText txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtBirthDateProfile, txtLocationProfile;
+    TextView txtBirthDate;
     Button btnSaveChanges, btnCancel;
     ImageButton btnProfilePic, btnEditProfile;
     Spinner sprCountryProfile, sprStateProfile, sprCityProfile;
@@ -42,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         txtPhoneProfile = findViewById(R.id.txtPhoneProfile);
         txtPasswordProfile = findViewById(R.id.txtPasswordProfile);
         txtBirthDateProfile = findViewById(R.id.txtBirthDateProfile);
+        txtBirthDate = findViewById(R.id.txtBirthDate);
         txtLocationProfile = findViewById(R.id.txtLocationProfile);
 
         sprCountryProfile = findViewById(R.id.sprCountryProfile);
@@ -65,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        txtBirthDateProfile.setOnClickListener(new View.OnClickListener(){
+        txtBirthDate.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 final Calendar c = Calendar.getInstance();
@@ -76,7 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
                 datePicker = new DatePickerDialog(ProfileActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        txtBirthDateProfile.setText(dayOfMonth + "/"+ (monthOfYear + 1) + "/" + year);
+                        txtBirthDate.setText(dayOfMonth + "/"+ (monthOfYear + 1) + "/" + year);
                     }
                 }, selYear, selMonth, selDay);
                 c.add(Calendar.YEAR,-10);
@@ -102,6 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
             campos[i].setText(value);
             i++;
         }
+        txtBirthDate.setText(data[4]);
     }
 
     protected void editMode(){
@@ -117,7 +120,9 @@ public class ProfileActivity extends AppCompatActivity {
         txtPasswordProfile.setVisibility(View.VISIBLE);
         txtPasswordProfile.setEnabled(true);
 
-        txtBirthDateProfile.setVisibility(View.VISIBLE);
+        txtBirthDateProfile.setVisibility(View.GONE);
+
+        txtBirthDate.setVisibility(View.VISIBLE);
 
         txtLocationProfile.setVisibility(View.GONE);
 
@@ -140,7 +145,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         txtPasswordProfile.setEnabled(false);
 
+        txtBirthDateProfile.setVisibility(View.VISIBLE);
         txtBirthDateProfile.setEnabled(false);
+
+        txtBirthDate.setVisibility(View.GONE);
 
         txtLocationProfile.setVisibility(View.VISIBLE);
 

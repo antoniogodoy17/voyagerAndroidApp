@@ -114,6 +114,21 @@
                 android:textColorHint="@color/colorSecondaryLight"
                 android:enabled="false" />
 
+            <TextView
+                android:id="@+id/txtBirthDate"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:drawablePadding="10dp"
+                android:inputType="date"
+                android:drawableStart="@drawable/ic_date_range_black_24dp"
+                android:hint="@string/Birth_Date"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:visibility="gone" />
+
             <EditText
                 android:id="@+id/txtLocationProfile"
                 android:layout_width="300dp"

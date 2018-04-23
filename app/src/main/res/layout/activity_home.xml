@@ -12,6 +12,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/fragmentHandlerLayout">
 
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button" />
     </FrameLayout>
 
     <android.support.design.widget.NavigationView
