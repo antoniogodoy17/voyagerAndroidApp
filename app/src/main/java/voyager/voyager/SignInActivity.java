@@ -121,28 +121,28 @@ public class SignInActivity extends AppCompatActivity {
 
     protected boolean verify_data() {
         if (name.isEmpty()) {
-            Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show(); return false;
         }
         if (lastname.isEmpty()) {
-            Toast.makeText(this, R.string.Last_name, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.Last_name, Toast.LENGTH_LONG).show(); return false;
         }
         if (email.isEmpty()) {
-            Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show(); return false;
         }
         if (password.isEmpty()) {
-            Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show(); return false;
         }
         if (passwordconfirm.isEmpty()) {
-            Toast.makeText(this, R.string.Confirm_your_password, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.Confirm_your_password, Toast.LENGTH_LONG).show(); return false;
         }
         if (birth_date.isEmpty()) {
-            Toast.makeText(this, R.string.Birth_Date, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.Birth_Date, Toast.LENGTH_LONG).show(); return false;
         }
 //        if(nationality.isEmpty()){
 //            Toast.makeText(this,R.string.Nationality,Toast.LENGTH_LONG).show();
 //        }
         if (!password.equals(passwordconfirm)) {
-            Toast.makeText(this, R.string.Password_match, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.Password_match, Toast.LENGTH_LONG).show(); return false;
         }
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
