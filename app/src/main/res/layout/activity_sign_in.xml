@@ -69,7 +69,7 @@
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight" />
 
-            <EditText
+            <TextView
                 android:id="@+id/txtBirthDateSignIn"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
@@ -79,7 +79,6 @@
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_date_range_black_24dp"
                 android:hint="@string/Birth_Date"
-                android:inputType="date"
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight" />
 
