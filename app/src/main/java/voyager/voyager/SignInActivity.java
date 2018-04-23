@@ -3,6 +3,7 @@ package voyager.voyager;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,6 +14,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +36,7 @@ public class SignInActivity extends AppCompatActivity {
     TextView txtbirth_date;
     DatePickerDialog datePicker;
     private FirebaseAuth firebaseAuth;
+    boolean created  = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,58 +138,37 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-//    firebaseAuth.createUserWithEmailAndPassword(email, password)
-//            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//        @Override
-//        public void onComplete(@NonNull Task<AuthResult> task) {
-//            if (task.isSuccessful()) {
-//                // Sign in success, update UI with the signed-in user's information
-//                Log.d(TAG, "createUserWithEmail:success");
-//                FirebaseUser user = mAuth.getCurrentUser();
-//                updateUI(user);
-//            } else {
-//                // If sign in fails, display a message to the user.
-//                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                        Toast.LENGTH_SHORT).show();
-//                updateUI(null);
-//            }
-//
-//            // ...
-//        }
-//    });
-
 
     protected boolean verify_data() {
-        System.out.println(password + " -----> CONFIRMAR" + passwordconfirm);
+
         if (name.isEmpty()) {
             Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show();
-            return false;
+            created = false;
         }
 
         if (lastname.isEmpty()) {
             Toast.makeText(this, R.string.Last_name, Toast.LENGTH_LONG).show();
-            return false;
+            created = false;
         }
 
         if (email.isEmpty()) {
             Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
-            return false;
+            created = false;
         }
 
         if (password.isEmpty()) {
             Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show();
-            return false;
+            created = false;
         }
 
         if (passwordconfirm.isEmpty()) {
             Toast.makeText(this, R.string.Confirm_your_password, Toast.LENGTH_LONG).show();
-            return false;
+            created = false;
         }
 
         if (birth_date.isEmpty()) {
             Toast.makeText(this, R.string.Birth_Date, Toast.LENGTH_LONG).show();
-            return false;
+            created = false;
         }
 
 //        if(nationality.isEmpty()){
@@ -194,9 +178,29 @@ public class SignInActivity extends AppCompatActivity {
 
         if (!password.equals(passwordconfirm)) {
             Toast.makeText(this, R.string.Password_match, Toast.LENGTH_LONG).show();
-            return false;
+            created = false;
         }
-        return true;
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            created = true;
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(SignInActivity.this, R.string.Succesfull, Toast.LENGTH_LONG).show();
+
+                        } else {
+
+                            Toast.makeText(SignInActivity.this, R.string.Error, Toast.LENGTH_LONG).show();
+                            // If sign in fails, display a message to the user.
+
+                        }
+                    }
+                });
+
+
+        return created;
 
     }
 }

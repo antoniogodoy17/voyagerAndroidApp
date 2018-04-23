@@ -23,6 +23,8 @@
     <string name="categories">Categories</string>
     <string name="favorites">Favorites</string>
     <string name="lists">My Lists</string>
+    <string name="Succesfull"> User Registered Successfully </string>
+    <string name="Error"> There was a problem registering user </string>
     <string name="switch_location">Switch Location</string>
     <string name="logout">Logout</string>
     <string name="open" translatable="false">Open</string>
