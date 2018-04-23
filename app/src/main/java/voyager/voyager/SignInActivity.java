@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,6 +38,12 @@ public class SignInActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        //Hiding status bar
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //Hiding action bar
+        getSupportActionBar().hide();
+
         btnLogIn = findViewById(R.id.btnLogIn_SignIn);
         btnSignIn = findViewById(R.id.btnSignIn_Signin);
         txtname = findViewById(R.id.txtNameSignIn);
