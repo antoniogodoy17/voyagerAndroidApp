@@ -147,6 +147,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "238448789041-lasfvmfbk6nf8ccs9of2ntoc8cqd6s1r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "voyager.voyager",
+            "certificate_hash": "7a780f15f80f9f095dc6a7db3ddd83c40ab13a29"
+          }
+        },
+        {
+          "client_id": "238448789041-na8pqj2fj00gvgl4rei4nlk2mqncmr05.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "voyager.voyager",
+            "certificate_hash": "b2341e4d5c481773afa76fe85602a4b91e203756"
+          }
+        },
+        {
           "client_id": "238448789041-04f5ct6a5bubi96bcor7eakoknftsml9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

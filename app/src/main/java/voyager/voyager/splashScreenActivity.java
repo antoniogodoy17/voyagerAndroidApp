@@ -1,11 +1,10 @@
 package voyager.voyager;
 
-import android.app.ActionBar;
-import android.app.ActivityOptions;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -18,7 +17,10 @@ public class splashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
 
-
+        //Hiding status bar
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //Hiding action bar
+        getSupportActionBar().hide();
 
         l1 = findViewById(R.id.l1);
         alphaAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_transition);
@@ -40,13 +42,5 @@ public class splashScreenActivity extends AppCompatActivity {
             }
         };
         timer.start();
-//        View decorView = getWindow().getDecorView();
-//// Hide the status bar.
-//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-//// Remember that you should never show the action bar if the
-//// status bar is hidden, so hide that too if necessary.
-//        ActionBar actionBar = getActionBar();
-//        actionBar.hide();
     }
 }
