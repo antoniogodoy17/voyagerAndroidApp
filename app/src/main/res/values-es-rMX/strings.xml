@@ -5,4 +5,25 @@
     <string name="Enter_your_email">Ingresa tu correo electrónico</string>
     <string name="Password">Contraseña</string>
     <string name="Dont_have_account">¿No tienes una cuenta? Regístrate.</string>
+    <string name="Last_name">Ingresa tus apellidos</string>
+    <string name="Enter_your_password">Ingresa tu contraseña</string>
+    <string name="Confirm_your_password">Confirma tu contraseña</string>
+    <string name="Password_match">Las contraseñas no coinciden</string>
+    <string name="Nationality">Selecciona tu nacionalidad</string>
+    <string name="Profile_picture">Foto de perfil</string>
+    <string name="Enter_your_phone">Ingresa tu número telefónico</string>
+    <string name="Enter_your_location">Ingresa tu ubicación</string>
+    <string name="Save_Changes">Guardar cambios</string>
+    <string name="Cancel">Cancelar</string>
+    <string name="Name">Ingresa tu nombre</string>
+    <string name="Birth_Date">Ingresa tu fecha de nacimiento</string>
+    <string name="Sign_In">Registrarse</string>
+    <string name="Already_have_account">¿Ya tienes una cuenta? Inicia sesión</string>
+    <string name="categories">Categorías</string>
+    <string name="favorites">Favoritos</string>
+    <string name="lists">Mis Listas</string>
+    <string name="switch_location">Cambiar Ubicación</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="username">Usuario</string>
+    <string name="view_profile">Ver mi perfil</string>
 </resources>

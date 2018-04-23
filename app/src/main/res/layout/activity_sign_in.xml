@@ -92,7 +92,7 @@
                 android:backgroundTint="@color/colorSecondary"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_lock_black_24dp"
-                android:hint="@string/confirm_password"
+                android:hint="@string/Confirm_your_password"
                 android:inputType="textPassword"
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight" />
