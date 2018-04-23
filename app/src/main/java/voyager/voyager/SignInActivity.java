@@ -2,19 +2,21 @@ package voyager.voyager;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.widget.TextView;
-import java.util.Calendar;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -27,10 +29,12 @@ public class SignInActivity extends AppCompatActivity {
     String name,lastname,email,password,passwordconfirm,nationality,state,city,birth_date;
     TextView txtbirth_date;
     DatePickerDialog datePicker;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         database = FirebaseDatabase.getInstance().getReference("User");
+        firebaseAuth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         btnLogIn = findViewById(R.id.btnLogIn_SignIn);
@@ -45,6 +49,7 @@ public class SignInActivity extends AppCompatActivity {
         spnstate = findViewById(R.id.sprEstateSignIn);
         spncity = findViewById(R.id.sprCitySignIn);
         btnSignIn = findViewById(R.id.btnSignIn_Signin);
+
 
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +103,10 @@ public class SignInActivity extends AppCompatActivity {
                 startActivity(profile);
                 finish();
     }
+
+
+//    firebaseAuth.createUserWithEmailandPassword(){}
+
 
     protected boolean verify_data() {
 
