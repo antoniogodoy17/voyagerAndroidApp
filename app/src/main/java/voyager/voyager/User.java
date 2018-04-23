@@ -1,7 +1,5 @@
 package voyager.voyager;
 
-import java.text.DateFormat;
-
 public class User {
     String id;
     String name;
@@ -24,6 +22,9 @@ public class User {
         this.state = state;
         this.city = city;
     }
+
+    public User(){}
+
 
     public String getId() {
         return id;

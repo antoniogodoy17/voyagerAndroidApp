@@ -1,9 +1,8 @@
 package voyager.voyager;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -12,7 +11,13 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -27,6 +32,9 @@ public class ProfileActivity extends AppCompatActivity {
     ImageButton btnProfilePic, btnEditProfile;
     Spinner sprCountryProfile, sprStateProfile, sprCityProfile;
     DatePickerDialog datePicker;
+    String name,lastname, email, phone,birth_date,location, password;
+    DatabaseReference database;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +58,12 @@ public class ProfileActivity extends AppCompatActivity {
         sprStateProfile = findViewById(R.id.sprStateProfile);
         sprCityProfile = findViewById(R.id.sprCityProfile);
 
-        fillData();
+
+
+//        fillData();
+
+        fillFields();
+
 
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 viewMode();
-                fillData();
+//                fillData();
             }
         });
 
@@ -90,22 +103,66 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    protected void fillData(){
-        int i = 0;
-        EditText[] campos =
-                {
-                        txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtBirthDateProfile, txtLocationProfile
-                };
+    protected void fillFields(){
 
-        for(String value: data){
-            if (value == null){
-                campos[i].setVisibility(View.GONE);
+        database = FirebaseDatabase.getInstance().getReference("User");
+        database.orderByChild("email").startAt("diegomendozaco97@gmail.com").endAt("diegomendozaco97@gmail.com"+"\uf8ff").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                User user = dataSnapshot.getValue(User.class);
+                name = user.name;
+                email = user.email;
+                lastname = user.lastname;
+                birth_date = user.birth_date;
+                setValues();
             }
-            campos[i].setText(value);
-            i++;
-        }
-        txtBirthDate.setText(data[4]);
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
+    protected void setValues() {
+          txtNameProfile.setText(name +" "+ lastname);
+          txtBirthDate.setText(birth_date.toString());
+          txtEmailProfile.setText(email);
+
+    }
+
+
+//    protected void fillData(){
+//        int i = 0;
+//        EditText[] campos =
+//                {
+//                        txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtBirthDateProfile, txtLocationProfile
+//                };
+//
+//        for(String value: data){
+//            if (value == null){
+//                campos[i].setVisibility(View.GONE);
+//            }
+//            campos[i].setText(value);
+//            i++;
+//        }
+//        txtBirthDate.setText(data[4]);
+//    }
 
     protected void editMode(){
         txtNameProfile.setVisibility(View.VISIBLE);

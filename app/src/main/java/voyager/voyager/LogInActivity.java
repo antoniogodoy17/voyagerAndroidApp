@@ -55,7 +55,7 @@ public class LogInActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signin = new Intent(getApplicationContext(),SignInActivity.class);
+                Intent signin = new Intent(getApplicationContext(),ProfileActivity.class);
                 startActivity(signin);
     //          overridePendingTransition(R.anim.alpha_transition,R.anim.alpha_transition);
                 finish();
