@@ -3,8 +3,10 @@ package voyager.voyager;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,6 +34,7 @@ public class SignInActivity extends AppCompatActivity {
     String name,lastname,email,password,passwordconfirm,nationality,state,city,birth_date;
     TextView txtbirth_date;
     DatePickerDialog datePicker;
+    FirebaseUser fbUser;
 
     DatabaseReference database;
     private FirebaseAuth firebaseAuth;
@@ -100,8 +104,10 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 set_user_values();
-                if (verify_data())
+                if (verify_data()){
                     auth_register();
+                }
+
             }
         });
     }
@@ -164,6 +170,8 @@ public class SignInActivity extends AppCompatActivity {
                         //                            // Sign in success, update UI with the signed-in user's information
                         Toast.makeText(SignInActivity.this, R.string.Succesfull, Toast.LENGTH_LONG).show();
                         register_user();
+                        auth_emai_verification();
+
                     }
                     else {
                         Toast.makeText(SignInActivity.this, R.string.Error, Toast.LENGTH_LONG).show();
@@ -171,6 +179,27 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 }
             });
+    }
+
+    protected void auth_emai_verification(){
+        fbUser = firebaseAuth.getCurrentUser();
+        fbUser.sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(SignInActivity.this,
+                                    "Verification email sent to " + fbUser.getEmail(),
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+
+                            Log.d("puto", "onComplete: " + task.getException());
+                            Toast.makeText(SignInActivity.this,
+                                    "Failed to send verification email.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
     protected void register_user(){
         //Create Object user and register it to firebase, and create a user for authentication.

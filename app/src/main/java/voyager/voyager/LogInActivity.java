@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LogInActivity extends AppCompatActivity {
     Button btnSignIn, btnLogin;
@@ -21,6 +22,7 @@ public class LogInActivity extends AppCompatActivity {
     String email, password;
 
     FirebaseAuth firebaseAuth;
+    FirebaseUser fbUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 set_user_values();
                 if (verify_data())
-                    auth_register();
+                    auth_SignIn();
 
             }
         });
@@ -75,15 +77,22 @@ public class LogInActivity extends AppCompatActivity {
         }
         return true;
     }
-    protected void auth_register(){
+    protected void auth_SignIn(){
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
             //Animation to wait until authorization is completed
             if(task.isSuccessful()){
-                Intent home = new Intent(getApplicationContext(),homeActivity.class);
-                startActivity(home);
-                finish();
+                fbUser = firebaseAuth.getCurrentUser();
+                if (fbUser.isEmailVerified()){
+                    Intent home = new Intent(getApplicationContext(),homeActivity.class);
+                    startActivity(home);
+                    finish();
+                }else{
+                    Toast.makeText(LogInActivity.this,"Your email is not verified yet", Toast.LENGTH_LONG).show();
+
+                }
+
             }else{
                 Toast.makeText(LogInActivity.this,"El usuario o la contraseña son incorrectos", Toast.LENGTH_LONG).show();
             }
