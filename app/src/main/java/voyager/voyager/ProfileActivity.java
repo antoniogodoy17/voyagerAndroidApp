@@ -21,18 +21,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity {
-    String[] data =
-            {"Name", "Email", null, "password", "12/11/96", "Tijuana"};
-//    String[] data =
-//            {"Name", "Email", "6643133393", "password", "12/11/96", "Tijuana"};
 
-    EditText txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtBirthDateProfile, txtLocationProfile;
-    TextView txtBirthDate;
+    EditText txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtLocationProfile;
+    TextView txtBirthDateProfile;
     Button btnSaveChanges, btnCancel;
     ImageButton btnProfilePic, btnEditProfile;
     Spinner sprCountryProfile, sprStateProfile, sprCityProfile;
     DatePickerDialog datePicker;
-    String name,lastname, email, phone,birth_date,location, password;
+    String name, lastname, email, phone, birth_date, location, password;
     DatabaseReference database;
     private FirebaseAuth firebaseAuth;
 
@@ -51,7 +47,6 @@ public class ProfileActivity extends AppCompatActivity {
         txtPhoneProfile = findViewById(R.id.txtPhoneProfile);
         txtPasswordProfile = findViewById(R.id.txtPasswordProfile);
         txtBirthDateProfile = findViewById(R.id.txtBirthDateProfile);
-        txtBirthDate = findViewById(R.id.txtBirthDate);
         txtLocationProfile = findViewById(R.id.txtLocationProfile);
 
         sprCountryProfile = findViewById(R.id.sprCountryProfile);
@@ -80,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        txtBirthDate.setOnClickListener(new View.OnClickListener(){
+        txtBirthDateProfile.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 final Calendar c = Calendar.getInstance();
@@ -91,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
                 datePicker = new DatePickerDialog(ProfileActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        txtBirthDate.setText(dayOfMonth + "/"+ (monthOfYear + 1) + "/" + year);
+                        txtBirthDateProfile.setText(dayOfMonth + "/"+ (monthOfYear + 1) + "/" + year);
                     }
                 }, selYear, selMonth, selDay);
                 c.add(Calendar.YEAR,-10);
@@ -141,9 +136,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     protected void setValues() {
           txtNameProfile.setText(name +" "+ lastname);
-          txtBirthDate.setText(birth_date.toString());
+          txtBirthDateProfile.setText(birth_date.toString());
           txtEmailProfile.setText(email);
-
     }
 
 
@@ -177,9 +171,7 @@ public class ProfileActivity extends AppCompatActivity {
         txtPasswordProfile.setVisibility(View.VISIBLE);
         txtPasswordProfile.setEnabled(true);
 
-        txtBirthDateProfile.setVisibility(View.GONE);
-
-        txtBirthDate.setVisibility(View.VISIBLE);
+        txtBirthDateProfile.setVisibility(View.VISIBLE);
 
         txtLocationProfile.setVisibility(View.GONE);
 
@@ -202,10 +194,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         txtPasswordProfile.setEnabled(false);
 
-        txtBirthDateProfile.setVisibility(View.VISIBLE);
         txtBirthDateProfile.setEnabled(false);
-
-        txtBirthDate.setVisibility(View.GONE);
 
         txtLocationProfile.setVisibility(View.VISIBLE);
 
