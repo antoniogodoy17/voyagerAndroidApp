@@ -145,6 +145,13 @@
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight"/>
 
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:id="@+id/progressBar"/>
+
             <Button
                 android:id="@+id/btnSignIn_Signin"
                 android:layout_width="wrap_content"

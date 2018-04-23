@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class SignInActivity extends AppCompatActivity {
 
     DatabaseReference database;
     private FirebaseAuth firebaseAuth;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,9 @@ public class SignInActivity extends AppCompatActivity {
         //Database reference
         database = FirebaseDatabase.getInstance().getReference("User");
         firebaseAuth = FirebaseAuth.getInstance();
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
 
         //Hiding status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -103,9 +108,15 @@ public class SignInActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
+                btnSignIn.setVisibility(View.GONE);
                 set_user_values();
                 if (verify_data()){
                     auth_register();
+                }
+                else{
+                    btnSignIn.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -165,38 +176,36 @@ public class SignInActivity extends AppCompatActivity {
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        //                            register_user();
-                        //                            // Sign in success, update UI with the signed-in user's information
-                        Toast.makeText(SignInActivity.this, R.string.Succesfull, Toast.LENGTH_LONG).show();
-                        register_user();
-                        auth_emai_verification();
-
-                    }
-                    else {
-                        Toast.makeText(SignInActivity.this, R.string.Error, Toast.LENGTH_LONG).show();
-                        // If sign in fails, display a message to the user.
-                    }
+                if (task.isSuccessful()) {
+                    //                            register_user();
+                    //                            // Sign in success, update UI with the signed-in user's information
+                    Toast.makeText(SignInActivity.this, R.string.Succesfull, Toast.LENGTH_LONG).show();
+                    register_user();
+                    auth_email_verification();
+                }
+                else {
+                    Toast.makeText(SignInActivity.this, R.string.Error, Toast.LENGTH_LONG).show();
+                    // If sign in fails, display a message to the user.
+                    btnSignIn.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
                 }
             });
     }
 
-    protected void auth_emai_verification(){
+    protected void auth_email_verification(){
         fbUser = firebaseAuth.getCurrentUser();
         fbUser.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(SignInActivity.this,
-                                    "Verification email sent to " + fbUser.getEmail(),
-                                    Toast.LENGTH_LONG).show();
-                        } else {
-
-                            Log.d("puto", "onComplete: " + task.getException());
-                            Toast.makeText(SignInActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignInActivity.this,"Verification email sent to " + fbUser.getEmail(), Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(SignInActivity.this,"Failed to send verification email.", Toast.LENGTH_LONG).show();
+                            btnSignIn.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });
