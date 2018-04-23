@@ -4,7 +4,12 @@
     <string name="LogoDescription">Voyager Logo</string>
     <string name="Log_In">Log In</string>
     <string name="Enter_your_email">Enter your email</string>
+    <string name="Last_name">Enter your last name</string>
     <string name="Password">Password</string>
+    <string name="Enter_your_password">Enter your Password</string>
+    <string name="Confirm_your_password">Confirm your Password</string>
+    <string name="Password_match">Your passwords do not match</string>
+    <string name="Nationality">Select a nationality</string>
     <string name="Dont_have_account">Don\'t have an account? Sign In.</string>
     <string name="Name">Enter your name</string>
     <string name="Birth_Date">Enter your birth date</string>
