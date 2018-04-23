@@ -45,19 +45,9 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 set_user_values();
-                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        //Animation to wait until authorization is completed
-                        if(task.isSuccessful()){
-                            Intent home = new Intent(getApplicationContext(),homeActivity.class);
-                            startActivity(home);
-                            finish();
-                        }else{
-                            Toast.makeText(LogInActivity.this,"El usuario o la contraseña son incorrectos", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                if (verify_data())
+                    auth_register();
+
             }
         });
         btnSignIn.setOnClickListener(new View.OnClickListener() {
@@ -70,9 +60,34 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
     }
-
     public void set_user_values(){
         email = txtEmail.getText().toString().trim();
         password = txtPassword.getText().toString().trim();
+    }
+    protected boolean verify_data() {
+        if (email.isEmpty()) {
+            Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (password.isEmpty()) {
+            Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+    protected void auth_register(){
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+            //Animation to wait until authorization is completed
+            if(task.isSuccessful()){
+                Intent home = new Intent(getApplicationContext(),homeActivity.class);
+                startActivity(home);
+                finish();
+            }else{
+                Toast.makeText(LogInActivity.this,"El usuario o la contraseña son incorrectos", Toast.LENGTH_LONG).show();
+            }
+            }
+        });
     }
 }
