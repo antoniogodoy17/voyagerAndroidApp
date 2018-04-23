@@ -32,17 +32,18 @@
         android:textColorHint="@color/colorSecondaryLight"/>
 
     <EditText
+        android:id="@+id/txtPasswordLogIn"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
+        android:backgroundTint="@color/colorSecondary"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ic_lock_black_24dp"
         android:hint="@string/Password"
         android:inputType="textPassword"
-        android:drawableStart="@drawable/ic_lock_black_24dp"
-        android:drawablePadding="10dp"
-        android:backgroundTint="@color/colorSecondary"
         android:textColor="@color/colorSecondary"
-        android:textColorHint="@color/colorSecondaryLight"/>
+        android:textColorHint="@color/colorSecondaryLight" />
 
     <Button
         android:id="@+id/btnLogIn"
