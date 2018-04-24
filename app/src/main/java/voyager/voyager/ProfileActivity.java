@@ -166,7 +166,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     protected void setValues() {
-          txtNameProfile.setText(user.getName() +" "+ user.getLastname());
+//          txtNameProfile.setText(user.getName() +" "+ user.getLastname());
           txtBirthDateProfile.setText(user.getBirth_date());
           txtEmailProfile.setText(email);
           viewMode();
@@ -247,7 +247,7 @@ public class ProfileActivity extends AppCompatActivity {
         txtPasswordProfile.setEnabled(true);
 
         txtBirthDateProfile.setVisibility(View.VISIBLE);
-        txtPasswordProfile.setEnabled(true);
+        txtBirthDateProfile.setEnabled(true);
 
         txtLocationProfile.setVisibility(View.GONE);
 

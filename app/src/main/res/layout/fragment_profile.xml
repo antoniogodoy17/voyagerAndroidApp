@@ -49,6 +49,20 @@
                     android:textColorHint="@color/white"
                     android:layout_marginTop="5dp"/>
 
+                <EditText
+                    android:id="@+id/txtLastNameProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="@color/white"
+                    android:enabled="false"
+                    android:hint="@string/Last_name"
+                    android:inputType="textCapWords|textNoSuggestions"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:layout_marginTop="5dp"/>
+
                 <ImageButton
                     android:id="@+id/btnEditProfile"
                     android:layout_width="wrap_content"

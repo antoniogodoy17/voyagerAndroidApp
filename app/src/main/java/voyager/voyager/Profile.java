@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-//import android.support.v4.app.Fragment;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,20 +15,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -58,7 +49,7 @@ public class Profile extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     //Our code from profile goes here
-    EditText txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtLocationProfile;
+    EditText txtNameProfile, txtLastNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtLocationProfile;
     TextView txtBirthDateProfile;
     Button btnSaveChanges, btnCancel;
     ImageButton btnProfilePic, btnEditProfile;
@@ -104,8 +95,8 @@ public class Profile extends Fragment {
     //OUR CODE FROM PROFILE GOES HERE
 
     protected void fillFields(){
-
-        txtNameProfile.setText(user.getName() +" "+ user.getLastname());
+        txtNameProfile.setText(user.getName());
+        txtLastNameProfile.setText(user.getLastname());
         txtBirthDateProfile.setText(user.getBirth_date());
         txtEmailProfile.setText(email);
         viewMode();
@@ -171,7 +162,7 @@ public class Profile extends Fragment {
 
     protected void saveChanges(){
         user.setName(txtNameProfile.getText().toString().trim());
-        user.setBirth_date(txtBirthDateProfile.toString().trim());
+        user.setBirth_date(txtBirthDateProfile.getText().toString().trim());
         voyager.voyager.homeActivity.database.child(user.getId()).setValue(user);
     }
 
@@ -196,6 +187,9 @@ public class Profile extends Fragment {
         txtNameProfile.setVisibility(View.VISIBLE);
         txtNameProfile.setEnabled(true);
 
+        txtLastNameProfile.setVisibility(View.VISIBLE);
+        txtLastNameProfile.setEnabled(true);
+
         txtEmailProfile.setVisibility(View.VISIBLE);
         txtEmailProfile.setEnabled(true);
 
@@ -206,7 +200,7 @@ public class Profile extends Fragment {
         txtPasswordProfile.setEnabled(true);
 
         txtBirthDateProfile.setVisibility(View.VISIBLE);
-        txtPasswordProfile.setEnabled(true);
+        txtBirthDateProfile.setEnabled(true);
 
         txtLocationProfile.setVisibility(View.GONE);
 
@@ -245,6 +239,7 @@ public class Profile extends Fragment {
             txtLocationProfile.setVisibility(View.GONE);
         else txtLocationProfile.setEnabled(false);
 
+        txtLastNameProfile.setVisibility(View.GONE);
         sprCountryProfile.setVisibility(View.GONE);
         sprStateProfile.setVisibility(View.GONE);
         sprCityProfile.setVisibility(View.GONE);
@@ -254,9 +249,6 @@ public class Profile extends Fragment {
         btnSaveChanges.setVisibility(View.GONE);
         btnCancel.setVisibility(View.GONE);
     }
-
-    //
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -268,6 +260,7 @@ public class Profile extends Fragment {
         btnProfilePic = view.findViewById(R.id.btnProfilePic);
         btnCancel = view.findViewById(R.id.btnCancel);
         txtNameProfile = view.findViewById(R.id.txtNameProfile);
+        txtLastNameProfile = view.findViewById(R.id.txtLastNameProfile);
         txtEmailProfile = view.findViewById(R.id.txtEmailProfile);
         txtPhoneProfile = view.findViewById(R.id.txtPhoneProfile);
         txtPasswordProfile = view.findViewById(R.id.txtPasswordProfile);
@@ -325,7 +318,6 @@ public class Profile extends Fragment {
             }
         });
         //fillFields();
-        // Inflate the layout for this fragment
         return view;
     }
 
