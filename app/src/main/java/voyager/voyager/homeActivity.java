@@ -116,20 +116,16 @@ public class homeActivity extends AppCompatActivity {
     }
 
     public void goProfile(){
-
-
         try{
             Class fragmentClass = Profile.class;
             Fragment fragment = (Fragment)fragmentClass.newInstance();
             FragmentManager fragmentManager = getFragmentManager();
-            Log.d("FRAGMENT ", fragment.toString());
             fragmentManager.beginTransaction().replace(R.id.fragmentHandlerLayout,fragment).commit();
 //                setTitle(header.toString());
             drawerLayout.closeDrawers();
         }
         catch (Exception e){
             e.printStackTrace();
-            Toast.makeText(this, "dsdgdfsi", Toast.LENGTH_SHORT).show();
         }
 
     }

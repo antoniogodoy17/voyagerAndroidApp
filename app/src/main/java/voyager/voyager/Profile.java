@@ -320,7 +320,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 saveChanges();
-                Toast.makeText(getView().getContext(),"Changes Made " , Toast.LENGTH_LONG).show();
+                Toast.makeText(getView().getContext(),"Changes has ben made." , Toast.LENGTH_LONG).show();
                 viewMode();
             }
         });

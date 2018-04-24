@@ -98,13 +98,13 @@ public class LogInActivity extends AppCompatActivity {
                     startActivity(home);
                     finish();
                 }else{
-                    Toast.makeText(LogInActivity.this,"Your email is not verified yet", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LogInActivity.this,"Your email is not verified yet.", Toast.LENGTH_LONG).show();
                     btnLogin.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                 }
 
             }else{
-                Toast.makeText(LogInActivity.this,"El usuario o la contraseña son incorrectos", Toast.LENGTH_LONG).show();
+                Toast.makeText(LogInActivity.this,"The email or password is incorrect.", Toast.LENGTH_LONG).show();
                 btnLogin.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
