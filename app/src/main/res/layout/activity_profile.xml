@@ -11,14 +11,12 @@
 
     <ImageButton
         android:id="@+id/btnProfilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_weight="0"
         android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/Profile_picture"
-        android:clickable="false"
-        app:srcCompat="@drawable/ic_account_circle_white_200dp" />
+        android:background="@drawable/ic_account_circle_white_200dp"
+        android:clickable="false" />
 
     <EditText
         android:id="@+id/txtNameProfile"
