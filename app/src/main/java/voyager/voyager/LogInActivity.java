@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -52,15 +50,15 @@ public class LogInActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                btnLogin.setVisibility(View.GONE);
+//                progressBar.setVisibility(View.VISIBLE);
+//                btnLogin.setVisibility(View.GONE);
                 set_user_values();
                 if (verify_data())
                     auth_SignIn();
-                else{
-                    btnLogin.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                }
+//                else{
+//                    btnLogin.setVisibility(View.VISIBLE);
+//                    progressBar.setVisibility(View.GONE);
+//                }
             }
         });
         btnSignIn.setOnClickListener(new View.OnClickListener() {

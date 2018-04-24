@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -113,6 +114,14 @@ public class ProfileActivity extends AppCompatActivity {
                 datePicker.show();
             }
         });
+
+        btnSaveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveChanges();
+                Toast.makeText(ProfileActivity.this,"Changes Made " , Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     protected void fillFields(){
@@ -187,6 +196,24 @@ public class ProfileActivity extends AppCompatActivity {
             }
         }
     }
+
+    protected void saveChanges(){
+
+
+        String userId = user.id;
+        Object[] campos =
+                {
+                        txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtBirthDateProfile, txtLocationProfile
+                };
+
+        User userChanged = new User();
+
+//
+    // get Data from Fields and Change it on Object User
+
+        database.child(userId).setValue(user);
+    }
+
 
 
 //    protected void fillData(){

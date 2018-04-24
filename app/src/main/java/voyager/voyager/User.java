@@ -2,7 +2,7 @@ package voyager.voyager;
 
 public class User {
     String id;
-    private String name;
+    String name;
     String lastname;
     String email;
     //String password;
@@ -10,6 +10,7 @@ public class User {
     String nationality;
     String state;
     String city;
+    String phone;
 
     public User(String id,String name,String lastname,String email,String birth_date,String nationality,String state,String city){
         this.id = id;
@@ -60,6 +61,9 @@ public class User {
         return city;
     }
 
+    public String getPhone(){ return phone; }
+
+
     public void setName(String name) {
         this.name = name;
     }
@@ -91,4 +95,6 @@ public class User {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public void setPhone(String phone) { this.phone = phone; }
 }
