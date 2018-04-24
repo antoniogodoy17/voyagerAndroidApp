@@ -181,14 +181,27 @@ public class Profile extends Fragment {
 
     protected void fillFields(){
 
+       // txtNameProfile.setText(user.getName() +" "+ user.getLastname());
+        txtBirthDateProfile.setText(user.getBirth_date());
+        txtEmailProfile.setText(email);
+        viewMode();
+
+        btnProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+            }
+        });
+    }
+    protected  void getUserData(){
         email = fbUser.getEmail();
         voyager.voyager.homeActivity.database.orderByChild("email").startAt(email).endAt(email+"\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 user = dataSnapshot.getValue(User.class);
-
-                setValues();
+                //Toast.makeText(getView().getContext(), user.getName(), Toast.LENGTH_SHORT).show();
+                fillFields();
             }
 
             @Override
@@ -211,21 +224,8 @@ public class Profile extends Fragment {
 
             }
         });
-
-        btnProfilePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
     }
 
-    protected void setValues() {
-        txtNameProfile.setText(user.getName() +" "+ user.getLastname());
-        txtBirthDateProfile.setText(user.getBirth_date());
-        txtEmailProfile.setText(email);
-        viewMode();
-    }
 
     private void chooseImage() {
         Intent intent = new Intent();
@@ -254,19 +254,10 @@ public class Profile extends Fragment {
 
     protected void saveChanges(){
 
+        user.setName(txtNameProfile.getText().toString().trim());
+        user.setBirth_date(txtBirthDateProfile.toString().trim());
 
-        String userId = user.id;
-        Object[] campos =
-                {
-                        txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtBirthDateProfile, txtLocationProfile
-                };
-
-        User userChanged = new User();
-
-//
-        // get Data from Fields and Change it on Object User
-
-        voyager.voyager.homeActivity.database.child(userId).setValue(user);
+        voyager.voyager.homeActivity.database.child(user.getId()).setValue(user);
     }
 
 
@@ -377,7 +368,8 @@ public class Profile extends Fragment {
         sprStateProfile = view.findViewById(R.id.sprStateProfile);
         sprCityProfile = view.findViewById(R.id.sprCityProfile);
 
-        fillFields();
+        getUserData();
+
 
         ScrollView l = view.findViewById(R.id.x);
         l.setOnClickListener(new View.OnClickListener() {
@@ -432,7 +424,7 @@ public class Profile extends Fragment {
                 Toast.makeText(getView().getContext(),"Changes Made " , Toast.LENGTH_LONG).show();
             }
         });
-
+        //fillFields();
         // Inflate the layout for this fragment
         return view;
     }
