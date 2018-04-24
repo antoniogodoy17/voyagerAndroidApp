@@ -57,7 +57,6 @@ public class Profile extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-
     //Our code from profile goes here
     EditText txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtLocationProfile;
     TextView txtBirthDateProfile;
@@ -67,9 +66,7 @@ public class Profile extends Fragment {
     DatePickerDialog datePicker;
     String name, lastname, email, phone, birth_date, location, password;
     User user;
-
     private Uri filePath;
-
     private final int PICK_IMAGE_REQUEST = 71;
     //
 
@@ -102,86 +99,13 @@ public class Profile extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        //Our code from profile goes here
-//        database = FirebaseDatabase.getInstance().getReference("User");
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        fbUser = firebaseAuth.getCurrentUser();
-
-
-//        btnEditProfile = getView().findViewById(R.id.btnEditProfile);
-//        btnSaveChanges = getView().findViewById(R.id.btnSaveChanges);
-//        btnProfilePic = getView().findViewById(R.id.btnProfilePic);
-//        btnCancel = getView().findViewById(R.id.btnCancel);
-//
-//        txtNameProfile = getView().findViewById(R.id.txtNameProfile);
-//        txtEmailProfile = getView().findViewById(R.id.txtEmailProfile);
-//        txtPhoneProfile = getView().findViewById(R.id.txtPhoneProfile);
-//        txtPasswordProfile = getView().findViewById(R.id.txtPasswordProfile);
-//        txtBirthDateProfile = getView().findViewById(R.id.txtBirthDateProfile);
-//        txtLocationProfile = getView().findViewById(R.id.txtLocationProfile);
-//
-//        sprCountryProfile = getView().findViewById(R.id.sprCountryProfile);
-//        sprStateProfile = getView().findViewById(R.id.sprStateProfile);
-//        sprCityProfile = getView().findViewById(R.id.sprCityProfile);
-
-//        fillData();
-
-//        fillFields();
-//
-//
-//        btnEditProfile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                editMode();
-//            }
-//        });
-//
-//        btnCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                viewMode();
-////                fillData();
-//            }
-//        });
-//
-//        txtBirthDateProfile.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                final Calendar c = Calendar.getInstance();
-//                int selYear = c.get(Calendar.YEAR); // current year
-//                int selMonth = c.get(Calendar.MONTH); // current month
-//                int selDay = c.get(Calendar.DAY_OF_MONTH); // current day
-//                // date picker dialog
-//                datePicker = new DatePickerDialog(getView().getContext(), new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//                        txtBirthDateProfile.setText(dayOfMonth + "/"+ (monthOfYear + 1) + "/" + year);
-//                    }
-//                }, selYear, selMonth, selDay);
-//                c.add(Calendar.YEAR,-10);
-//                datePicker.getDatePicker().setMaxDate(c.getTimeInMillis());
-//                c.add(Calendar.YEAR, -100);
-//                datePicker.getDatePicker().setMinDate(c.getTimeInMillis());
-//                datePicker.show();
-//            }
-//        });
-//
-//        btnSaveChanges.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                saveChanges();
-//                Toast.makeText(getView().getContext(),"Changes Made " , Toast.LENGTH_LONG).show();
-//            }
-//        });
-
     }
 
     //OUR CODE FROM PROFILE GOES HERE
 
     protected void fillFields(){
 
-       // txtNameProfile.setText(user.getName() +" "+ user.getLastname());
+        txtNameProfile.setText(user.getName() +" "+ user.getLastname());
         txtBirthDateProfile.setText(user.getBirth_date());
         txtEmailProfile.setText(email);
         viewMode();
@@ -198,34 +122,27 @@ public class Profile extends Fragment {
         voyager.voyager.homeActivity.database.orderByChild("email").startAt(email).endAt(email+"\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
                 user = dataSnapshot.getValue(User.class);
-                //Toast.makeText(getView().getContext(), user.getName(), Toast.LENGTH_SHORT).show();
                 fillFields();
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
             }
-
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
-
 
     private void chooseImage() {
         Intent intent = new Intent();
@@ -253,14 +170,10 @@ public class Profile extends Fragment {
     }
 
     protected void saveChanges(){
-
         user.setName(txtNameProfile.getText().toString().trim());
         user.setBirth_date(txtBirthDateProfile.toString().trim());
-
         voyager.voyager.homeActivity.database.child(user.getId()).setValue(user);
     }
-
-
 
 //    protected void fillData(){
 //        int i = 0;
@@ -346,9 +259,7 @@ public class Profile extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_profile,container,false);
 
@@ -356,33 +267,21 @@ public class Profile extends Fragment {
         btnSaveChanges = view.findViewById(R.id.btnSaveChanges);
         btnProfilePic = view.findViewById(R.id.btnProfilePic);
         btnCancel = view.findViewById(R.id.btnCancel);
-
         txtNameProfile = view.findViewById(R.id.txtNameProfile);
         txtEmailProfile = view.findViewById(R.id.txtEmailProfile);
         txtPhoneProfile = view.findViewById(R.id.txtPhoneProfile);
         txtPasswordProfile = view.findViewById(R.id.txtPasswordProfile);
         txtBirthDateProfile = view.findViewById(R.id.txtBirthDateProfile);
         txtLocationProfile = view.findViewById(R.id.txtLocationProfile);
-
         sprCountryProfile = view.findViewById(R.id.sprCountryProfile);
         sprStateProfile = view.findViewById(R.id.sprStateProfile);
         sprCityProfile = view.findViewById(R.id.sprCityProfile);
 
         getUserData();
 
-
-        ScrollView l = view.findViewById(R.id.x);
-        l.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getView().getContext(), "asdfasdfasdfsda", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "asdfasdfasdfsda", Toast.LENGTH_SHORT).show();
                 editMode();
             }
         });
@@ -422,6 +321,7 @@ public class Profile extends Fragment {
             public void onClick(View v) {
                 saveChanges();
                 Toast.makeText(getView().getContext(),"Changes Made " , Toast.LENGTH_LONG).show();
+                viewMode();
             }
         });
         //fillFields();

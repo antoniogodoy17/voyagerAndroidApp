@@ -50,15 +50,15 @@ public class LogInActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                progressBar.setVisibility(View.VISIBLE);
-//                btnLogin.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                btnLogin.setVisibility(View.GONE);
                 set_user_values();
                 if (verify_data())
                     auth_SignIn();
-//                else{
-//                    btnLogin.setVisibility(View.VISIBLE);
-//                    progressBar.setVisibility(View.GONE);
-//                }
+                else{
+                    btnLogin.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
             }
         });
         btnSignIn.setOnClickListener(new View.OnClickListener() {

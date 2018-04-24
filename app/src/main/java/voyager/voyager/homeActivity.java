@@ -52,6 +52,7 @@ public class homeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 goProfile();
+                setTitle("Profile");
             }
         });
 
