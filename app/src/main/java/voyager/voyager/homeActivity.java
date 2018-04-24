@@ -9,20 +9,36 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class homeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
 
     Button button2;
+    View header;
+    static DatabaseReference database;
+    static FirebaseUser fbUser;
+    FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        database = FirebaseDatabase.getInstance().getReference("User");
+        firebaseAuth = FirebaseAuth.getInstance();
+        fbUser = firebaseAuth.getCurrentUser();
+
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -31,18 +47,29 @@ public class homeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
 
-        button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
+        header = navigationView.getHeaderView(0);
+        header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
-                startActivity(profile);
-                //          overridePendingTransition(R.anim.alpha_transition,R.anim.alpha_transition);
-                finish();
+                goProfile();
             }
         });
+
+//        button2 = findViewById(R.id.button2);
+//        button2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
+//                startActivity(profile);
+//                //          overridePendingTransition(R.anim.alpha_transition,R.anim.alpha_transition);
+//                finish();
+//            }
+//        });
     }
 
+//    public static FirebaseUser getfbUser(){
+//        return fbUser;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -85,5 +112,24 @@ public class homeActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public void goProfile(){
+
+
+        try{
+            Class fragmentClass = Profile.class;
+            Fragment fragment = (Fragment)fragmentClass.newInstance();
+            FragmentManager fragmentManager = getFragmentManager();
+            Log.d("FRAGMENT ", fragment.toString());
+            fragmentManager.beginTransaction().replace(R.id.fragmentHandlerLayout,fragment).commit();
+//                setTitle(header.toString());
+            drawerLayout.closeDrawers();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(this, "dsdgdfsi", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
