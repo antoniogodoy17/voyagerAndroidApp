@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,12 +31,19 @@ public class ProfileActivity extends AppCompatActivity {
     DatePickerDialog datePicker;
     String name, lastname, email, phone, birth_date, location, password;
     DatabaseReference database;
-    private FirebaseAuth firebaseAuth;
+    FirebaseUser fbUser;
+    FirebaseAuth firebaseAuth;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        database = FirebaseDatabase.getInstance().getReference("User");
+        firebaseAuth = FirebaseAuth.getInstance();
+        fbUser = firebaseAuth.getCurrentUser();
+
 
         btnEditProfile = findViewById(R.id.btnEditProfile);
         btnSaveChanges = findViewById(R.id.btnSaveChanges);
@@ -100,15 +108,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     protected void fillFields(){
 
-        database = FirebaseDatabase.getInstance().getReference("User");
-        database.orderByChild("email").startAt("diegomendozaco97@gmail.com").endAt("diegomendozaco97@gmail.com"+"\uf8ff").addChildEventListener(new ChildEventListener() {
+        email = fbUser.getEmail();
+        database.orderByChild("email").startAt(email).endAt(email+"\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                User user = dataSnapshot.getValue(User.class);
-                name = user.name;
-                email = user.email;
-                lastname = user.lastname;
-                birth_date = user.birth_date;
+
+                user = dataSnapshot.getValue(User.class);
+
                 setValues();
             }
 
@@ -135,8 +141,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     protected void setValues() {
-          txtNameProfile.setText(name +" "+ lastname);
-          txtBirthDateProfile.setText(birth_date.toString());
+          txtNameProfile.setText(user.getName() +" "+ user.getLastname());
+          txtBirthDateProfile.setText(user.getBirth_date());
           txtEmailProfile.setText(email);
           viewMode();
     }

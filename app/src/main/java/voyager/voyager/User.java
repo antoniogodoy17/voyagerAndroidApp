@@ -2,7 +2,7 @@ package voyager.voyager;
 
 public class User {
     String id;
-    String name;
+    private String name;
     String lastname;
     String email;
     //String password;
