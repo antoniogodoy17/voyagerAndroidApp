@@ -176,7 +176,7 @@ public class SignInActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     //                            register_user();
                     //                            // Sign in success, update UI with the signed-in user's information
-                    Toast.makeText(SignInActivity.this, R.string.Succesfull, Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignInActivity.this, R.string.Successful, Toast.LENGTH_LONG).show();
                     register_user();
                     auth_email_verification();
                 }

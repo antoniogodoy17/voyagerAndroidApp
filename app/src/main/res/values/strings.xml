@@ -23,7 +23,7 @@
     <string name="categories">Categories</string>
     <string name="favorites">Favorites</string>
     <string name="lists">My Lists</string>
-    <string name="Succesfull"> User Registered Successfully </string>
+    <string name="Successful"> User Registered Successfully </string>
     <string name="Error"> There was a problem registering user </string>
     <string name="switch_location">Switch Location</string>
     <string name="logout">Logout</string>
@@ -31,6 +31,7 @@
     <string name="close" translatable="false">Close</string>
     <string name="username">Username</string>
     <string name="view_profile">View my profile</string>
+    <string name="home">Home</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

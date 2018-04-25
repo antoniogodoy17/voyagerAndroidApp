@@ -102,7 +102,6 @@ public class LogInActivity extends AppCompatActivity {
                     btnLogin.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                 }
-
             }else{
                 Toast.makeText(LogInActivity.this,"The email or password is incorrect.", Toast.LENGTH_LONG).show();
                 btnLogin.setVisibility(View.VISIBLE);

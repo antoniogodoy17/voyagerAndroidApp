@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +25,6 @@ public class homeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
 
-    Button button2;
     View header;
     static DatabaseReference database;
     static FirebaseUser fbUser;
@@ -56,22 +56,21 @@ public class homeActivity extends AppCompatActivity {
             }
         });
 
-//        button2 = findViewById(R.id.button2);
-//        button2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent profile = new Intent(getApplicationContext(),ProfileActivity.class);
-//                startActivity(profile);
-//                //          overridePendingTransition(R.anim.alpha_transition,R.anim.alpha_transition);
-//                finish();
-//            }
-//        });
+        setHome();
     }
 
-//    public static FirebaseUser getfbUser(){
-//        return fbUser;
-//    }
-
+    public void setHome(){
+        try{
+            Class fragmentClass = Home.class;
+            Fragment fragment = (Fragment)fragmentClass.newInstance();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragmentHandlerLayout,fragment).commit();
+            setTitle("Home");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(drawerToggle.onOptionsItemSelected(item)){
@@ -79,7 +78,6 @@ public class homeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
     public void selectDrawerMenu(MenuItem menu){
         Fragment fragment = null;
         Class fragmentClass;
@@ -88,21 +86,30 @@ public class homeActivity extends AppCompatActivity {
             case R.id.categoriesMenu:
                 fragmentClass = Categories.class;
                 break;
+            case R.id.homeMenu:
+                fragmentClass = Home.class;
+                break;
+            case R.id.logoutMenu:
+                fragmentClass = null;
+                break;
             default:
-                fragmentClass = Categories.class;
+                fragmentClass = Home.class;
                 break;
         }
         try{
-            fragment = (Fragment)fragmentClass.newInstance();
+            if(fragmentClass!=null){
+                fragment = (Fragment)fragmentClass.newInstance();
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragmentHandlerLayout,fragment).commit();
+                menu.setChecked(true);
+                setTitle(menu.getTitle());
+                drawerLayout.closeDrawers();
+            }
+            goLogin();
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragmentHandlerLayout,fragment).commit();
-        menu.setChecked(true);
-        setTitle(menu.getTitle());
-        drawerLayout.closeDrawers();
     }
 
     private void setupDrawerContent(NavigationView navigationView){
@@ -114,7 +121,11 @@ public class homeActivity extends AppCompatActivity {
             }
         });
     }
-
+    public void goLogin(){
+        Intent login = new Intent(getApplicationContext(),LogInActivity.class);
+        startActivity(login);
+        finish();
+    }
     public void goProfile(){
         try{
             Class fragmentClass = Profile.class;
