@@ -104,8 +104,8 @@ public class homeActivity extends AppCompatActivity {
                 menu.setChecked(true);
                 setTitle(menu.getTitle());
                 drawerLayout.closeDrawers();
-            }
-            goLogin();
+            } else
+                goLogin();
         }
         catch (Exception e){
             e.printStackTrace();
