@@ -1,6 +1,7 @@
 package voyager.voyager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ public class LogInActivity extends AppCompatActivity {
     Button btnSignIn, btnLogin;
     EditText txtEmail, txtPassword;
     String email, password;
+    SharedPreferences sp;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser fbUser;
@@ -46,6 +48,8 @@ public class LogInActivity extends AppCompatActivity {
         txtEmail = findViewById(R.id.txtEmailLogin);
         txtPassword = findViewById(R.id.txtPasswordLogIn);
 
+        sp = getSharedPreferences("login",MODE_PRIVATE);
+
         //Elements Listener
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +58,7 @@ public class LogInActivity extends AppCompatActivity {
                 btnLogin.setVisibility(View.GONE);
                 set_user_values();
                 if (verify_data())
-                    auth_SignIn();
+                    auth_LogIn();
                 else{
                     btnLogin.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
@@ -86,7 +90,7 @@ public class LogInActivity extends AppCompatActivity {
         }
         return true;
     }
-    protected void auth_SignIn(){
+    protected void auth_LogIn(){
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -94,9 +98,7 @@ public class LogInActivity extends AppCompatActivity {
             if(task.isSuccessful()){
                 fbUser = firebaseAuth.getCurrentUser();
                 if (fbUser.isEmailVerified()){
-                    Intent home = new Intent(getApplicationContext(),homeActivity.class);
-                    startActivity(home);
-                    finish();
+                    goToMainActivity();
                 }else{
                     Toast.makeText(LogInActivity.this,"Your email is not verified yet.", Toast.LENGTH_LONG).show();
                     btnLogin.setVisibility(View.VISIBLE);
@@ -109,5 +111,11 @@ public class LogInActivity extends AppCompatActivity {
             }
             }
         });
+    }
+
+    public void goToMainActivity(){
+        Intent home = new Intent(getApplicationContext(),homeActivity.class);
+        startActivity(home);
+        finish();
     }
 }
