@@ -2,6 +2,7 @@ package voyager.voyager;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class homeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    homeVM vm;
 
     View header;
     static DatabaseReference database;
@@ -34,10 +36,7 @@ public class homeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        database = FirebaseDatabase.getInstance().getReference("User");
-        firebaseAuth = FirebaseAuth.getInstance();
-        fbUser = firebaseAuth.getCurrentUser();
+        vm = ViewModelProviders.of(this).get(homeVM.class);
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
