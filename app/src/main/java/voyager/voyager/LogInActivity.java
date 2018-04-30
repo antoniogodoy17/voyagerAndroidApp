@@ -26,7 +26,6 @@ public class LogInActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser fbUser;
 
-    homeVM vm;
     SharedPreferences sp;
     ProgressBar progressBar;
 
@@ -35,7 +34,6 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         //Database reference
-        vm = ViewModelProviders.of(this).get(homeVM.class);
         firebaseAuth = FirebaseAuth.getInstance();
 
         progressBar = findViewById(R.id.progressBar);
