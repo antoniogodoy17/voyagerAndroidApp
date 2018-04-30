@@ -1,5 +1,6 @@
 package voyager.voyager;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,17 +23,16 @@ public class LogInActivity extends AppCompatActivity {
     Button btnSignIn, btnLogin;
     EditText txtEmail, txtPassword;
     String email, password;
+    homeVM vm;
     SharedPreferences sp;
-
-    FirebaseAuth firebaseAuth;
-    FirebaseUser fbUser;
     ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         //Database reference
-        firebaseAuth = FirebaseAuth.getInstance();
+        vm = ViewModelProviders.of(this).get(homeVM.class);
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
@@ -91,13 +91,13 @@ public class LogInActivity extends AppCompatActivity {
         return true;
     }
     protected void auth_LogIn(){
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        vm.getFirebaseAuth().signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
             //Animation to wait until authorization is completed
             if(task.isSuccessful()){
-                fbUser = firebaseAuth.getCurrentUser();
-                if (fbUser.isEmailVerified()){
+                vm.setFbUser(vm.getFirebaseAuth().getCurrentUser());
+                if (vm.getFbUser().isEmailVerified()){
                     goToMainActivity();
                 }else{
                     Toast.makeText(LogInActivity.this,"Your email is not verified yet.", Toast.LENGTH_LONG).show();
@@ -116,6 +116,6 @@ public class LogInActivity extends AppCompatActivity {
     public void goToMainActivity(){
         Intent home = new Intent(getApplicationContext(),homeActivity.class);
         startActivity(home);
-        finish();
+//        finish();
     }
 }

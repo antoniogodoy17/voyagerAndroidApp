@@ -2,6 +2,7 @@ package voyager.voyager;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -26,7 +27,7 @@ public class homeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     View header;
-    homeVM vm;
+    private static homeVM vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,10 @@ public class homeActivity extends AppCompatActivity {
         });
 
         setHome();
+    }
+
+    public static homeVM getViewModel(){
+        return vm;
     }
 
     public void setHome(){
@@ -100,6 +105,7 @@ public class homeActivity extends AppCompatActivity {
                 setTitle(menu.getTitle());
                 drawerLayout.closeDrawers();
             } else
+                vm.getFirebaseAuth().signOut();
                 goLogin();
         }
         catch (Exception e){

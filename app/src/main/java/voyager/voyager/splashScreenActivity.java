@@ -22,11 +22,11 @@ public class splashScreenActivity extends AppCompatActivity {
 
         sp = getSharedPreferences("login",MODE_PRIVATE);
 
-        if (sp.getBoolean("logged", true)) {
-            Intent home = new Intent(getApplicationContext(), homeActivity.class);
-            startActivity(home);
-            finish();
-        } else {
+//        if (sp.getBoolean("logged", true)) {
+//                Intent home = new Intent(getApplicationContext(), homeActivity.class);
+//            startActivity(home);
+//            finish();
+//        } else {
             //Hiding status bar
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             //Hiding action bar
@@ -53,5 +53,5 @@ public class splashScreenActivity extends AppCompatActivity {
             };
             timer.start();
         }
-    }
+//    }
 }

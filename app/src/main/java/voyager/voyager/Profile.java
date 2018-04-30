@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class Profile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        vm = ViewModelProviders.of((FragmentActivity)getActivity()).get(homeVM.class);
+        vm = homeActivity.getViewModel();
         user = vm.getUser();
     }
 
@@ -66,6 +67,7 @@ public class Profile extends Fragment {
         txtLastNameProfile.setText(user.getLastname());
         txtBirthDateProfile.setText(user.getBirth_date());
         txtEmailProfile.setText(user.getEmail());
+
         viewMode();
 
         btnProfilePic.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +179,6 @@ public class Profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_profile,container,false);
-
         btnEditProfile = view.findViewById(R.id.btnEditProfile);
         btnSaveChanges = view.findViewById(R.id.btnSaveChanges);
         btnProfilePic = view.findViewById(R.id.btnProfilePic);
