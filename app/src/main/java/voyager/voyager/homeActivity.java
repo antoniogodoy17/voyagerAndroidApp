@@ -104,9 +104,10 @@ public class homeActivity extends AppCompatActivity {
                 menu.setChecked(true);
                 setTitle(menu.getTitle());
                 drawerLayout.closeDrawers();
-            } else
+            } else {
                 vm.getFirebaseAuth().signOut();
                 goLogin();
+            }
         }
         catch (Exception e){
             e.printStackTrace();
