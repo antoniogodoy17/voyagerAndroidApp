@@ -37,7 +37,10 @@ public class Home extends Fragment {
         NavigationView navigationView = getActivity().findViewById(R.id.navigationView);
         View headerView = navigationView.getHeaderView(0);
         TextView username = headerView.findViewById(R.id.drawerUsername);
-        username.setText(vm.getFbUser().getDisplayName());
+        if(vm.getFbUser().getDisplayName().equals(""))
+            username.setText("Username");
+        else
+            username.setText(vm.getFbUser().getDisplayName());
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 

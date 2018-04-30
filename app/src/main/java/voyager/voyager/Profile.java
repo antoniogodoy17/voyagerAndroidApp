@@ -18,6 +18,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.UserProfileChangeRequest;
+
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -106,6 +109,9 @@ public class Profile extends Fragment {
         user.setBirth_date(txtBirthDateProfile.getText().toString().trim());
         vm.getUsersDatabase().child(user.getId()).setValue(user);
         vm.setUser(user);
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(user.getName()+user.getLastname()).build();
+        vm.getFbUser().updateProfile(profileUpdates);
     }
 
     protected void editMode(){
