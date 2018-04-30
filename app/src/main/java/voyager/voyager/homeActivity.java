@@ -25,12 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class homeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    homeVM vm;
-
     View header;
-    static DatabaseReference database;
-    static FirebaseUser fbUser;
-    FirebaseAuth firebaseAuth;
+    homeVM vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,12 +127,10 @@ public class homeActivity extends AppCompatActivity {
             Fragment fragment = (Fragment)fragmentClass.newInstance();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragmentHandlerLayout,fragment).commit();
-//                setTitle(header.toString());
             drawerLayout.closeDrawers();
         }
         catch (Exception e){
             e.printStackTrace();
         }
-
     }
 }

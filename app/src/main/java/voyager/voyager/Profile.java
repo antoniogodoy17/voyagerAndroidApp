@@ -43,7 +43,6 @@ public class Profile extends Fragment {
     private final int PICK_IMAGE_REQUEST = 71;
     User user;
     homeVM vm;
-    //
 
     public Profile() {
         // Required empty public constructor
@@ -57,6 +56,7 @@ public class Profile extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vm = ViewModelProviders.of((FragmentActivity)getActivity()).get(homeVM.class);
+        user = vm.getUser();
     }
 
     //OUR CODE FROM PROFILE GOES HERE
@@ -65,40 +65,13 @@ public class Profile extends Fragment {
         txtNameProfile.setText(user.getName());
         txtLastNameProfile.setText(user.getLastname());
         txtBirthDateProfile.setText(user.getBirth_date());
-        txtEmailProfile.setText(email);
+        txtEmailProfile.setText(user.getEmail());
         viewMode();
 
         btnProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage();
-            }
-        });
-    }
-    protected  void getUserData(){
-        email = vm.getFbUser().getEmail();
-        vm.getUsersDatabase().orderByChild("email").startAt(email).endAt(email+"\uf8ff").addChildEventListener(new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                user = dataSnapshot.getValue(User.class);
-                fillFields();
-            }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
@@ -113,9 +86,7 @@ public class Profile extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null ){
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getView().getContext().getContentResolver(), filePath);
@@ -131,7 +102,7 @@ public class Profile extends Fragment {
     protected void saveChanges(){
         user.setName(txtNameProfile.getText().toString().trim());
         user.setBirth_date(txtBirthDateProfile.getText().toString().trim());
-        voyager.voyager.homeActivity.database.child(user.getId()).setValue(user);
+        vm.getUsersDatabase().child(user.getId()).setValue(user);
     }
 
     protected void editMode(){
@@ -221,8 +192,7 @@ public class Profile extends Fragment {
         sprStateProfile = view.findViewById(R.id.sprStateProfile);
         sprCityProfile = view.findViewById(R.id.sprCityProfile);
 
-        getUserData();
-
+        fillFields();
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,7 +204,6 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 viewMode();
-//                fillData();
             }
         });
 

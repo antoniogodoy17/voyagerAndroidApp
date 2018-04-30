@@ -14,6 +14,7 @@ public class splashScreenActivity extends AppCompatActivity {
     private LinearLayout l1;
     Animation alphaAnim;
     SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +22,7 @@ public class splashScreenActivity extends AppCompatActivity {
 
         sp = getSharedPreferences("login",MODE_PRIVATE);
 
-        if (sp.getBoolean("logged", false)) {
+        if (sp.getBoolean("logged", true)) {
             Intent home = new Intent(getApplicationContext(), homeActivity.class);
             startActivity(home);
             finish();
