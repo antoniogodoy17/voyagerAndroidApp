@@ -103,6 +103,10 @@ public class Profile extends Fragment {
 
     protected void saveChanges(){
         user.setName(txtNameProfile.getText().toString().trim());
+        user.setLastname(txtLastNameProfile.getText().toString().trim());
+        user.setEmail(txtEmailProfile.getText().toString().trim());
+        user.setPhone(txtPhoneProfile.getText().toString().trim());
+        //password pendiente
         user.setBirth_date(txtBirthDateProfile.getText().toString().trim());
         vm.getUsersDatabase().child(user.getId()).setValue(user);
         vm.setUser(user);
