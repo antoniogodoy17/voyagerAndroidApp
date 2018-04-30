@@ -235,7 +235,7 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View v) {
                 saveChanges();
-                Toast.makeText(getView().getContext(),"Changes has ben made." , Toast.LENGTH_LONG).show();
+                Toast.makeText(getView().getContext(),"Changes have been made." , Toast.LENGTH_LONG).show();
                 viewMode();
             }
         });

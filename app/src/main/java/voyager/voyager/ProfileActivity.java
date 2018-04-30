@@ -201,10 +201,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         String userId = user.id;
-        Object[] campos =
-                {
-                        txtNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtBirthDateProfile, txtLocationProfile
-                };
 
         User userChanged = new User();
 
