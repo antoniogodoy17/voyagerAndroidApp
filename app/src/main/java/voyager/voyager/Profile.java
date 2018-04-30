@@ -65,8 +65,10 @@ public class Profile extends Fragment {
     protected void fillFields(){
         txtNameProfile.setText(user.getName());
         txtLastNameProfile.setText(user.getLastname());
-        txtBirthDateProfile.setText(user.getBirth_date());
         txtEmailProfile.setText(user.getEmail());
+        txtPhoneProfile.setText(user.getPhone());
+//        txtPasswordProfile
+        txtBirthDateProfile.setText(user.getBirth_date());
 
         viewMode();
 
