@@ -110,7 +110,7 @@ public class Profile extends Fragment {
         vm.getUsersDatabase().child(user.getId()).setValue(user);
         vm.setUser(user);
 
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(user.getName()+user.getLastname()).build();
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(user.getName()+" "+user.getLastname()).build();
         vm.getFbUser().updateProfile(profileUpdates);
     }
 
