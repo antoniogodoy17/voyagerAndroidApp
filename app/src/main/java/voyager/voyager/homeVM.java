@@ -11,8 +11,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.nio.file.ClosedFileSystemException;
-
 public class homeVM extends ViewModel {
     private FirebaseDatabase database;
     private DatabaseReference usersDatabase;
