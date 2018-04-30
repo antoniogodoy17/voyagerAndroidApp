@@ -103,6 +103,7 @@ public class Profile extends Fragment {
         user.setName(txtNameProfile.getText().toString().trim());
         user.setBirth_date(txtBirthDateProfile.getText().toString().trim());
         vm.getUsersDatabase().child(user.getId()).setValue(user);
+        vm.setUser(user);
     }
 
     protected void editMode(){
