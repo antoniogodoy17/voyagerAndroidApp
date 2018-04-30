@@ -23,6 +23,9 @@ public class LogInActivity extends AppCompatActivity {
     Button btnSignIn, btnLogin;
     EditText txtEmail, txtPassword;
     String email, password;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser fbUser;
+
     homeVM vm;
     SharedPreferences sp;
     ProgressBar progressBar;
@@ -33,6 +36,7 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
         //Database reference
         vm = ViewModelProviders.of(this).get(homeVM.class);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
@@ -91,13 +95,13 @@ public class LogInActivity extends AppCompatActivity {
         return true;
     }
     protected void auth_LogIn(){
-        vm.getFirebaseAuth().signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
             //Animation to wait until authorization is completed
             if(task.isSuccessful()){
-                vm.setFbUser(vm.getFirebaseAuth().getCurrentUser());
-                if (vm.getFbUser().isEmailVerified()){
+                fbUser = firebaseAuth.getCurrentUser();
+                if (fbUser.isEmailVerified()){
                     goToMainActivity();
                 }else{
                     Toast.makeText(LogInActivity.this,"Your email is not verified yet.", Toast.LENGTH_LONG).show();
@@ -116,6 +120,6 @@ public class LogInActivity extends AppCompatActivity {
     public void goToMainActivity(){
         Intent home = new Intent(getApplicationContext(),homeActivity.class);
         startActivity(home);
-//        finish();
+        finish();
     }
 }
