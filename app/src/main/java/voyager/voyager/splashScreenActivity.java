@@ -9,23 +9,28 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class splashScreenActivity extends AppCompatActivity {
     private LinearLayout l1;
+    private FirebaseAuth mAuth;
     Animation alphaAnim;
-    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
 
-        sp = getSharedPreferences("login",MODE_PRIVATE);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-//        if (sp.getBoolean("logged", true)) {
-//                Intent home = new Intent(getApplicationContext(), homeActivity.class);
-//            startActivity(home);
-//            finish();
-//        } else {
+        if (currentUser != null) {
+            Intent home = new Intent(getApplicationContext(), homeActivity.class);
+            startActivity(home);
+            finish();
+        } else {
+
             //Hiding status bar
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             //Hiding action bar
@@ -35,22 +40,21 @@ public class splashScreenActivity extends AppCompatActivity {
             alphaAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_transition);
             l1.setAnimation(alphaAnim);
 
-            Thread timer = new Thread(){
+            Thread timer = new Thread() {
                 @Override
-                public void run(){
-                    try{
+                public void run() {
+                    try {
                         sleep(2500);
-                        Intent login = new Intent(getApplicationContext(),LogInActivity.class);
+                        Intent login = new Intent(getApplicationContext(), LogInActivity.class);
                         startActivity(login);
                         finish();
                         super.run();
-                    }
-                    catch (InterruptedException e){
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             };
             timer.start();
         }
-//    }
+    }
 }
