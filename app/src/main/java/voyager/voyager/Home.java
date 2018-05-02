@@ -22,7 +22,6 @@ public class Home extends Fragment {
     private ArrayList<Card> cardsList;
 
     private homeVM vm;
-    User user;
 
     public Home() {
         // Required empty public constructor
@@ -42,7 +41,7 @@ public class Home extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         //Drawer Menu > Setting up username
-//        setDrawerUserName();
+        setDrawerUserName();
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         //Other elements
