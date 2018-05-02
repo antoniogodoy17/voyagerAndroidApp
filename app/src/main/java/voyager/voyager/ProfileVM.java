@@ -23,6 +23,7 @@ public class ProfileVM extends ViewModel {
     private FirebaseAuth firebaseAuth;
     private User user;
 
+
     public ProfileVM(){
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();

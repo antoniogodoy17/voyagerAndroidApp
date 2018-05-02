@@ -147,6 +147,7 @@ public class homeActivity extends AppCompatActivity {
             }
         });
     }
+
     public void goLogin(){
         Intent login = new Intent(getApplicationContext(),LogInActivity.class);
         startActivity(login);

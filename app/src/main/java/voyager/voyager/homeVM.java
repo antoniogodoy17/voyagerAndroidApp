@@ -27,6 +27,10 @@ public class homeVM extends ViewModel {
     private ArrayList<String> activitiesId = new ArrayList<>();
     private ArrayList<Actividad> activities;
     private Map<String, Object> activitiesMap = new HashMap<>();
+    private int count;
+    private boolean finish;
+    private Home hm;
+
 
     public homeVM(){
         database = FirebaseDatabase.getInstance();
@@ -35,7 +39,8 @@ public class homeVM extends ViewModel {
         Query activityDatabase = database.getReference("Actividades");
         activities = new ArrayList<Actividad>();
         fbUser = firebaseAuth.getCurrentUser();
-
+        count = 0;
+        finish = false;
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -54,18 +59,24 @@ public class homeVM extends ViewModel {
         });
 
 
-        activities = new ArrayList<Actividad>();
+
         activityDatabase.orderByChild("id").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                count++;
                // activitiesId.add(dataSnapshot.getKey());
                 activities.add(dataSnapshot.getValue(Actividad.class));
                 System.out.println("---------> "+ activities.size());
 //                System.out.println(activitiesId.size());
+                if(count == dataSnapshot.getChildrenCount()){
+                    //Initialize the HomeActivity------------------------------
+                    System.out.println("-------> Termineeeee");
 
+                }
             }
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) { }
             @Override
@@ -75,7 +86,7 @@ public class homeVM extends ViewModel {
         });
 
         for(int i = 0; i < 13; i++){
-            //System.out.println("---------> "+ activities.size());
+            System.out.println("---------> "+ activities.size());
 //            activityDatabase.orderByChild(activitiesId.get(i)).startAt(activitiesId.get(i)).endAt(activitiesId.get(i)+ "\uf8ff").addValueEventListener(new ValueEventListener() {
 //                @Override
 //                public void onDataChange(DataSnapshot dataSnapshot) {
@@ -131,5 +142,7 @@ public class homeVM extends ViewModel {
 
 
     public ArrayList<Actividad> getActivitiesMap(){ return activities; }
+
+    public boolean getFinish(){return finish;}
 
 }

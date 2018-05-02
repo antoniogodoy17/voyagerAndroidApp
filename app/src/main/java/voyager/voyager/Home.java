@@ -22,6 +22,8 @@ public class Home extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ListView listView;
     private ArrayList<Card> cardsList;
+    private ArrayList<Actividad> activities;
+
 
     private homeVM vm;
 
@@ -38,6 +40,8 @@ public class Home extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vm = homeActivity.getViewModel();
+        activities = vm.getActivitiesMap();
+
     }
 
     @Override
@@ -52,6 +56,12 @@ public class Home extends Fragment {
         cardsList = new ArrayList<Card>();
 
         //Implement a loop here to dinamically create Cards with the ordered Activities
+
+        System.out.println("----------------->"+activities.size());
+        for(Actividad activity:activities){
+            System.out.println("------>" + activity.titulo);
+        }
+        //End loop
         cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 1"));
         cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 2"));
         cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 3"));
