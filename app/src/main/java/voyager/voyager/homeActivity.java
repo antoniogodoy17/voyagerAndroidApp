@@ -14,9 +14,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class homeActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -82,8 +79,31 @@ public class homeActivity extends AppCompatActivity {
     }
     public void selectDrawerMenu(MenuItem menu){
         Fragment fragment = null;
-        Class fragmentClass;
+        Class fragmentClass = null;
 
+
+//        Intent next = null;
+//        switch (menu.getItemId()){
+//            case R.id.homeMenu:
+//                next = new Intent(this,homeActivity.class);
+//                break;
+//            case R.id.categoriesMenu:
+//                next = new Intent(this,CategoriesActivity.class);
+//                break;
+//            case R.id.favoritesMenu:
+//                next = new Intent(this,FavoritesActivity.class);
+//                break;
+//            case R.id.listsMenu:
+//                next = new Intent(this,ListsActivity.class);
+//                break;
+//            case R.id.switchLocationMenu:
+//                next = new Intent(this,SwitchLocationActivity.class);
+//                break;
+//            case R.id.logoutMenu:
+//                break;
+//        }
+//        startActivity(next);
+//        finish();
         switch (menu.getItemId()){
             case R.id.categoriesMenu:
                 fragmentClass = Categories.class;
