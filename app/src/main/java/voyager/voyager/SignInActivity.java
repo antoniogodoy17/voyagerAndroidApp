@@ -198,6 +198,8 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name+" "+lastname).build();
+                            fbUser.updateProfile(profileUpdates);
                             Toast.makeText(SignInActivity.this,"Verification email sent to " + fbUser.getEmail(), Toast.LENGTH_LONG).show();
                         }
                         else {

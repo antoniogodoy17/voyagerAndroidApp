@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Fragment;
+import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,6 +113,14 @@ public class Profile extends Fragment {
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(user.getName()+" "+user.getLastname()).build();
         vm.getFbUser().updateProfile(profileUpdates);
+        updateDrawerUserName();
+    }
+
+    public void updateDrawerUserName(){
+        NavigationView navigationView = getActivity().findViewById(R.id.navigationView);
+        View headerView = navigationView.getHeaderView(0);
+        TextView username = headerView.findViewById(R.id.drawerUsername);
+        username.setText(vm.getFbUser().getDisplayName());
     }
 
     protected void editMode(){

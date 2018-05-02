@@ -21,7 +21,7 @@ public class Home extends Fragment {
     private ListView listView;
     private ArrayList<Card> cardsList;
 
-    homeVM vm;
+    private homeVM vm;
     User user;
 
     public Home() {
@@ -42,13 +42,7 @@ public class Home extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         //Drawer Menu > Setting up username
-        NavigationView navigationView = getActivity().findViewById(R.id.navigationView);
-        View headerView = navigationView.getHeaderView(0);
-        TextView username = headerView.findViewById(R.id.drawerUsername);
-        if(vm.getFbUser().getDisplayName().equals(""))
-            username.setText("Username");
-        else
-            username.setText(vm.getFbUser().getDisplayName());
+//        setDrawerUserName();
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         //Other elements
@@ -67,6 +61,16 @@ public class Home extends Fragment {
         listView.setAdapter(cardAdapter);
 
         return view;
+    }
+
+    public void setDrawerUserName(){
+        NavigationView navigationView = getActivity().findViewById(R.id.navigationView);
+        View headerView = navigationView.getHeaderView(0);
+        TextView username = headerView.findViewById(R.id.drawerUsername);
+        if(vm.getFbUser().getDisplayName().isEmpty())
+            username.setText("Username");
+        else
+            username.setText(vm.getFbUser().getDisplayName());
     }
 
     public void onButtonPressed(Uri uri) {
