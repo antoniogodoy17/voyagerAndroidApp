@@ -33,13 +33,15 @@ public class homeVM extends ViewModel {
         firebaseAuth = FirebaseAuth.getInstance();
         usersDatabase = database.getReference("User");
         Query activityDatabase = database.getReference("Actividades");
-
+        activities = new ArrayList<Actividad>();
         fbUser = firebaseAuth.getCurrentUser();
 
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 user = dataSnapshot.getValue(User.class);
+
+
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
@@ -52,12 +54,13 @@ public class homeVM extends ViewModel {
         });
 
 
-
+        activities = new ArrayList<Actividad>();
         activityDatabase.orderByChild("id").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                activitiesId.add(dataSnapshot.getKey());
-
+               // activitiesId.add(dataSnapshot.getKey());
+                activities.add(dataSnapshot.getValue(Actividad.class));
+                System.out.println("---------> "+ activities.size());
 //                System.out.println(activitiesId.size());
 
             }
@@ -72,21 +75,21 @@ public class homeVM extends ViewModel {
         });
 
         for(int i = 0; i < 13; i++){
-
-            activityDatabase.orderByChild(activitiesId.get(i)).startAt(activitiesId.get(i)).endAt(activitiesId.get(i)+ "\uf8ff").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    int count = 0;
-                    activities.add(dataSnapshot.getValue(Actividad.class));
-                    System.out.println("---------> "+ activities.get(count).titulo);
-                    count++;
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+            //System.out.println("---------> "+ activities.size());
+//            activityDatabase.orderByChild(activitiesId.get(i)).startAt(activitiesId.get(i)).endAt(activitiesId.get(i)+ "\uf8ff").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    int count = 0;
+//                    activities.add(dataSnapshot.getValue(Actividad.class));
+//                    System.out.println("---------> "+ activities.get(count).titulo);
+//                    count++;
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
         }
 
 

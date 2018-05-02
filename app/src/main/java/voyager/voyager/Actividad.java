@@ -1,10 +1,11 @@
 package voyager.voyager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Actividad {
 
-    String calificacion;
+    HashMap<String, String> calificacion;
     int costo;
     HashMap<String, String> imagenes;
     String categoria;
@@ -13,10 +14,10 @@ public class Actividad {
     String fecha;
     String horario;
     HashMap<String, String > reseñas;
-    HashMap<String,HashMap<String, String >> tags;
+    ArrayList<Object> tags;
     String tipo;
     String titulo;
-    HashMap<Object , String> ubicacion;
+    HashMap<String , Object> ubicacion;
 
 
 }
