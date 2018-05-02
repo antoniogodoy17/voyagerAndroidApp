@@ -33,11 +33,18 @@
         <activity
             android:name=".homeActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".CategoriesActivity" />
-        <activity android:name=".FavoritesActivity" />
-        <activity android:name=".ListsActivity" />
-        <activity android:name=".SwitchLocationActivity" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".CategoriesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FavoritesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ListsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SwitchLocationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -8,24 +8,34 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class homeVM extends ViewModel {
     private FirebaseDatabase database;
-    private DatabaseReference usersDatabase,activityDatabase;
+    private DatabaseReference usersDatabase;
+//    ,activityDatabase;
+    private Query activityDatabase;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     private User user;
-    private ArrayList<Object> activities;
-    private Actividad activity;
+    private ArrayList<String> activitiesId = new ArrayList<>();
+    private ArrayList<Actividad> activities;
+    private Map<String, Object> activitiesMap = new HashMap<>();
 
     public homeVM(){
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         usersDatabase = database.getReference("User");
-        activityDatabase = database.getReference("Actividades");
+        Query activityDatabase = database.getReference("Actividades");
+
         fbUser = firebaseAuth.getCurrentUser();
-        activities = new ArrayList<>();
+
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -40,10 +50,16 @@ public class homeVM extends ViewModel {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-        activityDatabase.orderByKey().addChildEventListener(new ChildEventListener() {
+
+
+
+        activityDatabase.orderByChild("id").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                activities.add(dataSnapshot.getValue());
+                activitiesId.add(dataSnapshot.getKey());
+
+//                System.out.println(activitiesId.size());
+
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
@@ -54,6 +70,28 @@ public class homeVM extends ViewModel {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
+
+        for(int i = 0; i < 13; i++){
+
+            activityDatabase.orderByChild(activitiesId.get(i)).startAt(activitiesId.get(i)).endAt(activitiesId.get(i)+ "\uf8ff").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int count = 0;
+                    activities.add(dataSnapshot.getValue(Actividad.class));
+                    System.out.println("---------> "+ activities.get(count).titulo);
+                    count++;
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+
+
     }
 
     public FirebaseDatabase getDatabase() {
@@ -83,4 +121,12 @@ public class homeVM extends ViewModel {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void setActivities(ArrayList<Actividad> acts){
+        this.activities = acts;
+    }
+
+
+    public ArrayList<Actividad> getActivitiesMap(){ return activities; }
+
 }
