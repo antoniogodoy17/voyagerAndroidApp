@@ -10,10 +10,17 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Home extends Fragment {
     private OnFragmentInteractionListener mListener;
+    private ListView listView;
+    private ArrayList<Card> cardsList;
+
     homeVM vm;
     User user;
 
@@ -34,6 +41,7 @@ public class Home extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        //Drawer Menu > Setting up username
         NavigationView navigationView = getActivity().findViewById(R.id.navigationView);
         View headerView = navigationView.getHeaderView(0);
         TextView username = headerView.findViewById(R.id.drawerUsername);
@@ -41,7 +49,24 @@ public class Home extends Fragment {
             username.setText("Username");
         else
             username.setText(vm.getFbUser().getDisplayName());
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        //Other elements
+        listView = view.findViewById(R.id.listView);
+
+        cardsList = new ArrayList<Card>();
+
+        //Implement a loop here to dinamically create Cards with the ordered Activities
+        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 1"));
+        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 2"));
+        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 3"));
+        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 4"));
+        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 5"));
+
+        CardListAdapter cardAdapter = new CardListAdapter(view.getContext(), R.layout.card_layout, cardsList);
+        listView.setAdapter(cardAdapter);
+
+        return view;
     }
 
     public void onButtonPressed(Uri uri) {
