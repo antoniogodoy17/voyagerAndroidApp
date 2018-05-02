@@ -1,23 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity"
-    android:id="@+id/drawer">
+    android:orientation="vertical">
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigationView"
-        app:headerLayout="@layout/drawerheader"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        app:itemTextColor="@color/colorSecondary"
-        app:itemIconTint="@color/colorSecondary"
-        app:menu="@menu/drawermenu"
-        android:layout_gravity="start">
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:id="@+id/x">
 
-    </android.support.design.widget.NavigationView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-</android.support.v4.widget.DrawerLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/colorPrimaryDark">
+                <ImageButton
+                    android:id="@+id/btnProfilePic"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_weight="0"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_account_circle_white_200dp"
+                    android:clickable="false" />
+
+                <EditText
+                    android:id="@+id/txtNameProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="@color/white"
+                    android:enabled="false"
+                    android:hint="@string/Name"
+                    android:inputType="textCapWords|textNoSuggestions"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:layout_marginTop="5dp"/>
+
+                <EditText
+                    android:id="@+id/txtLastNameProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="@color/white"
+                    android:enabled="false"
+                    android:hint="@string/Last_name"
+                    android:inputType="textCapWords|textNoSuggestions"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:layout_marginTop="5dp"/>
+
+                <ImageButton
+                    android:id="@+id/btnEditProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/transparent"
+                    app:srcCompat="@drawable/ic_edit_white_30dp" />
+            </LinearLayout>
+
+                <EditText
+                    android:id="@+id/txtEmailProfile"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/ic_email_black_24dp"
+                    android:hint="@string/Enter_your_email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/colorSecondary"
+                    android:textColorHint="@color/colorSecondaryLight"
+                    android:enabled="false" />
+
+                <EditText
+                    android:id="@+id/txtPhoneProfile"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/ic_phone_black_24dp"
+                    android:hint="@string/Enter_your_phone"
+                    android:inputType="phone"
+                    android:textColor="@color/colorSecondary"
+                    android:textColorHint="@color/colorSecondaryLight"
+                    android:enabled="false" />
+
+                <EditText
+                    android:id="@+id/txtPasswordProfile"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/ic_lock_black_24dp"
+                    android:hint="@string/Password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/colorSecondary"
+                    android:textColorHint="@color/colorSecondaryLight"
+                    android:enabled="false" />
+
+                <TextView
+                    android:id="@+id/txtBirthDateProfile"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/ic_date_range_black_24dp"
+                    android:hint="@string/Birth_Date"
+                    android:textColor="@color/colorSecondary"
+                    android:textColorHint="@color/colorSecondaryLight"
+                    android:textSize="18sp"
+                    android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+
+                <EditText
+                    android:id="@+id/txtLocationProfile"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/ic_place_black_24dp"
+                    android:hint="@string/Enter_your_location"
+                    android:inputType="date"
+                    android:textColor="@color/colorSecondary"
+                    android:textColorHint="@color/colorSecondaryLight"
+                    android:enabled="false" />
+
+                <Spinner
+                    android:id="@+id/sprCountryProfile"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:drawableStart="@drawable/ic_email_black_24dp"
+                    android:textColor="@color/colorSecondary"
+                    android:textColorHint="@color/colorSecondaryLight"
+                    android:visibility="gone" />
+
+                <Spinner
+                    android:id="@+id/sprStateProfile"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:drawableStart="@drawable/ic_email_black_24dp"
+                    android:textColor="@color/colorSecondary"
+                    android:textColorHint="@color/colorSecondaryLight"
+                    android:visibility="gone"/>
+
+                <Spinner
+                    android:id="@+id/sprCityProfile"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:drawableStart="@drawable/ic_email_black_24dp"
+                    android:textColor="@color/colorSecondary"
+                    android:textColorHint="@color/colorSecondaryLight"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnSaveChanges"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:fontFamily="@font/quicksand"
+                    android:text="@string/Save_Changes"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@android:color/transparent"
+                    android:text="@string/Cancel"
+                    android:textColor="@color/colorSecondary"
+                    android:visibility="gone" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
