@@ -22,7 +22,7 @@ public class Home extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ListView listView;
     private ArrayList<Card> cardsList;
-    private ArrayList<Actividad> activities;
+    private ArrayList<Activity> activities;
 
 
     private homeVM vm;
@@ -58,8 +58,8 @@ public class Home extends Fragment {
         //Implement a loop here to dinamically create Cards with the ordered Activities
 
         System.out.println("----------------->"+activities.size());
-        for(Actividad activity:activities){
-            System.out.println("------>" + activity.titulo);
+        for(Activity activity:activities){
+            System.out.println("------>" + activity.title);
         }
         //End loop
         cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 1"));

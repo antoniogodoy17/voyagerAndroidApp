@@ -25,7 +25,7 @@ public class homeVM extends ViewModel {
     private FirebaseAuth firebaseAuth;
     private User user;
     private ArrayList<String> activitiesId = new ArrayList<>();
-    private ArrayList<Actividad> activities;
+    private ArrayList<Activity> activities;
     private Map<String, Object> activitiesMap = new HashMap<>();
     private int count;
     private boolean finish;
@@ -36,8 +36,8 @@ public class homeVM extends ViewModel {
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         usersDatabase = database.getReference("User");
-        Query activityDatabase = database.getReference("Actividades");
-        activities = new ArrayList<Actividad>();
+        Query activityDatabase = database.getReference("Activities");
+        activities = new ArrayList<Activity>();
         fbUser = firebaseAuth.getCurrentUser();
         count = 0;
         finish = false;
@@ -65,7 +65,7 @@ public class homeVM extends ViewModel {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 count++;
                // activitiesId.add(dataSnapshot.getKey());
-                activities.add(dataSnapshot.getValue(Actividad.class));
+                activities.add(dataSnapshot.getValue(Activity.class));
                 System.out.println("---------> "+ activities.size());
 //                System.out.println(activitiesId.size());
                 if(count == dataSnapshot.getChildrenCount()){
@@ -136,12 +136,12 @@ public class homeVM extends ViewModel {
         this.user = user;
     }
 
-    public void setActivities(ArrayList<Actividad> acts){
+    public void setActivities(ArrayList<Activity> acts){
         this.activities = acts;
     }
 
 
-    public ArrayList<Actividad> getActivitiesMap(){ return activities; }
+    public ArrayList<Activity> getActivitiesMap(){ return activities; }
 
     public boolean getFinish(){return finish;}
 
