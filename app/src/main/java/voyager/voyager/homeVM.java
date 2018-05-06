@@ -63,10 +63,11 @@ public class homeVM extends ViewModel {
         activityDatabase.orderByChild("id").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                count++;
+
                // activitiesId.add(dataSnapshot.getKey());
                 activities.add(dataSnapshot.getValue(Activity.class));
-                System.out.println("---------> "+ activities.size());
+                System.out.println("---------> "+ activities.get(count).title);
+                count++;
 //                System.out.println(activitiesId.size());
                 if(count == dataSnapshot.getChildrenCount()){
                     //Initialize the HomeActivity------------------------------
@@ -84,26 +85,6 @@ public class homeVM extends ViewModel {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-
-        for(int i = 0; i < 13; i++){
-            System.out.println("---------> "+ activities.size());
-//            activityDatabase.orderByChild(activitiesId.get(i)).startAt(activitiesId.get(i)).endAt(activitiesId.get(i)+ "\uf8ff").addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    int count = 0;
-//                    activities.add(dataSnapshot.getValue(Actividad.class));
-//                    System.out.println("---------> "+ activities.get(count).titulo);
-//                    count++;
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-        }
-
-
 
 
     }
