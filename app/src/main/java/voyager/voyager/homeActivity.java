@@ -1,11 +1,7 @@
 package voyager.voyager;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -32,10 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.security.auth.login.LoginException;
-
-public class homeActivity extends AppCompatActivity {
+public class homeActivity extends ListActivity {
     // Database Setup
     private FirebaseDatabase database;
     private DatabaseReference usersDatabase, activityDatabase;
@@ -137,6 +133,22 @@ public class homeActivity extends AppCompatActivity {
         }
         cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
         listView.setAdapter(cardAdapter);
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(homeActivity.this, "hola desde " + parent.getAdapter().getItem(position).toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//                // TODO Auto-generated method stub
+//                Toast.makeText(homeActivity.this, "hola: " + arg2, Toast.LENGTH_SHORT).show();
+//            }
+//
+//        });
         progressBarLayout.setVisibility(View.GONE);
     }
     public void setDrawerUserName(){
@@ -194,5 +206,10 @@ public class homeActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onListItemClickListener(ListView l, View v, int position, long id){
+        Toast.makeText(this, "Hola desde: " + l.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
     }
 }

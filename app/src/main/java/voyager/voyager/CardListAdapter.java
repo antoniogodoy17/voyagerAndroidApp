@@ -1,6 +1,7 @@
 package voyager.voyager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 public class CardListAdapter extends ArrayAdapter<Card> {
     private Context context;
     private int resource;
+    private ArrayList<Card> cards;
 
     /**
      * Holds variables in a View
@@ -40,6 +43,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
+        this.cards = objects;
     }
 
     @NonNull
@@ -49,6 +53,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         setupImageLoader();
 
         //get the cards information
+        final Card card = cards.get(position);
         String title = getItem(position).getTitle();
         String imgUrl = getItem(position).getImgUrl();
 
@@ -85,6 +90,14 @@ public class CardListAdapter extends ArrayAdapter<Card> {
             //download and display image from url
             imageLoader.displayImage(imgUrl, holder.image, options);
 
+            convertView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, card.getTitle(), Toast.LENGTH_SHORT).show();
+                    openCard();
+                }
+            });
+
             return convertView;
         }catch (IllegalArgumentException e){
 //            Log.e(TAG, "getView: IllegalArgumentException: " + e.getMessage() );
@@ -93,6 +106,9 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
     }
 
+    private void openCard(){
+//        Intent cardActivity = new Intent(context,ActivityActivity.class);
+    }
     /**
      * Required for setting up the Universal Image loader Library
      */
@@ -110,4 +126,5 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         ImageLoader.getInstance().init(config);
         // END - UNIVERSAL IMAGE LOADER SETUP
     }
+
 }

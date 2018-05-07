@@ -2,11 +2,12 @@ package voyager.voyager;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class ListActivity extends AppCompatActivity {
+public abstract class ListActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayList<Card> cardsList;
     private ArrayList<Activity> activities;
@@ -35,4 +36,6 @@ public class ListActivity extends AppCompatActivity {
         CardListAdapter cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
         listView.setAdapter(cardAdapter);
     }
+
+    protected abstract void onListItemClickListener(ListView l, View v, int position, long id);
 }
