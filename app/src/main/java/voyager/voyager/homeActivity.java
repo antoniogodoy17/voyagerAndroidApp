@@ -48,7 +48,8 @@ public class homeActivity extends AppCompatActivity {
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent next = new Intent(homeActivity.this, ProfileActivity.class);
+                startActivity(next);
                 setTitle("Profile");
             }
         });
