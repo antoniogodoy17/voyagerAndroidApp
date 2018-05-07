@@ -40,55 +40,43 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
 
         // Database Setup
-        //Database reference
         firebaseAuth = FirebaseAuth.getInstance();
-
-
-        //Hiding status bar
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //Hiding action bar
-        getSupportActionBar().hide();
-
-        //Elements initialization
-        btnLogin = findViewById(R.id.btnLogIn);
-        btnSignIn = findViewById(R.id.btnSignIn);
-        txtEmail = findViewById(R.id.txtEmailLogin);
-        txtPassword = findViewById(R.id.txtPasswordLogIn);
-
         authListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 fbUser = firebaseAuth.getCurrentUser();
-                if(fbUser != null){
-                    goHome();
+                if(fbUser != null && fbUser.isEmailVerified()){
+                    goToHome();
                 }
             }
         };
+        // End Database Setup
 
-        //Elements Listener
+        // UI Setup
+        progressDialog = new ProgressDialog(this);
+        //Hiding status bar
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //Hiding action bar
+        getSupportActionBar().hide();
+        txtEmail = findViewById(R.id.txtEmailLogin);
+        txtPassword = findViewById(R.id.txtPasswordLogIn);
+        btnLogin = findViewById(R.id.btnLogIn);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                btnLogin.setVisibility(View.GONE);
-                set_user_values();
-                if (verify_data())
-                    auth_LogIn();
-                else{
-                    btnLogin.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                }
+                logIn();
             }
         });
+        btnSignIn = findViewById(R.id.btnSignIn);
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent signin = new Intent(getApplicationContext(),SignInActivity.class);
                 startActivity(signin);
-    //          overridePendingTransition(R.anim.alpha_transition,R.anim.alpha_transition);
                 finish();
             }
         });
+        // End UI Setup
     }
     public void displayProgressDialog(String title, String message){
         progressDialog.setTitle(title);
@@ -96,22 +84,31 @@ public class LogInActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(true);
     }
-    public void set_user_values(){
+    public void logIn(){
+        displayProgressDialog("Logging In","Please Wait");
+        setUserValues();
+        if (verifyData()){
+            authLogin();
+        }
+    }
+    public void setUserValues(){
         email = txtEmail.getText().toString().trim();
         password = txtPassword.getText().toString().trim();
     }
-    protected boolean verify_data() {
+    protected boolean verifyData() {
         if (email.isEmpty()) {
             Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
             return false;
         }
         if (password.isEmpty()) {
             Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
             return false;
         }
         return true;
     }
-    protected void auth_LogIn(){
+    protected void authLogin(){
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -119,22 +116,20 @@ public class LogInActivity extends AppCompatActivity {
             if(task.isSuccessful()){
                 fbUser = firebaseAuth.getCurrentUser();
                 if (fbUser.isEmailVerified()){
-                    goHome();
+                    progressDialog.dismiss();
+                    goToHome();
                 }else{
+                    progressDialog.dismiss();
                     Toast.makeText(LogInActivity.this,"Your email is not verified yet.", Toast.LENGTH_LONG).show();
-                    btnLogin.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
                 }
             }else{
+                progressDialog.dismiss();
                 Toast.makeText(LogInActivity.this,"The email or password is incorrect.", Toast.LENGTH_LONG).show();
-                btnLogin.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
             }
             }
         });
     }
-
-    public void goHome(){
+    public void goToHome(){
         Intent home = new Intent(getApplicationContext(),homeActivity.class);
         startActivity(home);
         finish();
