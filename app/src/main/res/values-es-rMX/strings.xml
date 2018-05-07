@@ -26,4 +26,7 @@
     <string name="logout">Cerrar Sesión</string>
     <string name="username">Usuario</string>
     <string name="view_profile">Ver mi perfil</string>
+    <string name="profile">Perfil</string>
+    <string name="Successful">El usuario se ha registrado con éxito</string>
+    <string name="Error">Error al registrar al usuario</string>
 </resources>

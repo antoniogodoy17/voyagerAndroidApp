@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ public class homeActivity extends AppCompatActivity {
     // UI Setup
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private MenuItem searchItem;
+    private SearchView searchView;
     View header;
     TextView drawerUsername;
     LinearLayout progressBarLayout;
@@ -85,7 +88,6 @@ public class homeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent next = new Intent(homeActivity.this, ProfileActivity.class);
                 startActivity(next);
-                setTitle("Profile");
             }
         });
         // End UI Initialization
@@ -133,12 +135,25 @@ public class homeActivity extends AppCompatActivity {
         activities = new ArrayList<>();
         for(DataSnapshot ds : data.getChildren()){
             activities.add(ds.getValue(Activity.class));
-            System.out.println(activities);
         }
         sortDate();
 
         displayActivities();
 
+    }
+    public void updateActivities(){
+        cardAdapter.clear();
+        for(Activity activity:activities){
+            cardAdapter.add(new Card(activity));
+        }
+        homeActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                cardAdapter.notifyDataSetChanged();
+            }
+        });
+        progressBarLayout.setVisibility(View.GONE);
+        listView.setVisibility(View.VISIBLE);
     }
     public void displayActivities(){
         for(Activity activity:activities){
@@ -146,7 +161,9 @@ public class homeActivity extends AppCompatActivity {
         }
         cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
         listView.setAdapter(cardAdapter);
-        listView.setClickable(true);
+//        listView.setClickable(true);
+//        cardAdapter.notifyDataSetChanged();
+
         progressBarLayout.setVisibility(View.GONE);
 
 
@@ -164,6 +181,29 @@ public class homeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.searchview, menu);
+        searchItem = menu.findItem(R.id.actionSearch);
+        searchView = (SearchView)searchItem.getActionView();
+        searchView.setQueryHint("Search an event here");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(!query.isEmpty()){
+                    progressBarLayout.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                    activities = searchActivity(query);
+                }
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                return true;
+                // Save an alternate list for the query result.
+                // Add a variable to track if a search has been made
+                // If so, track when the BACK button is pressed and reset the list
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
     @Override
@@ -193,8 +233,8 @@ public class homeActivity extends AppCompatActivity {
                 next = new Intent(this,SwitchLocationActivity.class);
                 break;
             case R.id.logoutMenu:
+                firebaseAuth.signOut();
                 next = new Intent(this, LogInActivity.class);
-                vm.getFirebaseAuth().signOut();
                 break;
         }
         startActivity(next);
@@ -222,7 +262,6 @@ public class homeActivity extends AppCompatActivity {
             for (int i =0; i < a.getTags().size();i ++){
                 if(search.equals( a.getTags().get(i).get("tag"))){
                     searchActivity.add(a);
-
                 }
             }
         }
@@ -234,7 +273,7 @@ public class homeActivity extends AppCompatActivity {
         newFavorite.put("id", id);
         favoriteList.add(newFavorite);
         try {
-
+//            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
             usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").setValue(favoriteList);
             usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
                 @Override

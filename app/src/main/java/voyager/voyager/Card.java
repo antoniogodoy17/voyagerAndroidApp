@@ -7,7 +7,7 @@ public class Card {
 
     public Card(Activity activity){
         this.activity = activity;
-        this.title = activity.title;
+        this.title = activity.getTitle();
         this.imgUrl = "drawable://"+R.drawable.logo512;
 //        imgUrl = activity.getImages();
     }
@@ -26,5 +26,9 @@ public class Card {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public Activity getActivity() {
+        return activity;
     }
 }

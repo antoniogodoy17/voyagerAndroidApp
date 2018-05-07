@@ -29,32 +29,15 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/activityTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:backgroundTint="@color/colorSecondary"
-                    android:textColor="@color/colorSecondary"
-                    android:textColorHint="@color/colorSecondaryLight"
-                    android:textSize="18sp" />
-
-                <TextView
                     android:id="@+id/activityPrice"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:backgroundTint="@color/colorSecondary"
-                    android:layout_marginStart="10dp"
                     android:textColor="@color/colorSecondary"
                     android:textColorHint="@color/colorSecondaryLight"
                     android:textSize="18sp" />
 
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
                 <RatingBar
                     android:id="@+id/activityRating"
                     android:layout_width="wrap_content"
@@ -70,7 +53,7 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:src="@drawable/ic_favorite_border_black_24dp"
-                    android:id="@+id/FavButton"/>
+                    android:id="@+id/favButton"/>
             </TableRow>
 
             <TextView
@@ -114,7 +97,7 @@
             <!--/>-->
 
             <TextView
-                android:id="@+id/activityCategoria"
+                android:id="@+id/activityCategory"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
