@@ -12,19 +12,19 @@ import java.util.Locale;
 
 public class Activity implements Serializable, Comparator {
 
-    public HashMap<String, String> score;
-    public int cost;
-    public HashMap<String, String> images;
-    public String category;
-    public String description;
-    public String status;
-    public  String date;
-    public String schedule;
-    public HashMap<String, String> reviews;
-    public ArrayList<HashMap<String,String>> tags;
-    public String type;
-    public String title;
-    public HashMap<String , String> location;
+    private HashMap<String, String> score;
+    private int cost;
+    private HashMap<String, String> images;
+    private String category;
+    private String description;
+    private String status;
+    private String date;
+    private String schedule;
+    private HashMap<String, String> reviews;
+    private ArrayList<HashMap<String,String>> tags;
+    private String type;
+    private String title;
+    private HashMap<String , String> location;
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
