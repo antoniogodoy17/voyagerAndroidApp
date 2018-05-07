@@ -18,7 +18,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/actividadHeader"
+                android:id="@+id/Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -30,7 +30,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/actividadName"
+                    android:id="@+id/activityName"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/colorSecondary"
@@ -39,29 +39,43 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/actividadPrice"
+                    android:id="@+id/activityPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/colorSecondary"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:textColor="@color/colorSecondary"
                     android:textColorHint="@color/colorSecondaryLight"
                     android:textSize="18sp" />
 
             </TableRow>
 
-            <RatingBar
-                android:id="@+id/actividadRating"
+            <TableRow
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:stepSize="0.1"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                android:numStars="5"/>
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+                <RatingBar
+                    android:id="@+id/activityRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:stepSize="0.1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:numStars="5"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:src="@drawable/ic_favorite_border_black_24dp"
+                    android:id="@+id/FavButton"/>
+            </TableRow>
 
             <TextView
-                android:id="@+id/actividadDescription"
+                android:id="@+id/activityDescription"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -73,7 +87,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/actividadDate"
+                android:id="@+id/activityDate"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -86,7 +100,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/actividadLocation"
+                android:id="@+id/activityLocation"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -101,7 +115,7 @@
             <!--/>-->
 
             <TextView
-                android:id="@+id/actividadCategoria"
+                android:id="@+id/activityCategoria"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

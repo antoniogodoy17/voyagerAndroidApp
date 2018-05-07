@@ -108,7 +108,7 @@ public class homeActivity extends AppCompatActivity {
                 next = new Intent(this,CategoriesActivity.class);
                 break;
             case R.id.favoritesMenu:
-                next = new Intent(this,FavoritesActivity.class);
+                next = new Intent(this,ListActivity.class);
                 break;
             case R.id.listsMenu:
                 next = new Intent(this,ListsActivity.class);
@@ -122,7 +122,6 @@ public class homeActivity extends AppCompatActivity {
                 break;
         }
         startActivity(next);
-        finish();
     }
     private void setupDrawerContent(NavigationView navigationView){
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
