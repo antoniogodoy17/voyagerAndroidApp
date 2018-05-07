@@ -29,7 +29,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.List;
+=======
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+>>>>>>> 6b8673813482f23c30962d68c4975a0f5f44d2f6
 
 public class homeActivity extends ListActivity {
     // Database Setup
@@ -54,6 +60,7 @@ public class homeActivity extends ListActivity {
     private ArrayList<Activity> activities;
     private static homeVM vm;
     private User user;
+    private ArrayList<HashMap<String,String>> favoriteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,7 @@ public class homeActivity extends ListActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
+        favoriteList = new ArrayList<>();
         listView = findViewById(R.id.listView);
         cardsList = new ArrayList<Card>();
         progressBarLayout = findViewById(R.id.progressBarLayout);
@@ -90,6 +98,9 @@ public class homeActivity extends ListActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         fbUser = firebaseAuth.getCurrentUser();
         usersDatabase = database.getReference("User");
+
+
+
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -118,13 +129,17 @@ public class homeActivity extends ListActivity {
         });
         // End Database Initialization
         setDrawerUserName();
+        addFavorite("-LBJWNYgOW5_NG8JKEpX");
     }
+
     public void saveActivities(DataSnapshot data){
         activities = new ArrayList<>();
         for(DataSnapshot ds : data.getChildren()){
             activities.add(ds.getValue(Activity.class));
-            System.out.println(activities.size());
+            System.out.println(activities);
         }
+        sortDate();
+
         displayActivities();
     }
     public void displayActivities(){
@@ -150,6 +165,7 @@ public class homeActivity extends ListActivity {
 //
 //        });
         progressBarLayout.setVisibility(View.GONE);
+        //Toast.makeText(this, "User: "+ user.getName(),  Toast.LENGTH_SHORT).show();
     }
     public void setDrawerUserName(){
         if(fbUser.getDisplayName().isEmpty())
@@ -208,8 +224,52 @@ public class homeActivity extends ListActivity {
         });
     }
 
+<<<<<<< HEAD
     @Override
     protected void onListItemClickListener(ListView l, View v, int position, long id){
         Toast.makeText(this, "Hola desde: " + l.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
     }
+=======
+    private void sortDate(){
+        Collections.sort(activities, new Comparator<Activity>() {
+            @Override
+            public int compare(Activity o1, Activity o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+
+
+    }
+
+    private ArrayList<Activity> searchActivity(String search) {
+        ArrayList<Activity> searchActivity = new ArrayList<>();
+        for (Activity a: activities) {
+            for (int i =0; i < a.getTags().size();i ++){
+                if(search.equals( a.getTags().get(i).get("tag"))){
+                    searchActivity.add(a);
+
+                }
+            }
+        }
+        return searchActivity;
+    }
+
+
+    public void addFavorite(String id ){
+        //System.out.println("----------------------------> "+ user.getId());
+        HashMap<String,String> newFavorite = new HashMap<>();
+        newFavorite.put("id", id);
+        favoriteList.add(newFavorite);
+        try {
+
+            usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").setValue(favoriteList);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+>>>>>>> 6b8673813482f23c30962d68c4975a0f5f44d2f6
 }
