@@ -6,13 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -29,15 +28,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
-import java.util.List;
-=======
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
->>>>>>> 6b8673813482f23c30962d68c4975a0f5f44d2f6
 
-public class homeActivity extends ListActivity {
+public class homeActivity extends AppCompatActivity {
     // Database Setup
     private FirebaseDatabase database;
     private DatabaseReference usersDatabase, activityDatabase;
@@ -99,8 +94,6 @@ public class homeActivity extends ListActivity {
         fbUser = firebaseAuth.getCurrentUser();
         usersDatabase = database.getReference("User");
 
-
-
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -131,7 +124,6 @@ public class homeActivity extends ListActivity {
         setDrawerUserName();
         addFavorite("-LBJWNYgOW5_NG8JKEpX");
     }
-
     public void saveActivities(DataSnapshot data){
         activities = new ArrayList<>();
         for(DataSnapshot ds : data.getChildren()){
@@ -149,23 +141,7 @@ public class homeActivity extends ListActivity {
         cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
         listView.setAdapter(cardAdapter);
         listView.setClickable(true);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(homeActivity.this, "hola desde " + parent.getAdapter().getItem(position).toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//                // TODO Auto-generated method stub
-//                Toast.makeText(homeActivity.this, "hola: " + arg2, Toast.LENGTH_SHORT).show();
-//            }
-//
-//        });
         progressBarLayout.setVisibility(View.GONE);
-        //Toast.makeText(this, "User: "+ user.getName(),  Toast.LENGTH_SHORT).show();
     }
     public void setDrawerUserName(){
         if(fbUser.getDisplayName().isEmpty())
@@ -223,13 +199,6 @@ public class homeActivity extends ListActivity {
             }
         });
     }
-
-<<<<<<< HEAD
-    @Override
-    protected void onListItemClickListener(ListView l, View v, int position, long id){
-        Toast.makeText(this, "Hola desde: " + l.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-    }
-=======
     private void sortDate(){
         Collections.sort(activities, new Comparator<Activity>() {
             @Override
@@ -237,10 +206,7 @@ public class homeActivity extends ListActivity {
                 return o1.getDate().compareTo(o2.getDate());
             }
         });
-
-
     }
-
     private ArrayList<Activity> searchActivity(String search) {
         ArrayList<Activity> searchActivity = new ArrayList<>();
         for (Activity a: activities) {
@@ -253,8 +219,6 @@ public class homeActivity extends ListActivity {
         }
         return searchActivity;
     }
-
-
     public void addFavorite(String id ){
         //System.out.println("----------------------------> "+ user.getId());
         HashMap<String,String> newFavorite = new HashMap<>();
@@ -269,7 +233,4 @@ public class homeActivity extends ListActivity {
             e.printStackTrace();
         }
     }
-
-
->>>>>>> 6b8673813482f23c30962d68c4975a0f5f44d2f6
 }
