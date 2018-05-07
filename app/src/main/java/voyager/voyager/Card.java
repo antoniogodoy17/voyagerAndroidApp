@@ -3,10 +3,11 @@ package voyager.voyager;
 public class Card {
     private String imgUrl;
     private String title;
+    private Activity activity;
 
-    public Card(String imgUrl, String title){
-        this.imgUrl = imgUrl;
-        this.title = title;
+    public Card(Activity activity){
+        this.activity = activity;
+//        imgUrl = activity.getImages();
     }
 
     public String getTitle() {

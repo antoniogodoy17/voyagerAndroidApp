@@ -9,8 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="58dp">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,7 +17,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/Header"
+                android:id="@+id/activityHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -30,7 +29,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/activityName"
+                    android:id="@+id/activityTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/colorSecondary"

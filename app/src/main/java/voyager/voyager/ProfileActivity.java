@@ -168,7 +168,6 @@ public class ProfileActivity extends AppCompatActivity {
                 break;
         }
         startActivity(next);
-        finish();
     }
     protected void fillFields(){
         txtNameProfile.setText(user.getName());
