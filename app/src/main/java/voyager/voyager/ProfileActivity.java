@@ -21,27 +21,44 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity {
+    // Database Setup
+    private FirebaseDatabase database;
+    private DatabaseReference usersDatabase;
+    private FirebaseUser fbUser;
+    private FirebaseAuth firebaseAuth;
+    //
+    // UI Setup
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     View header;
-    private static homeVM vm;
-    //Our code from profile goes here
     EditText txtNameProfile, txtLastNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtLocationProfile;
     TextView txtBirthDateProfile;
     Button btnSaveChanges, btnCancel;
     ImageButton btnProfilePic, btnEditProfile;
     Spinner sprCountryProfile, sprStateProfile, sprCityProfile;
     DatePickerDialog datePicker;
+    //
+    // Variables Setup
+    private static homeVM vm;
+    User user;
     String name, lastname, email, phone, birth_date, location, password;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
-    User user;
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +66,28 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         vm = homeActivity.getViewModel();
+        // Database Initialization
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        fbUser = firebaseAuth.getCurrentUser();
+        usersDatabase = database.getReference("User");
+
+        usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                user = dataSnapshot.getValue(User.class);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+        // End Database Initialization
+        // UI Initialization
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -56,7 +95,6 @@ public class ProfileActivity extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
-
         header = navigationView.getHeaderView(0);
         header.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,37 +103,31 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(next);
             }
         });
-
-        btnEditProfile = findViewById(R.id.btnEditProfile);
-        btnSaveChanges = findViewById(R.id.btnSaveChanges);
         btnProfilePic = findViewById(R.id.btnProfilePic);
-        btnCancel = findViewById(R.id.btnCancel);
         txtNameProfile = findViewById(R.id.txtNameProfile);
         txtLastNameProfile = findViewById(R.id.txtLastNameProfile);
         txtEmailProfile = findViewById(R.id.txtEmailProfile);
         txtPhoneProfile = findViewById(R.id.txtPhoneProfile);
         txtPasswordProfile = findViewById(R.id.txtPasswordProfile);
-        txtBirthDateProfile = findViewById(R.id.txtBirthDateProfile);
         txtLocationProfile = findViewById(R.id.txtLocationProfile);
         sprCountryProfile = findViewById(R.id.sprCountryProfile);
         sprStateProfile = findViewById(R.id.sprStateProfile);
         sprCityProfile = findViewById(R.id.sprCityProfile);
-
-//        fillFields();
+        btnEditProfile = findViewById(R.id.btnEditProfile);
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editMode();
             }
         });
-
+        btnCancel = findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewMode();
             }
         });
-
+        txtBirthDateProfile = findViewById(R.id.txtBirthDateProfile);
         txtBirthDateProfile.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -117,7 +149,7 @@ public class ProfileActivity extends AppCompatActivity {
                 datePicker.show();
             }
         });
-
+        btnSaveChanges = findViewById(R.id.btnSaveChanges);
         btnSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +158,8 @@ public class ProfileActivity extends AppCompatActivity {
                 viewMode();
             }
         });
+        // End UI Initialization
+//        fillFields();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -163,7 +197,7 @@ public class ProfileActivity extends AppCompatActivity {
                 next = new Intent(this,SwitchLocationActivity.class);
                 break;
             case R.id.logoutMenu:
-                vm.getFirebaseAuth().signOut();
+                firebaseAuth.signOut();
                 next = new Intent(this,LogInActivity.class);
                 break;
         }
