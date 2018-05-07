@@ -135,7 +135,8 @@
                     android:textColor="@color/colorSecondary"
                     android:textColorHint="@color/colorSecondaryLight"
                     android:textSize="18sp"
-                    android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+                    android:theme="@style/Base.V7.Widget.AppCompat.EditText"
+                    android:enabled="false"/>
 
                 <EditText
                     android:id="@+id/txtLocationProfile"
