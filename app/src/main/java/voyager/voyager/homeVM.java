@@ -75,8 +75,10 @@ public class homeVM extends ViewModel {
 //                System.out.println(activitiesId.size());
                 if(count == dataSnapshot.getChildrenCount()){
                     //Initialize the HomeActivity------------------------------
-                    System.out.println("-------> Termineeeee");
-                    imprimir();
+//                    System.out.println("-------> Termineeeee");
+                    sortDate();
+                    searchActivity("Xolos");
+
                 }
             }
             @Override
@@ -89,7 +91,6 @@ public class homeVM extends ViewModel {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-
 
     }
 
@@ -134,7 +135,7 @@ public class homeVM extends ViewModel {
 
     }
 
-    public void imprimir(){
+    public void sortDate(){
         Collections.sort(activities, new Comparator<Activity>() {
             @Override
             public int compare(Activity o1, Activity o2) {
@@ -142,11 +143,20 @@ public class homeVM extends ViewModel {
             }
         });
 
-        for(Activity actiiv:activities){
-            System.out.println("***************************** ---> "+actiiv.getDate());
-        }
+
     }
 
+    public ArrayList<Activity> searchActivity(String search) {
+        ArrayList<Activity> searchActivity = new ArrayList<>();
+        for (Activity a: activities) {
+            for (int i =0; i < a.getTags().size();i ++){
+                if(search.equals( a.getTags().get(i).get("tag"))){
+                    searchActivity.add(a);
 
+                }
+            }
+        }
+        return searchActivity;
+    }
 
 }
