@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,15 +30,16 @@ public class ActivityActivity extends AppCompatActivity {
         activityLocation = findViewById(R.id.activityLocation);
         activityCategoria = findViewById(R.id.activityCategoria);
 
+        fillData();
     }
 
     void fillData(){
         activityTitle.setText(activity.getTitle());
-        activityPrice.setText(activity.getCost());
+        activityPrice.setText(String.valueOf(String.valueOf(activity.getCost())));
 //        activityRating.setRating(activity.getReviews());
         activityDescription.setText(activity.getDescription());
         activityDate.setText(activity.getDate());
-        activityLocation.setText(activity.getLocation().get("address"));
+//        activityLocation.setText(activity.getLocation().get("address"));
         activityCategoria.setText(activity.getCategory());
     }
 }

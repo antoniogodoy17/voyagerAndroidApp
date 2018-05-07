@@ -40,6 +40,11 @@ public class Activity implements Serializable, Comparator {
 
     }
 
+    @Override
+    public String toString() {
+        return title;
+    }
+
     public HashMap<String, String> getScore() {
         return score;
     }

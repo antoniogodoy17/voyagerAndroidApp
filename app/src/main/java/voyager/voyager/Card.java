@@ -27,4 +27,8 @@ public class Card {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
+    public Activity getActivity() {
+        return activity;
+    }
 }

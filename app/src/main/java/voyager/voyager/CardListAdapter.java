@@ -94,7 +94,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, card.getTitle(), Toast.LENGTH_SHORT).show();
-                    openCard();
+                    openCard(card.getActivity());
                 }
             });
 
@@ -106,8 +106,10 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
     }
 
-    private void openCard(){
-//        Intent cardActivity = new Intent(context,ActivityActivity.class);
+    private void openCard(Activity activity){
+        Intent cardActivity = new Intent(context,ActivityActivity.class);
+        cardActivity.putExtra("activity",activity);
+        context.startActivity(cardActivity);
     }
     /**
      * Required for setting up the Universal Image loader Library
