@@ -1,6 +1,8 @@
 package voyager.voyager;
 
 import android.arch.lifecycle.ViewModel;
+import android.test.ActivityUnitTestCase;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -12,6 +14,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +29,7 @@ public class homeVM extends ViewModel {
     private FirebaseAuth firebaseAuth;
     private User user;
     private ArrayList<String> activitiesId = new ArrayList<>();
-    private ArrayList<Activity> activities;
+    private ArrayList<Activity> activities,activitiesWDate;
     private Map<String, Object> activitiesMap = new HashMap<>();
     private int count;
     private boolean finish;
@@ -38,6 +42,7 @@ public class homeVM extends ViewModel {
         usersDatabase = database.getReference("User");
         Query activityDatabase = database.getReference("Activities");
         activities = new ArrayList<Activity>();
+
         fbUser = firebaseAuth.getCurrentUser();
         count = 0;
         finish = false;
@@ -66,13 +71,13 @@ public class homeVM extends ViewModel {
 
                // activitiesId.add(dataSnapshot.getKey());
                 activities.add(dataSnapshot.getValue(Activity.class));
-                System.out.println("---------> "+ activities.get(count).title);
+                //System.out.println("---------> "+ activities.get(count).getDate());
                 count++;
 //                System.out.println(activitiesId.size());
                 if(count == dataSnapshot.getChildrenCount()){
                     //Initialize the HomeActivity------------------------------
                     System.out.println("-------> Termineeeee");
-
+                    imprimir();
                 }
             }
             @Override
@@ -125,5 +130,24 @@ public class homeVM extends ViewModel {
     public ArrayList<Activity> getActivitiesMap(){ return activities; }
 
     public boolean getFinish(){return finish;}
+
+    public void fillActivitiesDate(){
+
+    }
+
+    public void imprimir(){
+        Collections.sort(activities, new Comparator<Activity>() {
+            @Override
+            public int compare(Activity o1, Activity o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+
+        for(Activity actiiv:activities){
+            System.out.println("***************************** ---> "+actiiv.getDate());
+        }
+    }
+
+
 
 }
