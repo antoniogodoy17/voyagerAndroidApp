@@ -22,9 +22,8 @@ import java.util.Map;
 
 public class homeVM extends ViewModel {
     private FirebaseDatabase database;
-    private DatabaseReference usersDatabase;
-//    ,activityDatabase;
-    private Query activityDatabase;
+    private DatabaseReference usersDatabase,activityDatabase;
+
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     private User user;
@@ -39,7 +38,7 @@ public class homeVM extends ViewModel {
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         usersDatabase = database.getReference("User");
-        Query activityDatabase = database.getReference("Activities");
+        activityDatabase = database.getReference();
         activities = new ArrayList<Activity>();
 
         fbUser = firebaseAuth.getCurrentUser();
@@ -68,18 +67,9 @@ public class homeVM extends ViewModel {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-               // activitiesId.add(dataSnapshot.getKey());
-                activities.add(dataSnapshot.getValue(Activity.class));
-                //System.out.println("---------> "+ activities.get(count).getDate());
-                count++;
-//                System.out.println(activitiesId.size());
-                if(count == dataSnapshot.getChildrenCount()){
-                    //Initialize the HomeActivity------------------------------
-//                    System.out.println("-------> Termineeeee");
-                    sortDate();
-                    searchActivity("Xolos");
+               activities.add(dataSnapshot.getValue(Activity.class));
 
-                }
+
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {

@@ -12,18 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:id="@+id/progressBarLayout">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/progressBarLayout"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-            <!--<ProgressBar-->
-                <!--android:id="@+id/progressBar"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_gravity="center" />-->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="200dp"
+                android:visibility="visible"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Obteniendo Eventos ..."/>
 
-        <!--</LinearLayout>-->
+        </LinearLayout>
 
         <ListView
             android:id="@+id/listView"

@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -21,20 +22,42 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 import javax.security.auth.login.LoginException;
 
 public class homeActivity extends AppCompatActivity {
+    // Database Setup
+    private FirebaseDatabase database;
+    private DatabaseReference usersDatabase, activityDatabase;
+    private FirebaseUser fbUser;
+    private FirebaseAuth firebaseAuth;
+    //
+
+    // UI Setup
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     View header;
+    TextView drawerUsername;
     LinearLayout progressBarLayout;
     ProgressBar progressBar;
     private ListView listView;
+    private CardListAdapter cardAdapter;
+
+    // Variables Setup
     private ArrayList<Card> cardsList;
     private ArrayList<Activity> activities;
     private static homeVM vm;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +65,7 @@ public class homeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         vm = ViewModelProviders.of(this).get(homeVM.class);
 
+        // UI Initialization
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -49,8 +73,12 @@ public class homeActivity extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
-
+        listView = findViewById(R.id.listView);
+        cardsList = new ArrayList<Card>();
+        progressBarLayout = findViewById(R.id.progressBarLayout);
+        progressBarLayout.setVisibility(View.VISIBLE);
         header = navigationView.getHeaderView(0);
+        drawerUsername = header.findViewById(R.id.drawerUsername);
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,29 +87,64 @@ public class homeActivity extends AppCompatActivity {
                 setTitle("Profile");
             }
         });
+        // End UI Initialization
 
-        //Drawer Menu > Setting up username
+        // Database Initialization
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        fbUser = firebaseAuth.getCurrentUser();
+        usersDatabase = database.getReference("User");
+        usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                user = dataSnapshot.getValue(User.class);
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+        activityDatabase = database.getReference("Activities");
+        activityDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                saveActivities(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        // End Database Initialization
         setDrawerUserName();
-
-        //Other elements
-        listView = findViewById(R.id.listView);
-
-        cardsList = new ArrayList<Card>();
-        activities = vm.getActivitiesMap();
-
-
-
+    }
+    public void saveActivities(DataSnapshot data){
+        activities = new ArrayList<>();
+        for(DataSnapshot ds : data.getChildren()){
+            activities.add(ds.getValue(Activity.class));
+            System.out.println(activities.size());
+        }
+        displayActivities();
+    }
+    public void displayActivities(){
         for(Activity activity:activities){
             cardsList.add(new Card("drawable://"+R.drawable.logo512,activity.title));
         }
-        //End loop
-
-        CardListAdapter cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
+        cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
         listView.setAdapter(cardAdapter);
-
-//        progressBarLayout.setVisibility(View.GONE);
+        progressBarLayout.setVisibility(View.GONE);
     }
-
+    public void setDrawerUserName(){
+        if(fbUser.getDisplayName().isEmpty())
+            drawerUsername.setText("Username");
+        else
+            drawerUsername.setText(fbUser.getDisplayName());
+    }
     public static homeVM getViewModel(){
         return vm;
     }
@@ -131,12 +194,5 @@ public class homeActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
-    public void setDrawerUserName(){
-        TextView username = header.findViewById(R.id.drawerUsername);
-        if(vm.getFbUser().getDisplayName().isEmpty())
-            username.setText("Username");
-        else
-            username.setText(vm.getFbUser().getDisplayName());
     }
 }
