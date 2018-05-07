@@ -13,6 +13,7 @@ import java.util.Locale;
 public class Activity implements Serializable, Comparator {
 
     public HashMap<String, String> score;
+    public String _id;
     public int cost;
     public HashMap<String, String> images;
     public String category;
@@ -38,6 +39,14 @@ public class Activity implements Serializable, Comparator {
                 compareTo(activity2.getTitle());
 
 
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public HashMap<String, String> getScore() {
