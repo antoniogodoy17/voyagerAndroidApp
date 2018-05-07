@@ -33,7 +33,6 @@ public class homeVM extends ViewModel {
     private Map<String, Object> activitiesMap = new HashMap<>();
     private int count;
     private boolean finish;
-    private Home hm;
 
 
     public homeVM(){
