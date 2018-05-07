@@ -12,19 +12,20 @@ import java.util.Locale;
 
 public class Activity implements Serializable, Comparator {
 
-    private HashMap<String, String> score;
-    private int cost;
-    private HashMap<String, String> images;
-    private String category;
-    private String description;
-    private String status;
-    private String date;
-    private String schedule;
-    private HashMap<String, String> reviews;
-    private ArrayList<HashMap<String,String>> tags;
-    private String type;
-    private String title;
-    private HashMap<String , String> location;
+    public HashMap<String, String> score;
+    public String _id;
+    public int cost;
+    public HashMap<String, String> images;
+    public String category;
+    public String description;
+    public String status;
+    public  String date;
+    public String schedule;
+    public HashMap<String, String> reviews;
+    public ArrayList<HashMap<String,String>> tags;
+    public String type;
+    public String title;
+    public HashMap<String , String> location;
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
@@ -40,6 +41,13 @@ public class Activity implements Serializable, Comparator {
 
     }
 
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
     @Override
     public String toString() {
         return title;

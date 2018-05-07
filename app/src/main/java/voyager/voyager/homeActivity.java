@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class homeActivity extends AppCompatActivity {
     private static homeVM vm;
     private User user;
     private ArrayList<HashMap<String,String>> favoriteList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,7 @@ public class homeActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 user = dataSnapshot.getValue(User.class);
+               // Toast.makeText(homeActivity.this, "Que pedo prrooo!" + user.id, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
@@ -124,7 +127,9 @@ public class homeActivity extends AppCompatActivity {
         });
         // End Database Initialization
         setDrawerUserName();
-        addFavorite("-LBJWNYgOW5_NG8JKEpX");
+        //addFavorite("-LBJWNYgOW5_NG8JKEpX");
+        //removeFavorite();
+       // displayActivities();
     }
     public void saveActivities(DataSnapshot data){
         activities = new ArrayList<>();
@@ -134,6 +139,7 @@ public class homeActivity extends AppCompatActivity {
         sortDate();
 
         displayActivities();
+
     }
     public void updateActivities(){
         cardAdapter.clear();
@@ -159,6 +165,8 @@ public class homeActivity extends AppCompatActivity {
 //        cardAdapter.notifyDataSetChanged();
 
         progressBarLayout.setVisibility(View.GONE);
+
+
     }
     public void setDrawerUserName(){
         if(fbUser.getDisplayName().isEmpty())
@@ -210,6 +218,7 @@ public class homeActivity extends AppCompatActivity {
         switch (menu.getItemId()){
             case R.id.homeMenu:
                 next = new Intent(this,homeActivity.class);
+                Toast.makeText(homeActivity.this, "Que pedo prrooo!" + user.id, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.categoriesMenu:
                 next = new Intent(this,CategoriesActivity.class);
@@ -266,10 +275,62 @@ public class homeActivity extends AppCompatActivity {
         try {
 //            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
             usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").setValue(favoriteList);
+            usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    user = dataSnapshot.getValue(User.class);
+                }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) { }
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+                @Override
+                public void onCancelled(DatabaseError databaseError) { }
+            });
 
         }
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void removeFavorite(){
+        System.out.println("----------------------------> "+ user.getId());
+
+        HashMap<String,ArrayList<HashMap<String,String>>> list = user.getLists();
+        System.out.println("-------------->"+list.values());
+        for(int i = 0; i < list.get("favorite").size(); i++){
+            System.out.print("-------@!#@!#-------------> " +list.get("favorite").get(i));
+        }
+//        Query removeQuery =
+               // usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").child("0").child("id").removeValue();
+//                        .addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        for(DataSnapshot d: dataSnapshot.getChildren()){
+//                            System.out.println("-----------------------------> "+d.getRef());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                });
+//        removeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for(DataSnapshot ds:dataSnapshot.getChildren()){
+//                    System.out.println("***************** ------------->   Que pedo prroooooo!!!!" + ds.getKey());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 }
