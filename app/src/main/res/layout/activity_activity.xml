@@ -53,7 +53,7 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:src="@drawable/ic_favorite_border_black_24dp"
-                    android:id="@+id/FavButton"/>
+                    android:id="@+id/favButton"/>
             </TableRow>
 
             <TextView

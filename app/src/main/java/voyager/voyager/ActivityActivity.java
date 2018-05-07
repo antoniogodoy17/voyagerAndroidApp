@@ -3,6 +3,7 @@ package voyager.voyager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ActivityActivity extends AppCompatActivity {
     TextView activityPrice, activityDescription, activityDate, activityLocation, activityCategory;
     RatingBar activityRating;
+    ImageButton favButton;
     Activity activity;
 
 
@@ -29,8 +31,16 @@ public class ActivityActivity extends AppCompatActivity {
         activityDate = findViewById(R.id.activityDate);
         activityLocation = findViewById(R.id.activityLocation);
         activityCategory = findViewById(R.id.activityCategory);
+        favButton = findViewById(R.id.favButton);
 
         fillData();
+
+        favButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                favButton.setImageResource(R.drawable.ic_favorited_24dp);
+            }
+        });
     }
 
     void fillData(){
@@ -48,7 +58,7 @@ public class ActivityActivity extends AppCompatActivity {
     }
     String makeCost(int i){
         String cost = "";
-        for (int j =0; j<i; j++){ cost +="$"; }
+        for (int j =0; j<i; j++){ cost += "$"; }
         return cost;
     }
 }
