@@ -21,7 +21,7 @@ public class Activity implements Serializable, Comparator {
     public  String date;
     public String schedule;
     public HashMap<String, String> reviews;
-    public ArrayList<Object> tags;
+    public ArrayList<HashMap<String,String>> tags;
     public String type;
     public String title;
     public HashMap<String , Object> location;
@@ -95,7 +95,7 @@ public class Activity implements Serializable, Comparator {
         return reviews;
     }
 
-    public ArrayList<Object> getTags() {
+    public ArrayList<HashMap<String,String>> getTags() {
         return tags;
     }
 
@@ -148,7 +148,7 @@ public class Activity implements Serializable, Comparator {
         this.reviews = reviews;
     }
 
-    public void setTags(ArrayList<Object> tags) {
+    public void setTags(ArrayList<HashMap<String,String>>tags) {
         this.tags = tags;
     }
 
