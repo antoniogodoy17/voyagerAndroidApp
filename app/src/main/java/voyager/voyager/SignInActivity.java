@@ -190,7 +190,7 @@ public class SignInActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(SignInActivity.this, R.string.Successful, Toast.LENGTH_LONG).show();
+
                         registerUser();
                         sendEmailVerification();
                     }
@@ -220,7 +220,8 @@ public class SignInActivity extends AppCompatActivity {
     }
     protected void registerUser(){
         fbUserId = firebaseAuth.getCurrentUser().getUid();
-        final User user = new User(fbUserId,name,lastname,email,birth_date,nationality,nationality,city);
+        final User user = new User(fbUserId,name,lastname,email,birth_date,nationality);
+
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

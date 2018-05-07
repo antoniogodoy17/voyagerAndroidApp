@@ -16,7 +16,7 @@ public class User {
     String phone;
     HashMap<String,ArrayList<HashMap<String,String>>> list;
 
-    public User(String id,String name,String lastname,String email,String birth_date,String nationality,String state,String city){
+    public User(String id,String name,String lastname,String email,String birth_date,String nationality){
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -24,8 +24,8 @@ public class User {
         //this.password = password;
         this.birth_date = birth_date;
         this.nationality = nationality;
-        this.state = state;
-        this.city = city;
+//        this.state = state;
+//        this.city = city;
     }
 
     public User(){}
