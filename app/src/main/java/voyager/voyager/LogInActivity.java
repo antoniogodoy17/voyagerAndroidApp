@@ -23,6 +23,7 @@ public class LogInActivity extends AppCompatActivity {
     EditText txtEmail, txtPassword;
     String email, password;
     private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authListener;
     private FirebaseUser fbUser;
 
     SharedPreferences sp;
@@ -32,6 +33,8 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+
+        //
         //Database reference
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -49,7 +52,16 @@ public class LogInActivity extends AppCompatActivity {
         txtEmail = findViewById(R.id.txtEmailLogin);
         txtPassword = findViewById(R.id.txtPasswordLogIn);
 
-        sp = getSharedPreferences("login",MODE_PRIVATE);
+        authListener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                fbUser = firebaseAuth.getCurrentUser();
+                if(fbUser != null){
+                    goHome();
+                }
+            }
+        };
+//        sp = getSharedPreferences("login",MODE_PRIVATE);
 
         //Elements Listener
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +111,7 @@ public class LogInActivity extends AppCompatActivity {
             if(task.isSuccessful()){
                 fbUser = firebaseAuth.getCurrentUser();
                 if (fbUser.isEmailVerified()){
-                    goToMainActivity();
+                    goHome();
                 }else{
                     Toast.makeText(LogInActivity.this,"Your email is not verified yet.", Toast.LENGTH_LONG).show();
                     btnLogin.setVisibility(View.VISIBLE);
@@ -114,7 +126,7 @@ public class LogInActivity extends AppCompatActivity {
         });
     }
 
-    public void goToMainActivity(){
+    public void goHome(){
         Intent home = new Intent(getApplicationContext(),homeActivity.class);
         startActivity(home);
         finish();
