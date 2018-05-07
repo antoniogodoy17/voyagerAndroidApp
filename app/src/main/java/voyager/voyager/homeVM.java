@@ -34,7 +34,6 @@ public class homeVM extends ViewModel {
     private int count;
     private boolean finish;
 
-
     public homeVM(){
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -146,7 +145,4 @@ public class homeVM extends ViewModel {
             System.out.println("***************************** ---> "+actiiv.getDate());
         }
     }
-
-
-
 }
