@@ -72,6 +72,8 @@ public class SwitchLocationActivity extends AppCompatActivity {
                 next = new Intent(this,SwitchLocationActivity.class);
                 break;
             case R.id.logoutMenu:
+                next = new Intent(this, LogInActivity.class);
+//                vm.getFirebaseAuth().signOut();
                 break;
         }
         startActivity(next);

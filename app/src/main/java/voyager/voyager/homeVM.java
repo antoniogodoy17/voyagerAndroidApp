@@ -65,7 +65,7 @@ public class homeVM extends ViewModel {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 count++;
                // activitiesId.add(dataSnapshot.getKey());
-                activities.add(dataSnapshot.getValue(Activity.class));
+//                activities.add(dataSnapshot.getValue(Activity.class));
                 System.out.println("---------> "+ activities.size());
 //                System.out.println(activitiesId.size());
                 if(count == dataSnapshot.getChildrenCount()){
