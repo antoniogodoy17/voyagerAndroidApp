@@ -93,7 +93,6 @@ public class CardListAdapter extends ArrayAdapter<Card> {
             convertView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, card.getTitle(), Toast.LENGTH_SHORT).show();
                     openCard(card.getActivity());
                 }
             });
