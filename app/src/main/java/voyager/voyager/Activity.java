@@ -24,7 +24,7 @@ public class Activity implements Serializable, Comparator {
     public ArrayList<HashMap<String,String>> tags;
     public String type;
     public String title;
-    public HashMap<String , Object> location;
+    public HashMap<String , String> location;
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
@@ -64,28 +64,30 @@ public class Activity implements Serializable, Comparator {
         return status;
     }
 
-    public Date getDate() {
-        Date d = new Date();
-        String today;
-        if(date == ""){
+    public String getDate() { return date; }
 
-            today = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-            try {
-                d = formatter.parse(today);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return d;
-        }else{
-            try {
-                d = formatter.parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return d;
-        }
-
-    }
+    //    public Date getDate() {
+//        Date d = new Date();
+//        String today;
+//        if(date == ""){
+//
+//            today = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+//            try {
+//                d = formatter.parse(today);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            return d;
+//        }else{
+//            try {
+//                d = formatter.parse(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            return d;
+//        }
+//
+//    }
 
     public String getSchedule() {
         return schedule;
@@ -107,7 +109,7 @@ public class Activity implements Serializable, Comparator {
         return title;
     }
 
-    public HashMap<String, Object> getLocation() {
+    public HashMap<String, String> getLocation() {
         return location;
     }
 
@@ -160,7 +162,7 @@ public class Activity implements Serializable, Comparator {
         this.title = title;
     }
 
-    public void setLocation(HashMap<String, Object> location) {
+    public void setLocation(HashMap<String, String> location) {
         this.location = location;
     }
 }

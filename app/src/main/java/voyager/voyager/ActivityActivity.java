@@ -9,25 +9,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ActivityActivity extends AppCompatActivity {
-    private DatabaseReference databaseActivity;
     TextView activityTitle, activityPrice, activityDescription, activityDate, activityLocation, activityCategoria;
     RatingBar activityRating;
     Activity activity;
-    String activityId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity);
 
-        databaseActivity = FirebaseDatabase.getInstance().getReference("Acivities");
-        Bundle extras = getIntent().getExtras();
-
-        if(extras != null){
-            activityId = extras.getString("_id");
-        }
-
-//        databaseActivity. ;
+        activity = (Activity) getIntent().getSerializableExtra("activity");
 
         activityTitle = findViewById(R.id.activityTitle);
         activityPrice = findViewById(R.id.activityPrice);
@@ -41,5 +33,11 @@ public class ActivityActivity extends AppCompatActivity {
 
     void fillData(){
         activityTitle.setText(activity.getTitle());
+        activityPrice.setText(activity.getCost());
+//        activityRating.setRating(activity.getReviews());
+        activityDescription.setText(activity.getDescription());
+        activityDate.setText(activity.getDate());
+        activityLocation.setText(activity.getLocation().get("address"));
+        activityCategoria.setText(activity.getCategory());
     }
 }
