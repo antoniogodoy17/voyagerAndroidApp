@@ -35,4 +35,6 @@
     <string name="home">Home</string>
     <string name="Loading_events">Loading Events</string>
     <string name="Please_Wait">Please Wait</string>
+    <string name="Logging_In">Logging In</string>
+    <string name="Creating_Account">Creating Account</string>
 </resources>

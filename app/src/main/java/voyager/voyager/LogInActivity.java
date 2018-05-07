@@ -71,21 +71,19 @@ public class LogInActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signin = new Intent(getApplicationContext(),SignInActivity.class);
-                startActivity(signin);
-                finish();
+                goToSignin();
             }
         });
         // End UI Setup
     }
-    public void displayProgressDialog(String title, String message){
+    public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
-        progressDialog.setMessage(message);
+        progressDialog.setMessage(getApplicationContext().getString(message));
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(true);
     }
     public void logIn(){
-        displayProgressDialog("Logging In","Please Wait");
+        displayProgressDialog(R.string.Logging_In,R.string.Please_Wait);
         setUserValues();
         if (verifyData()){
             authLogin();
@@ -133,5 +131,9 @@ public class LogInActivity extends AppCompatActivity {
         Intent home = new Intent(getApplicationContext(),homeActivity.class);
         startActivity(home);
         finish();
+    }
+    public void goToSignin(){
+        Intent signin = new Intent(getApplicationContext(),SignInActivity.class);
+        startActivity(signin);
     }
 }

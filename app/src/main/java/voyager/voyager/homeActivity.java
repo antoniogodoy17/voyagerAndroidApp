@@ -74,32 +74,46 @@ public class homeActivity extends AppCompatActivity {
         // Database Initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        fbUser = firebaseAuth.getCurrentUser();
         authListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                fbUser = firebaseAuth.getCurrentUser();
-                fbUserId = fbUser.getUid();
                 if(fbUser == null){
                     goToLogin();
                 }
+                else{
+                    fbUserId = fbUser.getUid();
+                    setDrawerUserName();
+                }
             }
         };
-        usersDatabase = database.getReference("User").child(fbUserId);
-
-        usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
+//        usersDatabase = database.getReference("User").child(fbUserId);
+        usersDatabase = database.getReference("User");
+        usersDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
             }
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) { }
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
+
+//        usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                user = dataSnapshot.getValue(User.class);
+//            }
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) { }
+//        });
         activityDatabase = database.getReference("Activities");
         activityDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -138,8 +152,7 @@ public class homeActivity extends AppCompatActivity {
         // End UI Initialization
 
         displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
-        setDrawerUserName();
-       // displayActivities();
+//        displayActivities();
     }
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
@@ -149,6 +162,7 @@ public class homeActivity extends AppCompatActivity {
     }
     public void goToLogin(){
         Intent login = new Intent(this,LogInActivity.class);
+        login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(login);
         finish();
     }
@@ -158,9 +172,7 @@ public class homeActivity extends AppCompatActivity {
             activities.add(ds.getValue(Activity.class));
         }
         sortDate();
-
         displayActivities();
-
     }
     public void updateActivities(){
         cardAdapter.clear();
@@ -173,7 +185,7 @@ public class homeActivity extends AppCompatActivity {
                 cardAdapter.notifyDataSetChanged();
             }
         });
-//        progressBarLayout.setVisibility(View.GONE);
+        progressDialog.dismiss();
         listView.setVisibility(View.VISIBLE);
     }
     public void displayActivities(){
@@ -182,12 +194,9 @@ public class homeActivity extends AppCompatActivity {
         }
         cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
         listView.setAdapter(cardAdapter);
+        progressDialog.dismiss();
 //        listView.setClickable(true);
 //        cardAdapter.notifyDataSetChanged();
-
-//        progressBarLayout.setVisibility(View.GONE);
-
-
     }
     public void setDrawerUserName(){
         if(fbUser.getDisplayName().isEmpty())
@@ -209,7 +218,7 @@ public class homeActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if(!query.isEmpty()){
-//                    progressBarLayout.setVisibility(View.VISIBLE);
+                    displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
                     listView.setVisibility(View.GONE);
                     activities = searchActivity(query);
                 }
