@@ -133,7 +133,7 @@ public class homeActivity extends AppCompatActivity {
     }
     public void displayActivities(){
         for(Activity activity:activities){
-            cardsList.add(new Card("drawable://"+R.drawable.logo512,activity.title));
+            cardsList.add(new Card(activity));
         }
         cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
         listView.setAdapter(cardAdapter);

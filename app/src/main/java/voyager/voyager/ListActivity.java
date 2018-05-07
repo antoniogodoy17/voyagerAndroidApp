@@ -26,11 +26,11 @@ public class ListActivity extends AppCompatActivity {
 //            System.out.println("------>" + activity.title);
 //        }
         //End loop
-        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 1"));
-        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 2"));
-        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 3"));
-        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 4"));
-        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 5"));
+//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 1"));
+//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 2"));
+//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 3"));
+//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 4"));
+//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 5"));
 
         CardListAdapter cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
         listView.setAdapter(cardAdapter);
