@@ -1,5 +1,8 @@
 package voyager.voyager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class User {
     String id;
     String name;
@@ -11,6 +14,7 @@ public class User {
     String state;
     String city;
     String phone;
+    HashMap<String,ArrayList<HashMap<String,String>>> lists;
 
     public User(String id,String name,String lastname,String email,String birth_date,String nationality,String state,String city){
         this.id = id;
@@ -63,6 +67,9 @@ public class User {
 
     public String getPhone(){ return phone; }
 
+    public HashMap<String, ArrayList<HashMap<String, String>>> getLists() {
+        return lists;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -97,4 +104,8 @@ public class User {
     }
 
     public void setPhone(String phone) { this.phone = phone; }
+
+    public void setLists(HashMap<String, ArrayList<HashMap<String, String>>> lists) {
+        this.lists = lists;
+    }
 }

@@ -32,6 +32,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.security.auth.login.LoginException;
 
@@ -127,8 +129,10 @@ public class homeActivity extends AppCompatActivity {
         activities = new ArrayList<>();
         for(DataSnapshot ds : data.getChildren()){
             activities.add(ds.getValue(Activity.class));
-            System.out.println(activities.size());
+            System.out.println(activities);
         }
+        sortDate();
+
         displayActivities();
     }
     public void displayActivities(){
@@ -195,4 +199,17 @@ public class homeActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void sortDate(){
+        Collections.sort(activities, new Comparator<Activity>() {
+            @Override
+            public int compare(Activity o1, Activity o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+
+
+    }
+
+
 }
