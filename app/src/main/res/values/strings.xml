@@ -33,5 +33,6 @@
     <string name="username">Username</string>
     <string name="view_profile">View my profile</string>
     <string name="home">Home</string>
-    <string name="Loading_events">Loading events ...</string>
+    <string name="Loading_events">Loading Events</string>
+    <string name="Please_Wait">Please Wait</string>
 </resources>

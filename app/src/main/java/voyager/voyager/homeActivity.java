@@ -1,5 +1,6 @@
 package voyager.voyager;
 
+import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -35,31 +36,33 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 public class homeActivity extends AppCompatActivity {
-    // Database Setup
+    // Database Initialization
     private FirebaseDatabase database;
     private DatabaseReference usersDatabase, activityDatabase;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authListener;
     //
 
-    // UI Setup
+    // UI Initialization
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private MenuItem searchItem;
     private SearchView searchView;
     View header;
     TextView drawerUsername;
-    LinearLayout progressBarLayout;
-    ProgressBar progressBar;
+    ProgressDialog progressDialog;
     private ListView listView;
     private CardListAdapter cardAdapter;
 
-    // Variables Setup
+    // Variables Initialization
+    String fbUserId;
     private ArrayList<Card> cardsList;
     private ArrayList<Activity> activities;
     private static homeVM vm;
     private User user;
     private ArrayList<HashMap<String,String>> favoriteList;
+    //
 
 
     @Override
@@ -68,41 +71,25 @@ public class homeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         vm = ViewModelProviders.of(this).get(homeVM.class);
 
-        // UI Initialization
-        NavigationView navigationView = findViewById(R.id.navigationView);
-        drawerLayout = findViewById(R.id.drawer);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setupDrawerContent(navigationView);
-        favoriteList = new ArrayList<>();
-        listView = findViewById(R.id.listView);
-        cardsList = new ArrayList<Card>();
-        progressBarLayout = findViewById(R.id.progressBarLayout);
-        progressBarLayout.setVisibility(View.VISIBLE);
-        header = navigationView.getHeaderView(0);
-        drawerUsername = header.findViewById(R.id.drawerUsername);
-        header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent next = new Intent(homeActivity.this, ProfileActivity.class);
-                startActivity(next);
-            }
-        });
-        // End UI Initialization
-
         // Database Initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        fbUser = firebaseAuth.getCurrentUser();
-        usersDatabase = database.getReference("User");
+        authListener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                fbUser = firebaseAuth.getCurrentUser();
+                fbUserId = fbUser.getUid();
+                if(fbUser == null){
+                    goToLogin();
+                }
+            }
+        };
+        usersDatabase = database.getReference("User").child(fbUserId);
 
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 user = dataSnapshot.getValue(User.class);
-               // Toast.makeText(homeActivity.this, "Que pedo prrooo!" + user.id, Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
@@ -126,10 +113,44 @@ public class homeActivity extends AppCompatActivity {
             }
         });
         // End Database Initialization
+
+        // UI Initialization
+        progressDialog = new ProgressDialog(this);
+        NavigationView navigationView = findViewById(R.id.navigationView);
+        drawerLayout = findViewById(R.id.drawer);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupDrawerContent(navigationView);
+        favoriteList = new ArrayList<>();
+        listView = findViewById(R.id.listView);
+        cardsList = new ArrayList<Card>();
+        header = navigationView.getHeaderView(0);
+        drawerUsername = header.findViewById(R.id.drawerUsername);
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent next = new Intent(homeActivity.this, ProfileActivity.class);
+                startActivity(next);
+            }
+        });
+        // End UI Initialization
+
+        displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
         setDrawerUserName();
-        //addFavorite("-LBJWNYgOW5_NG8JKEpX");
-        //removeFavorite();
        // displayActivities();
+    }
+    public void displayProgressDialog(int title, int message){
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(getApplicationContext().getString(message));
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(true);
+    }
+    public void goToLogin(){
+        Intent login = new Intent(this,LogInActivity.class);
+        startActivity(login);
+        finish();
     }
     public void saveActivities(DataSnapshot data){
         activities = new ArrayList<>();
@@ -152,7 +173,7 @@ public class homeActivity extends AppCompatActivity {
                 cardAdapter.notifyDataSetChanged();
             }
         });
-        progressBarLayout.setVisibility(View.GONE);
+//        progressBarLayout.setVisibility(View.GONE);
         listView.setVisibility(View.VISIBLE);
     }
     public void displayActivities(){
@@ -164,7 +185,7 @@ public class homeActivity extends AppCompatActivity {
 //        listView.setClickable(true);
 //        cardAdapter.notifyDataSetChanged();
 
-        progressBarLayout.setVisibility(View.GONE);
+//        progressBarLayout.setVisibility(View.GONE);
 
 
     }
@@ -188,7 +209,7 @@ public class homeActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if(!query.isEmpty()){
-                    progressBarLayout.setVisibility(View.VISIBLE);
+//                    progressBarLayout.setVisibility(View.VISIBLE);
                     listView.setVisibility(View.GONE);
                     activities = searchActivity(query);
                 }
