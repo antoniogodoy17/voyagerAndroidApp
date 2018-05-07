@@ -11,10 +11,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -33,7 +31,6 @@ public class ProfileActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     View header;
     private static ProfileVM vm;
-    private Profile.OnFragmentInteractionListener mListener;
     //Our code from profile goes here
     EditText txtNameProfile, txtLastNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtLocationProfile;
     TextView txtBirthDateProfile;
@@ -63,7 +60,8 @@ public class ProfileActivity extends AppCompatActivity {
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToProfile();
+                Intent next = new Intent(getApplicationContext(),ProfileActivity.class);
+                startActivity(next);
             }
         });
 
@@ -82,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
         sprStateProfile = findViewById(R.id.sprStateProfile);
         sprCityProfile = findViewById(R.id.sprCityProfile);
 
-        fillFields();
+//        fillFields();
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,31 +145,28 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void selectDrawerMenu(MenuItem menu){
         Intent next = null;
-//        switch (menu.getItemId()){
-//            case R.id.homeMenu:
-//                next = new Intent(this,homeActivity.class);
-//                break;
-//            case R.id.categoriesMenu:
-//                next = new Intent(this,CategoriesActivity.class);
-//                break;
-//            case R.id.favoritesMenu:
-//                next = new Intent(this,FavoritesActivity.class);
-//                break;
-//            case R.id.listsMenu:
-//                next = new Intent(this,ListsActivity.class);
-//                break;
-//            case R.id.switchLocationMenu:
-//                next = new Intent(this,SwitchLocationActivity.class);
-//                break;
-//            case R.id.logoutMenu:
-//                break;
-//        }
-//        startActivity(next);
-//        finish();
-    }
-    public void goToProfile(){
-        Intent profile = new Intent(this,ProfileActivity.class);
-        startActivity(profile);
+        switch (menu.getItemId()){
+            case R.id.homeMenu:
+                next = new Intent(this,homeActivity.class);
+                break;
+            case R.id.categoriesMenu:
+                next = new Intent(this,CategoriesActivity.class);
+                break;
+            case R.id.favoritesMenu:
+                next = new Intent(this,FavoritesActivity.class);
+                break;
+            case R.id.listsMenu:
+                next = new Intent(this,ListsActivity.class);
+                break;
+            case R.id.switchLocationMenu:
+                next = new Intent(this,SwitchLocationActivity.class);
+                break;
+            case R.id.logoutMenu:
+                vm.getFirebaseAuth().signOut();
+                next = new Intent(this,LogInActivity.class);
+                break;
+        }
+        startActivity(next);
         finish();
     }
     protected void fillFields(){
