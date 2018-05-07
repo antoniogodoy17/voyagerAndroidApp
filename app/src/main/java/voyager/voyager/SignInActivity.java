@@ -58,7 +58,6 @@ public class SignInActivity extends AppCompatActivity {
         // Database Setup
         database = FirebaseDatabase.getInstance().getReference("User");
         firebaseAuth = FirebaseAuth.getInstance();
-
         // End Database Setup
 
         // UI Setup
@@ -134,7 +133,6 @@ public class SignInActivity extends AppCompatActivity {
         if (verifyData()){
             authRegister();
         }
-        progressDialog.dismiss();
     }
     public void setUserValues(){
         name = txtname.getText().toString().trim();
@@ -147,7 +145,6 @@ public class SignInActivity extends AppCompatActivity {
         //state = spnstate.getSelectedItem().toString();
         //city = spncity.getSelectedItem().toString();
     }
-
     protected boolean verifyData() {
         if (name.isEmpty()) {
             Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show();
@@ -183,54 +180,54 @@ public class SignInActivity extends AppCompatActivity {
         }
         return true;
     }
-
     protected void authRegister(){
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-
                         registerUser();
                         sendEmailVerification();
                     }
                     else {
+                        progressDialog.dismiss();
                         Toast.makeText(SignInActivity.this, R.string.Error, Toast.LENGTH_LONG).show();
                     }
                 }
             });
     }
-
     protected void sendEmailVerification(){
         fbUser = firebaseAuth.getCurrentUser();
         fbUser.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name+" "+lastname).build();
-                            fbUser.updateProfile(profileUpdates);
-                            Toast.makeText(SignInActivity.this,"Verification email sent to " + fbUser.getEmail(), Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            Toast.makeText(SignInActivity.this,"Failed to send verification email.", Toast.LENGTH_LONG).show();
-                        }
+            .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name+" "+lastname).build();
+                        fbUser.updateProfile(profileUpdates);
+                        Toast.makeText(SignInActivity.this,"Verification email sent to " + fbUser.getEmail(), Toast.LENGTH_LONG).show();
                     }
-                });
+                    else {
+                        progressDialog.dismiss();
+                        Toast.makeText(SignInActivity.this,"Failed to send verification email.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
     }
     protected void registerUser(){
         fbUserId = firebaseAuth.getCurrentUser().getUid();
         final User user = new User(fbUserId,name,lastname,email,birth_date,nationality);
-
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.hasChild(fbUserId)){
                     try{
+                        progressDialog.dismiss();
                         database.child(fbUserId).setValue(user);
                         goToLogin();
                     }
                     catch (DatabaseException e){
+                        progressDialog.dismiss();
                         Toast.makeText(SignInActivity.this, "ERROR: " + e.toString(), Toast.LENGTH_LONG).show();
                     }
                 }

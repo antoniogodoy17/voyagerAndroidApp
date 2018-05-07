@@ -1,5 +1,6 @@
 package voyager.voyager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,27 +20,29 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LogInActivity extends AppCompatActivity {
-    Button btnSignIn, btnLogin;
-    EditText txtEmail, txtPassword;
-    String email, password;
+    // Database Initialization
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseUser fbUser;
-
-    SharedPreferences sp;
-    ProgressBar progressBar;
+    //
+    // UI Initialization
+    Button btnSignIn, btnLogin;
+    EditText txtEmail, txtPassword;
+    ProgressDialog progressDialog;
+    //
+    // Variables Initialization
+    String email, password;
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        //
+        // Database Setup
         //Database reference
         firebaseAuth = FirebaseAuth.getInstance();
 
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
 
         //Hiding status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -61,7 +64,6 @@ public class LogInActivity extends AppCompatActivity {
                 }
             }
         };
-//        sp = getSharedPreferences("login",MODE_PRIVATE);
 
         //Elements Listener
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +89,12 @@ public class LogInActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    public void displayProgressDialog(String title, String message){
+        progressDialog.setTitle(title);
+        progressDialog.setMessage(message);
+        progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(true);
     }
     public void set_user_values(){
         email = txtEmail.getText().toString().trim();
