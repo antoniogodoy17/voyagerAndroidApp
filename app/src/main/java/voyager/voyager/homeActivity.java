@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import javax.security.auth.login.LoginException;
 
@@ -60,6 +61,7 @@ public class homeActivity extends AppCompatActivity {
     private ArrayList<Activity> activities;
     private static homeVM vm;
     private User user;
+    private ArrayList<HashMap<String,String>> favoriteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class homeActivity extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
+        favoriteList = new ArrayList<>();
         listView = findViewById(R.id.listView);
         cardsList = new ArrayList<Card>();
         progressBarLayout = findViewById(R.id.progressBarLayout);
@@ -96,6 +99,9 @@ public class homeActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         fbUser = firebaseAuth.getCurrentUser();
         usersDatabase = database.getReference("User");
+
+
+
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -124,7 +130,9 @@ public class homeActivity extends AppCompatActivity {
         });
         // End Database Initialization
         setDrawerUserName();
+        addFavorite("-LBJWNYgOW5_NG8JKEpX");
     }
+
     public void saveActivities(DataSnapshot data){
         activities = new ArrayList<>();
         for(DataSnapshot ds : data.getChildren()){
@@ -142,6 +150,7 @@ public class homeActivity extends AppCompatActivity {
         cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
         listView.setAdapter(cardAdapter);
         progressBarLayout.setVisibility(View.GONE);
+        //Toast.makeText(this, "User: "+ user.getName(),  Toast.LENGTH_SHORT).show();
     }
     public void setDrawerUserName(){
         if(fbUser.getDisplayName().isEmpty())
@@ -209,6 +218,35 @@ public class homeActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private ArrayList<Activity> searchActivity(String search) {
+        ArrayList<Activity> searchActivity = new ArrayList<>();
+        for (Activity a: activities) {
+            for (int i =0; i < a.getTags().size();i ++){
+                if(search.equals( a.getTags().get(i).get("tag"))){
+                    searchActivity.add(a);
+
+                }
+            }
+        }
+        return searchActivity;
+    }
+
+
+    public void addFavorite(String id ){
+        //System.out.println("----------------------------> "+ user.getId());
+        HashMap<String,String> newFavorite = new HashMap<>();
+        newFavorite.put("id", id);
+        favoriteList.add(newFavorite);
+        try {
+
+            usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").setValue(favoriteList);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

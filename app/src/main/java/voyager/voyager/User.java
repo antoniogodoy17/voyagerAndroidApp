@@ -108,4 +108,11 @@ public class User {
     public void setLists(HashMap<String, ArrayList<HashMap<String, String>>> lists) {
         this.lists = lists;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+//    public void setId(String id) {
+//        this.id = id;
+//    }
 }
