@@ -75,18 +75,30 @@ public class homeActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         fbUser = firebaseAuth.getCurrentUser();
-        authListener = new FirebaseAuth.AuthStateListener(){
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(fbUser == null){
                     goToLogin();
                 }
                 else{
-                    fbUserId = fbUser.getUid();
-                    setDrawerUserName();
+                    synchronized (firebaseAuth){
+
+                    }
+//                    synchronized (authListener) {
+//                        fbUserId = fbUser.getUid();
+//                        setDrawerUserName();
+//                        System.out.println("----------------------------- > " + fbUser.getDisplayName() + " < ---------------------------");
+//                    }
                 }
             }
-        };
+        });
+//          {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//
+//            }
+//        };
 //        usersDatabase = database.getReference("User").child(fbUserId);
         usersDatabase = database.getReference("User");
         usersDatabase.addValueEventListener(new ValueEventListener() {
@@ -95,11 +107,8 @@ public class homeActivity extends AppCompatActivity {
                 user = dataSnapshot.getValue(User.class);
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
-
 //        usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
 //            @Override
 //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -120,11 +129,8 @@ public class homeActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 saveActivities(dataSnapshot);
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
         // End Database Initialization
 
@@ -248,7 +254,6 @@ public class homeActivity extends AppCompatActivity {
         switch (menu.getItemId()){
             case R.id.homeMenu:
                 next = new Intent(this,homeActivity.class);
-                Toast.makeText(homeActivity.this, "Que pedo prrooo!" + user.id, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.categoriesMenu:
                 next = new Intent(this,CategoriesActivity.class);
