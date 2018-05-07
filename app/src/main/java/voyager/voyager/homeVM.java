@@ -20,10 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class homeVM extends ViewModel {
+public class homeVM extends ViewModel{
     private FirebaseDatabase database;
-    private DatabaseReference usersDatabase,activityDatabase;
-
+    private DatabaseReference usersDatabase, activityDatabase;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     private User user;
@@ -31,25 +30,45 @@ public class homeVM extends ViewModel {
     private ArrayList<Activity> activities,activitiesWDate;
     private Map<String, Object> activitiesMap = new HashMap<>();
     private int count;
-    private boolean finish;
+    private boolean finish = false;
 
 
     public homeVM(){
+//        database = FirebaseDatabase.getInstance();
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        usersDatabase = database.getReference("User");
+//        activityDatabase = database.getReference("Activities");
+//        activities = new ArrayList<Activity>();
+
+//        fbUser = firebaseAuth.getCurrentUser();
+        count = 0;
+//        usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                user = dataSnapshot.getValue(User.class);
+//            }
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) { }
+//        });
+    }
+    public void init(){
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        usersDatabase = database.getReference("User");
-        activityDatabase = database.getReference();
-        activities = new ArrayList<Activity>();
-
         fbUser = firebaseAuth.getCurrentUser();
-        count = 0;
-        finish = false;
+        usersDatabase = database.getReference("User");
+        activityDatabase = database.getReference("Activities");
+    }
+    public void initUser(){
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 user = dataSnapshot.getValue(User.class);
-
-
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
@@ -60,16 +79,14 @@ public class homeVM extends ViewModel {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-
-
-
+    }
+    public void fetchActivities(){
+        activities = new ArrayList<Activity>();
         activityDatabase.orderByChild("id").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-               activities.add(dataSnapshot.getValue(Activity.class));
-
-
+                activities.add(dataSnapshot.getValue(Activity.class));
+                System.out.println(activities.size());
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -81,13 +98,10 @@ public class homeVM extends ViewModel {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         });
-
     }
-
     public FirebaseDatabase getDatabase() {
         return database;
     }
-
     public FirebaseUser getFbUser() {
         return fbUser;
     }
@@ -116,8 +130,9 @@ public class homeVM extends ViewModel {
         this.activities = acts;
     }
 
-
-    public ArrayList<Activity> getActivitiesMap(){ return activities; }
+    public ArrayList<Activity> getActivitiesMap(){
+        return activities;
+    }
 
     public boolean getFinish(){return finish;}
 
