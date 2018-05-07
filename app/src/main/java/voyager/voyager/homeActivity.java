@@ -224,8 +224,8 @@ public class homeActivity extends AppCompatActivity {
                 next = new Intent(this,SwitchLocationActivity.class);
                 break;
             case R.id.logoutMenu:
+                firebaseAuth.signOut();
                 next = new Intent(this, LogInActivity.class);
-                vm.getFirebaseAuth().signOut();
                 break;
         }
         startActivity(next);
@@ -264,7 +264,7 @@ public class homeActivity extends AppCompatActivity {
         newFavorite.put("id", id);
         favoriteList.add(newFavorite);
         try {
-
+//            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
             usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").setValue(favoriteList);
 
         }
