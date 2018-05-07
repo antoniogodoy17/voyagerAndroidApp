@@ -83,7 +83,6 @@ public class homeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent next = new Intent(homeActivity.this, ProfileActivity.class);
                 startActivity(next);
-                setTitle("Profile");
             }
         });
         // End UI Initialization

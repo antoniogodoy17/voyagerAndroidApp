@@ -29,22 +29,28 @@
         <activity
             android:name=".SignInActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".homeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity android:name=".CategoriesActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="@string/categories"/>
         <activity android:name=".FavoritesActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="@string/favorites"/>
         <activity android:name=".ListActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ListsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="@string/lists"/>
         <activity android:name=".SwitchLocationActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="@string/switch_location"/>
         <activity android:name=".ProfileActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="@string/profile"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ActivityActivity"
             android:screenOrientation="portrait"/>
     </application>
