@@ -29,11 +29,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class SignInActivity extends AppCompatActivity {
     // Database Initialization
-    private DatabaseReference database;
+    private DatabaseReference database,countryRef;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser fbUser;
     //
@@ -48,6 +50,7 @@ public class SignInActivity extends AppCompatActivity {
     //
     // Variables Initialization
     String fbUserId;
+    private ArrayList<HashMap<String,String>> countries;
     //
 
     @Override
@@ -57,6 +60,7 @@ public class SignInActivity extends AppCompatActivity {
 
         // Database Setup
         database = FirebaseDatabase.getInstance().getReference("User");
+        countryRef = FirebaseDatabase.getInstance().getReference("Paises");
         firebaseAuth = FirebaseAuth.getInstance();
         // End Database Setup
 
@@ -97,6 +101,8 @@ public class SignInActivity extends AppCompatActivity {
                 int month = c.get(Calendar.MONTH); // current month
                 int day = c.get(Calendar.DAY_OF_MONTH); // current day
 
+
+
                 //Date picker dialog
                 datePicker = new DatePickerDialog(SignInActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -115,7 +121,34 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
         // End UI Setup
+
+        //Get countries snapshot
+        countryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                saveCountries(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
+    //Save all countries on a list
+        public void saveCountries(DataSnapshot data){
+        countries = new ArrayList<>();
+            for(DataSnapshot ds:data.getChildren()){
+                countries.add((HashMap<String,String>)data.getValue());
+            }
+
+            for(int i =0;i<countries.size();i++)
+            {
+                System.out.println("------------------------> " + countries.get(i).get("nombre_pais_int"));
+            }
+        }
+    //End method save countries
     public void displayProgressDialog(String title, String message){
         progressDialog.setTitle(title);
         progressDialog.setMessage(message);
@@ -148,26 +181,32 @@ public class SignInActivity extends AppCompatActivity {
     protected boolean verifyData() {
         if (name.isEmpty()) {
             Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
             return false;
         }
         if (lastname.isEmpty()) {
             Toast.makeText(this, R.string.Last_name, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
             return false;
         }
         if (email.isEmpty()) {
             Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
             return false;
         }
         if (password.isEmpty()) {
             Toast.makeText(this, R.string.Enter_your_password, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
             return false;
         }
         if (passwordconfirm.isEmpty()) {
             Toast.makeText(this, R.string.Confirm_your_password, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
             return false;
         }
         if (birth_date.isEmpty()) {
             Toast.makeText(this, R.string.Birth_Date, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
             return false;
         }
 //        if(nationality.isEmpty()){
@@ -176,6 +215,7 @@ public class SignInActivity extends AppCompatActivity {
 //        }
         if (!password.equals(passwordconfirm)) {
             Toast.makeText(this, R.string.Password_match, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
             return false;
         }
         return true;

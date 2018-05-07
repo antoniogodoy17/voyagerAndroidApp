@@ -28,6 +28,7 @@ public class homeVM extends ViewModel{
     private User user;
     private ArrayList<String> activitiesId = new ArrayList<>();
     private ArrayList<Activity> activities,activitiesWDate;
+
     private Map<String, Object> activitiesMap = new HashMap<>();
     private int count;
     private boolean finish = false;
