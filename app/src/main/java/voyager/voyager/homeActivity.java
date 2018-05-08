@@ -20,6 +20,8 @@ import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -57,13 +59,21 @@ public class homeActivity extends AppCompatActivity {
 
     // Variables Initialization
     String fbUserId;
+    boolean searched = false;
     private ArrayList<Card> cardsList;
-    private ArrayList<Activity> activities;
+    private ArrayList<Activity> activities, activitiesBackup;
     private static homeVM vm;
     private User user;
     private ArrayList<HashMap<String,String>> favoriteList;
     //
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            goToLogin();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,22 +91,21 @@ public class homeActivity extends AppCompatActivity {
                 if(fbUser == null){
                     goToLogin();
                 }
-                else{
-                    synchronized (firebaseAuth){
-
-                    }
+            }
+        });
+//        authListener = new FirebaseAuth.AuthStateListener(){
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if(fbUser == null){
+//                    goToLogin();
+//                }
+//                else{
 //                    synchronized (authListener) {
 //                        fbUserId = fbUser.getUid();
 //                        setDrawerUserName();
 //                        System.out.println("----------------------------- > " + fbUser.getDisplayName() + " < ---------------------------");
 //                    }
-                }
-            }
-        });
-//          {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//
+//                }
 //            }
 //        };
 //        usersDatabase = database.getReference("User").child(fbUserId);
@@ -104,7 +113,9 @@ public class homeActivity extends AppCompatActivity {
         usersDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                 user = dataSnapshot.getValue(User.class);
+                progressDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -127,7 +138,9 @@ public class homeActivity extends AppCompatActivity {
         activityDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
                 saveActivities(dataSnapshot);
+                progressDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -158,13 +171,31 @@ public class homeActivity extends AppCompatActivity {
         // End UI Initialization
 
         displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
+//        setDrawerUserName();
 //        displayActivities();
     }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, String.valueOf(searched), Toast.LENGTH_LONG).show();
+        if(searched){
+            super.onBackPressed();
+            activities = activitiesBackup;
+            updateActivities();
+            activitiesBackup.clear();
+            searched = false;
+        }
+        else {
+            Toast.makeText(this, "Super back", Toast.LENGTH_LONG).show();
+            super.onBackPressed();
+        }
+    }
+
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
         progressDialog.setMessage(getApplicationContext().getString(message));
         progressDialog.show();
-        progressDialog.setCanceledOnTouchOutside(true);
+        progressDialog.setCanceledOnTouchOutside(false);
     }
     public void goToLogin(){
         Intent login = new Intent(this,LogInActivity.class);
@@ -192,7 +223,6 @@ public class homeActivity extends AppCompatActivity {
             }
         });
         progressDialog.dismiss();
-        listView.setVisibility(View.VISIBLE);
     }
     public void displayActivities(){
         for(Activity activity:activities){
@@ -224,12 +254,15 @@ public class homeActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if(!query.isEmpty()){
+                    searched = true;
                     displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
-                    listView.setVisibility(View.GONE);
+                    activitiesBackup = activities;
                     activities = searchActivity(query);
+                    updateActivities();
                 }
+                searchView.isIconfiedByDefault();
                 searchView.setQuery("", false);
-                searchView.setIconified(true);
+//                searchView.setIconified(true);
                 return true;
                 // Save an alternate list for the query result.
                 // Add a variable to track if a search has been made
@@ -331,41 +364,41 @@ public class homeActivity extends AppCompatActivity {
         }
     }
 
-    public void removeFavorite(){
-        System.out.println("----------------------------> "+ user.getId());
-
-        HashMap<String,ArrayList<HashMap<String,String>>> list = user.getLists();
-        System.out.println("-------------->"+list.values());
-        for(int i = 0; i < list.get("favorite").size(); i++){
-            System.out.print("-------@!#@!#-------------> " +list.get("favorite").get(i));
-        }
-//        Query removeQuery =
-               // usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").child("0").child("id").removeValue();
-//                        .addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        for(DataSnapshot d: dataSnapshot.getChildren()){
-//                            System.out.println("-----------------------------> "+d.getRef());
-//                        }
-//                    }
+//    public void removeFavorite(){
+//        System.out.println("----------------------------> "+ user.getId());
 //
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
-//        removeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot ds:dataSnapshot.getChildren()){
-//                    System.out.println("***************** ------------->   Que pedo prroooooo!!!!" + ds.getKey());
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-    }
+//        HashMap<String,ArrayList<HashMap<String,String>>> list = user.getLists();
+//        System.out.println("-------------->"+list.values());
+//        for(int i = 0; i < list.get("favorite").size(); i++){
+//            System.out.print("-------@!#@!#-------------> " +list.get("favorite").get(i));
+//        }
+////        Query removeQuery =
+//               // usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").child("0").child("id").removeValue();
+////                        .addValueEventListener(new ValueEventListener() {
+////                    @Override
+////                    public void onDataChange(DataSnapshot dataSnapshot) {
+////                        for(DataSnapshot d: dataSnapshot.getChildren()){
+////                            System.out.println("-----------------------------> "+d.getRef());
+////                        }
+////                    }
+////
+////                    @Override
+////                    public void onCancelled(DatabaseError databaseError) {
+////
+////                    }
+////                });
+////        removeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+////            @Override
+////            public void onDataChange(DataSnapshot dataSnapshot) {
+////                for(DataSnapshot ds:dataSnapshot.getChildren()){
+////                    System.out.println("***************** ------------->   Que pedo prroooooo!!!!" + ds.getKey());
+////                }
+////            }
+////
+////            @Override
+////            public void onCancelled(DatabaseError databaseError) {
+////
+////            }
+////        });
+//    }
 }
