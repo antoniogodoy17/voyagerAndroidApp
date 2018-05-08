@@ -49,7 +49,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileActivity extends AppCompatActivity {
     // Database Setup
     private FirebaseDatabase database;
-    private DatabaseReference usersDatabase;
+    private DatabaseReference userRef;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     private StorageReference userProfileImageRef;
@@ -69,6 +69,7 @@ public class ProfileActivity extends AppCompatActivity {
     //
     // Variables Setup
     private static homeVM vm;
+    String fbUserId;
     User user;
     String name, lastname, email, phone, birth_date, location, password;
     final static int Gallery_Pick = 1;
@@ -82,24 +83,24 @@ public class ProfileActivity extends AppCompatActivity {
         // Database Initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
-        fbUser = firebaseAuth.getCurrentUser();
-        usersDatabase = database.getReference("User");
+        fbUserId = firebaseAuth.getCurrentUser().getUid();
+        userRef = database.getReference("User").child(fbUserId);
         userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile pictures");
 
-        usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                user = dataSnapshot.getValue(User.class);
-            }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) { }
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        });
+//        usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                user = dataSnapshot.getValue(User.class);
+//            }
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) { }
+//        });
         // End Database Initialization
         // UI Initialization
         NavigationView navigationView = findViewById(R.id.navigationView);
@@ -212,7 +213,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 Uri resultUri = result.getUri();
 
-                StorageReference filePath = userProfileImageRef.child(fbUser.getUid() + ".jpg");
+                StorageReference filePath = userProfileImageRef.child(fbUserId + ".jpg");
 
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -224,7 +225,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                             final String downloadUrl = task.getResult().getDownloadUrl().toString();
 
-                            usersDatabase.child("profileimage").setValue(downloadUrl)
+                            userRef.child("profile_picture").setValue(downloadUrl)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task)
@@ -299,7 +300,7 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(next);
     }
     protected void fillFields(){
-        txtNameProfile.setText(user.getName());
+            txtNameProfile.setText(user.getName());
         txtLastNameProfile.setText(user.getLastname());
         txtEmailProfile.setText(user.getEmail());
         txtPhoneProfile.setText(user.getPhone());
