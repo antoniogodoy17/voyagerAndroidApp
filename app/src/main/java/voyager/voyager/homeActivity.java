@@ -74,6 +74,7 @@ public class homeActivity extends AppCompatActivity {
         // Database Initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        //firebaseAuth.signOut();
         authListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -84,7 +85,7 @@ public class homeActivity extends AppCompatActivity {
                 }
             }
         };
-        usersDatabase = database.getReference("User").child(fbUserId);
+        usersDatabase = database.getReference("User");
 
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
