@@ -36,7 +36,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".homeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="@string/home"/>
         <activity android:name=".CategoriesActivity"
             android:screenOrientation="portrait"
             android:label="@string/categories"/>

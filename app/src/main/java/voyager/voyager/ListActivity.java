@@ -72,6 +72,9 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        //
+            //Check the list name and place that as a title
+        setTitle("Favorites");
 
         // Database initialization
         database = FirebaseDatabase.getInstance();

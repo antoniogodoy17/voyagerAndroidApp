@@ -29,4 +29,9 @@
     <string name="profile">Perfil</string>
     <string name="Successful">El usuario se ha registrado con éxito</string>
     <string name="Error">Error al registrar al usuario</string>
+    <string name="home">Inicio</string>
+    <string name="Creating_Account">Creando Tu Cuenta</string>
+    <string name="Loading_events">Cargando Eventos</string>
+    <string name="Logging_In">Iniciando Sesión</string>
+    <string name="Please_Wait">Por Favor Espera</string>
 </resources>
