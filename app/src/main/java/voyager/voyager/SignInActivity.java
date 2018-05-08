@@ -328,8 +328,8 @@ public class SignInActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.hasChild(fbUserId)){
                     try{
-                        progressDialog.dismiss();
                         database.child(fbUserId).setValue(user);
+                        progressDialog.dismiss();
                         goToLogin();
                     }
                     catch (DatabaseException e){

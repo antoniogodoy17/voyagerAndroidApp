@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -95,7 +96,6 @@ public class homeActivity extends AppCompatActivity {
             // UI Initialization
             progressDialog = new ProgressDialog(this);
             NavigationView navigationView = findViewById(R.id.navigationView);
-            drawerProfilePicture = findViewById(R.id.drawerProfilePicture);
             drawerLayout = findViewById(R.id.drawer);
             drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
             drawerLayout.addDrawerListener(drawerToggle);
@@ -107,6 +107,7 @@ public class homeActivity extends AppCompatActivity {
             cardsList = new ArrayList<Card>();
             header = navigationView.getHeaderView(0);
             drawerUsername = header.findViewById(R.id.drawerUsername);
+            drawerProfilePicture = header.findViewById(R.id.drawerProfilePicture);
             header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -143,9 +144,9 @@ public class homeActivity extends AppCompatActivity {
     //                }
     //            }
     //        };
-           // usersDatabase = database.getReference("User").child(fbUserId);
-            userRef = database.getReference("User").child(fbUser.getUid());
-            userRef.addValueEventListener(new ValueEventListener() {
+//            userRef = database.getReference("User").child(fbUser.getUid());
+            userRef = database.getReference("User");
+            userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
@@ -156,7 +157,7 @@ public class homeActivity extends AppCompatActivity {
                         setFavoriteList();
                     }
                     if(dataSnapshot.hasChild("profile_picture")){
-    //                    Picasso.get().load(dataSnapshot.child("profile_picture").getValue().toString()).into(drawerProfilePicture);
+                        setupDrawerProfilePicture(user.getProfile_picture());
                     }
 
                     //System.out.println("--------------------->" + user.getName());
@@ -263,11 +264,15 @@ public class homeActivity extends AppCompatActivity {
     //        cardAdapter.notifyDataSetChanged();
         }
         public void setupDrawerUsername(){
-            if(firebaseAuth.getCurrentUser().getDisplayName().isEmpty())
-                drawerUsername.setText("Username");
-            else{
-                drawerUsername.setText(firebaseAuth.getCurrentUser().getDisplayName());
-            }
+            drawerUsername.setText(user.name + " " + user.lastname);
+//            if(fbUser.getDisplayName().isEmpty())
+//                drawerUsername.setText("Username");
+//            else{
+//                drawerUsername.setText(firebaseAuth.getCurrentUser().getDisplayName());
+//            }
+        }
+        public void setupDrawerProfilePicture(String url){
+            Picasso.get().load(url).into(drawerProfilePicture);
         }
         public static homeVM getViewModel(){
             return vm;
