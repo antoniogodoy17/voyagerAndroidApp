@@ -47,12 +47,6 @@ public class ListActivity extends AppCompatActivity {
     CircleImageView imgProfilePicture;
     CircleImageView drawerProfilePicture;
     ProgressDialog progressDialog;
-    private ArrayList<Card> cardsList;
-    private ArrayList<Activity> activities;
-
-    private ArrayList<HashMap<String,String>> favoriteList;
-    private ArrayList<Activity> favoriteActivites;
-    private ArrayList<Activity> activitiesBackup;
 
     // Database Setup
     private FirebaseDatabase database;
@@ -61,6 +55,11 @@ public class ListActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     //
     private User user;
+    private ArrayList<Card> cardsList;
+    private ArrayList<Activity> activities;
+    private ArrayList<HashMap<String,String>> favoriteList;
+    private ArrayList<Activity> favoriteActivites;
+    private CardListAdapter cardAdapter;
 
 
     // Variables Setup
@@ -82,13 +81,12 @@ public class ListActivity extends AppCompatActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                 user = dataSnapshot.getValue(User.class);
                 setupDrawerUsername();
                 if(dataSnapshot.hasChild("profile_picture")){
                     setupDrawerProfilePicture(user.getProfile_picture());
                 }
-//                progressDialog.dismiss();
+                progressDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -116,23 +114,8 @@ public class ListActivity extends AppCompatActivity {
         //
 
         listView = findViewById(R.id.listView);
-
         cardsList = new ArrayList<Card>();
-
-
         progressDialog = new ProgressDialog(this);
-
-        //Implement a loop here to dinamically create Cards with the ordered Activities
-
-//        for(Activity activity:activities){
-//            System.out.println("------>" + activity.title);
-//        }
-        //End loop
-//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 1"));
-//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 2"));
-//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 3"));
-//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 4"));
-//        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 5"));
         favoriteList = new ArrayList<>();
         favoriteActivites = new ArrayList<>();
 
@@ -145,7 +128,6 @@ public class ListActivity extends AppCompatActivity {
         activityDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
                 saveActivities(dataSnapshot);
                 progressDialog.dismiss();
             }
@@ -156,7 +138,6 @@ public class ListActivity extends AppCompatActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                 user = dataSnapshot.getValue(User.class);
                 if(dataSnapshot.hasChild("list")){
                     setFavoriteList();
@@ -168,12 +149,7 @@ public class ListActivity extends AppCompatActivity {
         });
 
         // End Database Initialization
-
-        CardListAdapter cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
-        listView.setAdapter(cardAdapter);
-
-
-
+        displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
     }
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
@@ -187,11 +163,15 @@ public class ListActivity extends AppCompatActivity {
         for(DataSnapshot ds : data.getChildren()){
             activities.add(ds.getValue(Activity.class));
         }
-        activitiesBackup = activities;
-
-        //displayActivities();
     }
-
+    public void displayActivities(){
+        for(Activity activity:favoriteActivites){
+            cardsList.add(new Card(activity));
+        }
+        cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
+        listView.setAdapter(cardAdapter);
+        progressDialog.dismiss();
+    }
     public void setFavoriteList(){
 
         favoriteList = user.getLists().get("favorite");
@@ -202,7 +182,7 @@ public class ListActivity extends AppCompatActivity {
                 }
             }
         }
-
+        displayActivities();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
