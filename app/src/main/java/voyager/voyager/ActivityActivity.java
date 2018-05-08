@@ -35,7 +35,7 @@ public class ActivityActivity extends AppCompatActivity {
     ImageView activityHeader;
     RatingBar activityRating;
     ImageButton favButton;
-   ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
     //
     // Variables Setup
     private User user;
@@ -50,6 +50,7 @@ public class ActivityActivity extends AppCompatActivity {
 
         activity = (Activity) getIntent().getSerializableExtra("activity");
         progressDialog = new ProgressDialog(this);
+        displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
         activityHeader = findViewById(R.id.activityHeader);
         activityPrice = findViewById(R.id.activityPrice);
         activityRating = findViewById(R.id.activityRating);
@@ -64,11 +65,13 @@ public class ActivityActivity extends AppCompatActivity {
                 //if favorited
                 //favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                 //else
-                addFavorite(activity.get_id());
                 favButton.setImageResource(R.drawable.ic_favorited_24dp);
+                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
+                addFavorite(activity.get_id());
 
             }
         });
+        favoriteList = new ArrayList<>();
 
         // Database Initialization
         database = FirebaseDatabase.getInstance();
@@ -78,9 +81,10 @@ public class ActivityActivity extends AppCompatActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                 user = dataSnapshot.getValue(User.class);
-                progressDialog.dismiss();
+                if(dataSnapshot.hasChild("list")){
+                    setFavoriteList();
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -108,6 +112,7 @@ public class ActivityActivity extends AppCompatActivity {
 //        activityLocation.setText(activity.getLocation().get("address"));
         activityLocation.setVisibility(View.GONE);
         activityCategory.setText(activity.getCategory());
+        progressDialog.dismiss();
     }
     String makeCost(int i){
         String cost = "";
@@ -117,38 +122,19 @@ public class ActivityActivity extends AppCompatActivity {
     public void setFavoriteList(){
         list = user.getLists();
         favoriteList = list.get("favorite");
-        for(HashMap<String,String> hm:favoriteList){
-            Toast.makeText(this, "-------------------------->"+hm.get("id"), Toast.LENGTH_SHORT).show();
-
-        }
+        progressDialog.dismiss();
     }
     public void addFavorite(String id ){
-        //System.out.println("----------------------------> "+ user.getId());
         HashMap<String,String> newFavorite = new HashMap<>();
         newFavorite.put("id", id);
         favoriteList.add(newFavorite);
         try {
-            //            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-            userRef.child(fbUser.getUid()).child("list").child("favorite").setValue(favoriteList);
-            userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
-                    user = dataSnapshot.getValue(User.class);
-                    if(dataSnapshot.hasChild("list")){
-                        System.out.println("------------> Entreee al if2 prrooooo");
-                        setFavoriteList();
-                    }
-                    System.out.println("--------------------->" + favoriteList.size());
-                    progressDialog.dismiss();
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {}
-            });
-
+            userRef.child("list").child("favorite").setValue(favoriteList);
+            progressDialog.dismiss();
         }
         catch (Exception e){
             e.printStackTrace();
+            progressDialog.dismiss();
         }
     }
     public void removeFavorite(String idRemove){
@@ -157,24 +143,6 @@ public class ActivityActivity extends AppCompatActivity {
                 favoriteList.remove(i);
             }
         }
-
-        System.out.println("*********************sizeeeeee---->" + favoriteList.size());
-        userRef.child(fbUser.getUid()).child("list").child("favorite").setValue(favoriteList);
-        userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
-                user = dataSnapshot.getValue(User.class);
-                if(dataSnapshot.hasChild("list")){
-                    //System.out.println("------------> Entreee al if2 prrooooo");
-                    setFavoriteList();
-                }
-                System.out.println("--------------------->" + favoriteList.size());
-                progressDialog.dismiss();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
+        userRef.child("list").child("favorite").setValue(favoriteList);
     }
 }
