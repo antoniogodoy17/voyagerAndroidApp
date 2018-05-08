@@ -37,7 +37,7 @@
                         android:layout_gravity="center"
                         android:layout_margin="20dp"
                         android:src="@drawable/ic_account_circle_white_200dp"
-                        android:clickable="false" />
+                        android:clickable="false"/>
 
                     <TableRow
                         android:layout_width="wrap_content"

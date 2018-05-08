@@ -59,16 +59,19 @@ public class ProfileActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     ProgressDialog progressDialog;
     View header;
+    TextView drawerUsername;
+    CircleImageView imgProfilePicture;
+    CircleImageView drawerProfilePicture;
     EditText txtNameProfile, txtLastNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtLocationProfile;
     TextView txtBirthDateProfile;
     Button btnSaveChanges, btnCancel;
     ImageButton btnEditProfile;
-    CircleImageView imgProfilePicture;
     Spinner sprCountryProfile, sprStateProfile, sprCityProfile;
     DatePickerDialog datePicker;
     //
     // Variables Setup
     String fbUserId;
+    Uri tempImgUrl;
     User user;
     String name, lastname, email, phone, birth_date, location, password;
 
@@ -77,29 +80,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        progressDialog = new ProgressDialog(this);
-        // Database Initialization
-        database = FirebaseDatabase.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        fbUserId = firebaseAuth.getCurrentUser().getUid();
-        userRef = database.getReference("User").child(fbUserId);
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
-                user = dataSnapshot.getValue(User.class);
-                if(dataSnapshot.hasChild("profile_picture")){
-                    Picasso.get().load(dataSnapshot.child("profile_picture").getValue().toString()).into(imgProfilePicture);
-                }
-                fillFields();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-        userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile pictures");
-        // End Database Initialization
-
         // UI Initialization
+        progressDialog = new ProgressDialog(this);
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -108,6 +90,8 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
         header = navigationView.getHeaderView(0);
+        drawerUsername = header.findViewById(R.id.drawerUsername);
+        drawerProfilePicture = header.findViewById(R.id.drawerProfilePicture);
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,9 +120,9 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1,1)
-                    .start(ProfileActivity.this);
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1,1)
+                        .start(ProfileActivity.this);
             }
         });
         btnCancel = findViewById(R.id.btnCancel);
@@ -180,6 +164,29 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         // End UI Initialization
+
+        // Database Initialization
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        fbUserId = firebaseAuth.getCurrentUser().getUid();
+        userRef = database.getReference("User").child(fbUserId);
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
+                user = dataSnapshot.getValue(User.class);
+                setupDrawerUsername();
+                if(dataSnapshot.hasChild("profile_picture")){
+                    setupProfilePicture(user.getProfile_picture());
+                    setupDrawerProfilePicture(user.getProfile_picture());
+                }
+                fillFields();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+        userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile pictures");
+        // End Database Initialization
     }
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
@@ -192,42 +199,44 @@ public class ProfileActivity extends AppCompatActivity {
 //        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                StorageReference filePath = userProfileImageRef.child(fbUserId + ".jpg");
-
-                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task)
-                    {
-                        if(task.isSuccessful())
-                        {
-                            displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
-
-                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
-
-                            userRef.child("profile_picture").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    if(task.isSuccessful())
-                                    {
-                                        Intent selfIntent = new Intent(ProfileActivity.this, ProfileActivity.class);
-                                        startActivity(selfIntent);
-                                        user.setProfile_picture(downloadUrl);
-                                        Toast.makeText(ProfileActivity.this, "Profile Image stored to Firebase Database Successfully...", Toast.LENGTH_SHORT).show();
-                                        progressDialog.dismiss();
-                                    }
-                                    else
-                                    {
-                                        String message = task.getException().getMessage();
-                                        Toast.makeText(ProfileActivity.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
-                                        progressDialog.dismiss();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
+//                Uri resultUri = result.getUri();
+                tempImgUrl = result.getUri();
+                Picasso.get().load(tempImgUrl).into(imgProfilePicture);
+//                StorageReference filePath = userProfileImageRef.child(fbUserId + ".jpg");
+//
+//                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task)
+//                    {
+//                        if(task.isSuccessful())
+//                        {
+//                            displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
+//
+//                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
+//
+//                            userRef.child("profile_picture").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task)
+//                                {
+//                                    if(task.isSuccessful())
+//                                    {
+//                                        Intent selfIntent = new Intent(ProfileActivity.this, ProfileActivity.class);
+//                                        startActivity(selfIntent);
+//                                        user.setProfile_picture(downloadUrl);
+//                                        Toast.makeText(ProfileActivity.this, "Profile Image stored to Firebase Database Successfully...", Toast.LENGTH_SHORT).show();
+//                                        progressDialog.dismiss();
+//                                    }
+//                                    else
+//                                    {
+//                                        String message = task.getException().getMessage();
+//                                        Toast.makeText(ProfileActivity.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
+//                                        progressDialog.dismiss();
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
@@ -288,27 +297,66 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     protected void saveChanges(){
+
+        displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
         user.setName(txtNameProfile.getText().toString().trim());
         user.setLastname(txtLastNameProfile.getText().toString().trim());
         user.setEmail(txtEmailProfile.getText().toString().trim());
         user.setPhone(txtPhoneProfile.getText().toString().trim());
         //password pendiente
         user.setBirth_date(txtBirthDateProfile.getText().toString().trim());
+        updateProfilePicture();
 
         //Agregar aqui los cambios a la base de datos
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(user.getName()+" "+user.getLastname()).build();
         firebaseAuth.getCurrentUser().updateProfile(profileUpdates);
-        updateDrawerUserName();
-    }
+        setupDrawerUsername();
+        setupProfilePicture(user.getProfile_picture());
+        setupDrawerProfilePicture(user.getProfile_picture());
 
-    public void updateDrawerUserName(){
-        NavigationView navigationView = findViewById(R.id.navigationView);
-        View headerView = navigationView.getHeaderView(0);
-        TextView username = headerView.findViewById(R.id.drawerUsername);
-        username.setText(firebaseAuth.getCurrentUser().getDisplayName());
+        userRef.setValue(user);
+        progressDialog.dismiss();
     }
+    public void updateProfilePicture(){
+        StorageReference filePath = userProfileImageRef.child(fbUserId + ".jpg");
+        if(tempImgUrl != null) {
+            filePath.putFile(tempImgUrl).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        displayProgressDialog(R.string.Please_Wait, R.string.Please_Wait);
 
+                        final String downloadUrl = task.getResult().getDownloadUrl().toString();
+
+                        userRef.child("profile_picture").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    user.setProfile_picture(downloadUrl);
+                                    progressDialog.dismiss();
+                                } else {
+                                    String message = task.getException().getMessage();
+                                    Toast.makeText(ProfileActivity.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                }
+                                tempImgUrl = null;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+    public void setupDrawerUsername(){
+        drawerUsername.setText(user.name + " " + user.lastname);
+    }
+    public void setupDrawerProfilePicture(String url){
+        Picasso.get().load(url).into(drawerProfilePicture);
+    }
+    public void setupProfilePicture(String url){
+        Picasso.get().load(url).into(imgProfilePicture);
+    }
     protected void editMode(){
         txtNameProfile.setVisibility(View.VISIBLE);
         txtNameProfile.setEnabled(true);
@@ -341,6 +389,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     protected void viewMode(){
+        Picasso.get().load(user.getProfile_picture()).into(imgProfilePicture);
         if (txtNameProfile.getText().toString().isEmpty())
             txtNameProfile.setVisibility(View.GONE);
         else txtNameProfile.setEnabled(false);
@@ -374,5 +423,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnEditProfile.setVisibility(View.VISIBLE);
         btnSaveChanges.setVisibility(View.GONE);
         btnCancel.setVisibility(View.GONE);
+
+        progressDialog.dismiss();
     }
 }
