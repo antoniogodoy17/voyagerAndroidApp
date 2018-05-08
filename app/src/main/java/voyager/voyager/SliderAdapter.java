@@ -12,6 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -44,7 +50,7 @@ public class SliderAdapter extends PagerAdapter {
         TextView categoryTitle = view.findViewById(R.id.categoryTitle);
         ImageView categoryImage = view.findViewById(R.id.categoryImage);
         TextView categoryDescription = view.findViewById(R.id.categoryDescription);
-
+//
         categoryTitle.setText(categories.get(position).getTitle());
         Picasso.get().load(categories.get(position).getUrl()).into(categoryImage);
 //        categoryImage.setImageResource(R.drawable.ic_favorited_24dp);
@@ -64,6 +70,4 @@ public class SliderAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((LinearLayout)object);
     }
-
-
 }

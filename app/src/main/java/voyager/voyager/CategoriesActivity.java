@@ -46,7 +46,7 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
 
         categories = new ArrayList<>();
-        categories.add(new Category("Titulo 1","Descripcion 1","gs://proyecto-turista-af346.appspot.com/Actividades/Franco Escamilla/Franco.jpg"));
+        categories.add(new Category("Titulo 1","Descripcion 1","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FbR3zmD1qVyX1ZTlEkF0KlDC2tvr2.jpg?alt=media&token=5b2a905f-a4be-44a3-bb0b-652df6a25656"));
         categories.add(new Category("Titulo 2","Descripcion 2","https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjp9oianvfaAhVD7mMKHYtVAuMQjRx6BAgBEAU&url=http%3A%2F%2Fwww.iconarchive.com%2Fshow%2Fenkel-icons-by-froyoshark%2FBitcoin-icon.html&psig=AOvVaw3jqrO8VIwOeh-j1SUw5dR2&ust=1525907362905153"));
         categories.add(new Category("Titulo 3","Descripcion 3","https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiW3uCgnvfaAhVM7GMKHeSUABwQjRx6BAgBEAU&url=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F291715%2Fbrowser_chrome_google_internet_logo_network_web_icon&psig=AOvVaw3jqrO8VIwOeh-j1SUw5dR2&ust=1525907362905153"));
         slidePager = findViewById(R.id.slidePager);
