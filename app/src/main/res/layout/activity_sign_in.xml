@@ -124,7 +124,7 @@
                 android:textColorHint="@color/colorSecondaryLight"/>
 
             <Spinner
-                android:id="@+id/sprEstateSignIn"
+                android:id="@+id/sprStateSignIn"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -132,7 +132,8 @@
                 android:drawableStart="@drawable/ic_email_black_24dp"
                 android:drawablePadding="10dp"
                 android:textColor="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"/>
+                android:textColorHint="@color/colorSecondaryLight"
+                android:visibility="gone"/>
 
             <Spinner
                 android:id="@+id/sprCitySignIn"
@@ -143,7 +144,8 @@
                 android:drawableStart="@drawable/ic_email_black_24dp"
                 android:drawablePadding="10dp"
                 android:textColor="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"/>
+                android:textColorHint="@color/colorSecondaryLight"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btnSignIn_Signin"
