@@ -62,12 +62,19 @@ public class ActivityActivity extends AppCompatActivity {
         favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isFavorite(activity._id)){
+                    favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    removeFavorite(activity._id);
+                }
+                else{
+                    favButton.setImageResource(R.drawable.ic_favorited_24dp);
+                    displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
+                    addFavorite(activity.get_id());
+                }
                 //if favorited
                 //favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                 //else
-                favButton.setImageResource(R.drawable.ic_favorited_24dp);
-                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
-                addFavorite(activity.get_id());
+
 
             }
         });
@@ -136,6 +143,14 @@ public class ActivityActivity extends AppCompatActivity {
             e.printStackTrace();
             progressDialog.dismiss();
         }
+    }
+    public boolean isFavorite(String actId){
+        for(HashMap<String, String> hm:favoriteList){
+            if(hm.get("id").equals(actId)){
+                return true;
+            }
+        }
+        return false;
     }
     public void removeFavorite(String idRemove){
         for(int i =0;i<favoriteList.size();i++){
