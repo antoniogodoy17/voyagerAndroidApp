@@ -152,19 +152,20 @@ public class SignInActivity extends AppCompatActivity {
             }
         }
     //End method save countries
-    public void displayProgressDialog(String title, String message){
+    public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
-        progressDialog.setMessage(message);
+        progressDialog.setMessage(getApplicationContext().getString(message));
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(true);
     }
     public void goToLogin(){
         Intent login = new Intent(getApplicationContext(),LogInActivity.class);
+        login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(login);
         finish();
     }
     public void signIn(){
-        displayProgressDialog("Creating Account","Please Wait");
+        displayProgressDialog(R.string.Creating_Account,R.string.Please_Wait);
         setUserValues();
         if (verifyData()){
             authRegister();
