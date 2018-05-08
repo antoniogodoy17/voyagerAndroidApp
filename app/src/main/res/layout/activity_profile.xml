@@ -29,29 +29,44 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:background="@color/colorPrimaryDark">
-                    <ImageButton
-                        android:id="@+id/btnProfilePic"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgProfilePicture"
                         android:layout_width="200dp"
                         android:layout_height="200dp"
                         android:layout_weight="0"
-                        android:layout_marginTop="5dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_account_circle_white_200dp"
+                        android:layout_margin="20dp"
+                        android:src="@drawable/ic_account_circle_white_200dp"
                         android:clickable="false" />
 
-                    <EditText
-                        android:id="@+id/txtNameProfile"
+                    <TableRow
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:backgroundTint="@color/white"
-                        android:enabled="false"
-                        android:hint="@string/Name"
-                        android:inputType="textCapWords|textNoSuggestions"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_gravity="center"
+                        android:paddingLeft="24dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/txtNameProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:backgroundTint="@color/white"
+                            android:enabled="false"
+                            android:hint="@string/Name"
+                            android:inputType="textCapWords|textNoSuggestions"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white" />
+
+                        <ImageButton
+                            android:id="@+id/btnEditProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@android:color/transparent"
+                            app:srcCompat="@drawable/ic_edit_white_30dp" />
+                    </TableRow>
 
                     <EditText
                         android:id="@+id/txtLastNameProfile"
@@ -65,16 +80,7 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white"
-                        android:layout_marginTop="5dp"/>
-
-                    <ImageButton
-                        android:id="@+id/btnEditProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_margin="5dp"
-                        android:background="@android:color/transparent"
-                        app:srcCompat="@drawable/ic_edit_white_30dp" />
+                        android:layout_marginBottom="20dp"/>
                 </LinearLayout>
 
                 <EditText
