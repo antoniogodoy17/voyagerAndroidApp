@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
@@ -64,6 +66,7 @@ public class SignInActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         // End Database Setup
 
+        countries = new ArrayList<>();
         // UI Setup
         progressDialog = new ProgressDialog(this);
         //Hiding status bar
@@ -123,10 +126,45 @@ public class SignInActivity extends AppCompatActivity {
         // End UI Setup
 
         //Get countries snapshot
+
+//        countryRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//
+//               countries.add((HashMap<String, String>) dataSnapshot.getValue());
+//               System.out.println("------------------------------>  LLEGUE AUI" + countries.size());
+//
+//                //saveCountries(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//        fillSpinner();
+        displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
         countryRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                System.out.println("------------------------------>  LLEGUE AUI");
                 saveCountries(dataSnapshot);
 
             }
@@ -139,18 +177,36 @@ public class SignInActivity extends AppCompatActivity {
 
     }
     //Save all countries on a list
-        public void saveCountries(DataSnapshot data){
-        countries = new ArrayList<>();
-            Toast.makeText(this, "Ando por aqui", Toast.LENGTH_LONG).show();
-            for(DataSnapshot ds:data.getChildren()){
-                countries.add((HashMap<String,String>)data.getValue());
-            }
-
-            for(int i =0;i<countries.size();i++)
-            {
-                System.out.println("------------------------> " + countries.get(i).get("nombre_pais_int"));
-            }
+    public void saveCountries(DataSnapshot data){
+        // = new ArrayList<>();
+        for(DataSnapshot ds : data.getChildren()){
+            countries.add((HashMap<String, String>) ds.getValue());
         }
+        ArrayList<String> countriesList = new ArrayList<>();
+        //System.out.println("------------------------------>  Prroooooooooo");
+        for ( int i = 0; i < countries.size(); i++){
+            countriesList.add(countries.get(i).get("nombre_pais_int"));
+            System.out.println("------------------------------>  Prroooooooooo" + countriesList.size());
+        }
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, countriesList);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+        spnnationality.setAdapter(adapter);
+        progressDialog.dismiss();
+
+    }
+//        public void saveCountries(DataSnapshot data){
+//
+//
+//                countries.put("paises",(ArrayList<HashMap<String,String>>) data.getValue());
+//                System.out.println("------------------------------>  LLEGUE AUI" + data.getValue());
+//
+//            //Toast.makeText(this, countries.size(), Toast.LENGTH_LONG).show();
+//            for(int i =0;i<countries.keySet().size();i++)
+//            {
+//                System.out.println("------------------------> " + countries.get(i).get(i).get("nombre_pais_int"));
+//            }
+//        }
     //End method save countries
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
@@ -223,6 +279,8 @@ public class SignInActivity extends AppCompatActivity {
             return false;
         }
         return true;
+
+
     }
     protected void authRegister(){
         firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -258,6 +316,13 @@ public class SignInActivity extends AppCompatActivity {
                 }
             });
     }
+
+    protected  void fillSpinner(){
+
+
+
+    }
+
     protected void registerUser(){
         fbUserId = firebaseAuth.getCurrentUser().getUid();
         final User user = new User(fbUserId,name,lastname,email,birth_date,nationality);

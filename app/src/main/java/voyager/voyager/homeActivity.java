@@ -330,41 +330,41 @@ public class homeActivity extends AppCompatActivity {
         }
     }
 
-    public void removeFavorite(){
-        System.out.println("----------------------------> "+ user.getId());
-
-        HashMap<String,ArrayList<HashMap<String,String>>> list = user.getLists();
-        System.out.println("-------------->"+list.values());
-        for(int i = 0; i < list.get("favorite").size(); i++){
-            System.out.print("-------@!#@!#-------------> " +list.get("favorite").get(i));
-        }
-//        Query removeQuery =
-               // usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").child("0").child("id").removeValue();
-//                        .addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        for(DataSnapshot d: dataSnapshot.getChildren()){
-//                            System.out.println("-----------------------------> "+d.getRef());
-//                        }
-//                    }
+//    public void removeFavorite(){
+//        System.out.println("----------------------------> "+ user.getId());
 //
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
-//        removeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot ds:dataSnapshot.getChildren()){
-//                    System.out.println("***************** ------------->   Que pedo prroooooo!!!!" + ds.getKey());
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-    }
+//        HashMap<String,ArrayList<HashMap<String,String>>> list = user.getLists();
+//        System.out.println("-------------->"+list.values());
+//        for(int i = 0; i < list.get("favorite").size(); i++){
+//            System.out.print("-------@!#@!#-------------> " +list.get("favorite").get(i));
+//        }
+////        Query removeQuery =
+//               // usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").child("0").child("id").removeValue();
+////                        .addValueEventListener(new ValueEventListener() {
+////                    @Override
+////                    public void onDataChange(DataSnapshot dataSnapshot) {
+////                        for(DataSnapshot d: dataSnapshot.getChildren()){
+////                            System.out.println("-----------------------------> "+d.getRef());
+////                        }
+////                    }
+////
+////                    @Override
+////                    public void onCancelled(DatabaseError databaseError) {
+////
+////                    }
+////                });
+////        removeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+////            @Override
+////            public void onDataChange(DataSnapshot dataSnapshot) {
+////                for(DataSnapshot ds:dataSnapshot.getChildren()){
+////                    System.out.println("***************** ------------->   Que pedo prroooooo!!!!" + ds.getKey());
+////                }
+////            }
+////
+////            @Override
+////            public void onCancelled(DatabaseError databaseError) {
+////
+////            }
+////        });
+//    }
 }
