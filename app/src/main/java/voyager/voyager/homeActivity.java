@@ -129,22 +129,6 @@ public class homeActivity extends AppCompatActivity {
                     }
                 }
             });
-    //        authListener = new FirebaseAuth.AuthStateListener(){
-    //            @Override
-    //            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-    //                if(fbUser == null){
-    //                    goToLogin();
-    //                }
-    //                else{
-    //                    synchronized (authListener) {
-    //                        fbUserId = fbUser.getUid();
-    //                        setDrawerUserName();
-    //                        System.out.println("----------------------------- > " + fbUser.getDisplayName() + " < ---------------------------");
-    //                    }
-    //                }
-    //            }
-    //        };
-//            userRef = database.getReference("User").child(fbUser.getUid());
             userRef = database.getReference("User");
             userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -152,34 +136,14 @@ public class homeActivity extends AppCompatActivity {
                     displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                     user = dataSnapshot.getValue(User.class);
                     setupDrawerUsername();
-                    if(dataSnapshot.hasChild("list")){
-                        System.out.println("------------> Entreee al if prrooooo");
-                        setFavoriteList();
-                    }
                     if(dataSnapshot.hasChild("profile_picture")){
                         setupDrawerProfilePicture(user.getProfile_picture());
                     }
-
-                    //System.out.println("--------------------->" + user.getName());
                     progressDialog.dismiss();
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {}
             });
-    //        usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
-    //            @Override
-    //            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-    //                user = dataSnapshot.getValue(User.class);
-    //            }
-    //            @Override
-    //            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
-    //            @Override
-    //            public void onChildRemoved(DataSnapshot dataSnapshot) { }
-    //            @Override
-    //            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
-    //            @Override
-    //            public void onCancelled(DatabaseError databaseError) { }
-    //        });
             activityDatabase = database.getReference("Activities");
             activityDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -194,13 +158,10 @@ public class homeActivity extends AppCompatActivity {
             // End Database Initialization
 
             displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
-    //        setDrawerUserName();
-    //        displayActivities();
         }
 
     @Override
         public void onBackPressed() {
-//            Toast.makeText(this, String.valueOf(searched), Toast.LENGTH_LONG).show();
             if(searched){
                 activities = activitiesBackup;
                 updateActivities();
@@ -208,7 +169,6 @@ public class homeActivity extends AppCompatActivity {
                 searched = false;
             }
             else {
-//                Toast.makeText(this, "Super back", Toast.LENGTH_LONG).show();
                 super.onBackPressed();
             }
         }
@@ -260,22 +220,12 @@ public class homeActivity extends AppCompatActivity {
             cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
             listView.setAdapter(cardAdapter);
             progressDialog.dismiss();
-    //        listView.setClickable(true);
-    //        cardAdapter.notifyDataSetChanged();
         }
         public void setupDrawerUsername(){
             drawerUsername.setText(user.name + " " + user.lastname);
-//            if(fbUser.getDisplayName().isEmpty())
-//                drawerUsername.setText("Username");
-//            else{
-//                drawerUsername.setText(firebaseAuth.getCurrentUser().getDisplayName());
-//            }
         }
         public void setupDrawerProfilePicture(String url){
             Picasso.get().load(url).into(drawerProfilePicture);
-        }
-        public static homeVM getViewModel(){
-            return vm;
         }
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
@@ -287,6 +237,7 @@ public class homeActivity extends AppCompatActivity {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
+                    displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                     if(!query.isEmpty()){
                         searched = true;
                         displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
@@ -294,7 +245,6 @@ public class homeActivity extends AppCompatActivity {
                         updateActivities();
                         hideKeyboard();
                     }
-//                    searchView.isIconfiedByDefault();
                     searchView.setQuery("", false);
                     searchView.setIconified(true);
                     return true;
@@ -372,107 +322,4 @@ public class homeActivity extends AppCompatActivity {
             }
             return searchActivity;
         }
-        public void addFavorite(String id ){
-            //System.out.println("----------------------------> "+ user.getId());
-            HashMap<String,String> newFavorite = new HashMap<>();
-            newFavorite.put("id", id);
-            favoriteList.add(newFavorite);
-            try {
-    //            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                userRef.child(fbUser.getUid()).child("list").child("favorite").setValue(favoriteList);
-                userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
-                        user = dataSnapshot.getValue(User.class);
-                        setupDrawerUsername();
-                        if(dataSnapshot.hasChild("list")){
-                            System.out.println("------------> Entreee al if2 prrooooo");
-                            setFavoriteList();
-                        }
-                        System.out.println("--------------------->" + favoriteList.size());
-                        progressDialog.dismiss();
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {}
-                });
-
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-
-        public void setFavoriteList(){
-            list = user.getLists();
-            favoriteList = list.get("favorite");
-            for(HashMap<String,String> hm:favoriteList){
-                Toast.makeText(this, "-------------------------->"+hm.get("id"), Toast.LENGTH_SHORT).show();
-
-            }
-        }
-        public void removeFavorite(String idRemove){
-            for(int i =0;i<favoriteList.size();i++){
-                if(favoriteList.get(i).get("id").equals(idRemove)){
-                    favoriteList.remove(i);
-                }
-            }
-
-            System.out.println("*********************sizeeeeee---->" + favoriteList.size());
-            userRef.child(fbUser.getUid()).child("list").child("favorite").setValue(favoriteList);
-            userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
-                    user = dataSnapshot.getValue(User.class);
-                    setupDrawerUsername();
-                    if(dataSnapshot.hasChild("list")){
-                        //System.out.println("------------> Entreee al if2 prrooooo");
-                        setFavoriteList();
-                    }
-                    System.out.println("--------------------->" + favoriteList.size());
-                    progressDialog.dismiss();
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {}
-            });
-
-        }
-    //    public void removeFavorite(){
-    //        System.out.println("----------------------------> "+ user.getId());
-    //
-    //        HashMap<String,ArrayList<HashMap<String,String>>> list = user.getLists();
-    //        System.out.println("-------------->"+list.values());
-    //        for(int i = 0; i < list.get("favorite").size(); i++){
-    //            System.out.print("-------@!#@!#-------------> " +list.get("favorite").get(i));
-    //        }
-    ////        Query removeQuery =
-    //               // usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").child("0").child("id").removeValue();
-    ////                        .addValueEventListener(new ValueEventListener() {
-    ////                    @Override
-    ////                    public void onDataChange(DataSnapshot dataSnapshot) {
-    ////                        for(DataSnapshot d: dataSnapshot.getChildren()){
-    ////                            System.out.println("-----------------------------> "+d.getRef());
-    ////                        }
-    ////                    }
-    ////
-    ////                    @Override
-    ////                    public void onCancelled(DatabaseError databaseError) {
-    ////
-    ////                    }
-    ////                });
-    ////        removeQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-    ////            @Override
-    ////            public void onDataChange(DataSnapshot dataSnapshot) {
-    ////                for(DataSnapshot ds:dataSnapshot.getChildren()){
-    ////                    System.out.println("***************** ------------->   Que pedo prroooooo!!!!" + ds.getKey());
-    ////                }
-    ////            }
-    ////
-    ////            @Override
-    ////            public void onCancelled(DatabaseError databaseError) {
-    ////
-    ////            }
-    ////        });
-    //    }
 }
