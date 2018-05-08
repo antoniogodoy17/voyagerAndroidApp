@@ -10,7 +10,19 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class FavoritesActivity extends AppCompatActivity {
+    // Database Initialization
+    private FirebaseDatabase database;
+    private DatabaseReference userRef, activityDatabase;
+    private FirebaseUser fbUser;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authListener;
+    //
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     View header;
@@ -35,6 +47,20 @@ public class FavoritesActivity extends AppCompatActivity {
                 goToProfile();
             }
         });
+
+        // Database Initialization
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        fbUser = firebaseAuth.getCurrentUser();
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(fbUser == null){
+                    goToLogin();
+                }
+            }
+        });
+        // End Database Initialization
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -54,34 +80,46 @@ public class FavoritesActivity extends AppCompatActivity {
     }
 
     public void selectDrawerMenu(MenuItem menu){
-        Intent next = null;
+        Class intentClass = null;
         switch (menu.getItemId()){
             case R.id.homeMenu:
-                next = new Intent(this,homeActivity.class);
+                intentClass = homeActivity.class;
                 break;
             case R.id.categoriesMenu:
-                next = new Intent(this,CategoriesActivity.class);
+                intentClass = CategoriesActivity.class;
                 break;
             case R.id.favoritesMenu:
-                next = new Intent(this,FavoritesActivity.class);
+                intentClass = ListActivity.class;
                 break;
             case R.id.listsMenu:
-                next = new Intent(this,ListsActivity.class);
+                intentClass = ListsActivity.class;
                 break;
             case R.id.switchLocationMenu:
-                next = new Intent(this,SwitchLocationActivity.class);
+                intentClass = SwitchLocationActivity.class;
                 break;
             case R.id.logoutMenu:
-                next = new Intent(this, LogInActivity.class);
-//                vm.getFirebaseAuth().signOut();
+                intentClass = LogInActivity.class;
+                firebaseAuth.signOut();
                 break;
         }
-        startActivity(next);
-        finish();
+        if(intentClass != this.getClass() && intentClass != null){
+            Intent nextView = new Intent(this,intentClass);
+            if(intentClass == homeActivity.class){
+                nextView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            }
+            startActivity(nextView);
+            finish();
+        }
     }
     public void goToProfile(){
         Intent profile = new Intent(this,ProfileActivity.class);
         startActivity(profile);
+        finish();
+    }
+    public void goToLogin(){
+        Intent login = new Intent(this,LogInActivity.class);
+        login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(login);
         finish();
     }
 }
