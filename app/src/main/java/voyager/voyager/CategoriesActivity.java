@@ -3,17 +3,22 @@ package voyager.voyager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class CategoriesActivity extends AppCompatActivity {
     // Database Initialization
@@ -27,12 +32,27 @@ public class CategoriesActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     View header;
+    private ViewPager slidePager;
+    private LinearLayout dotsLayout;
+    private SliderAdapter sliderAdapter;
+    //
+    //
+    ArrayList<Category> categories;
     //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
+
+        categories = new ArrayList<>();
+        categories.add(new Category("Titulo 1","Descripcion 1","gs://proyecto-turista-af346.appspot.com/Actividades/Franco Escamilla/Franco.jpg"));
+        categories.add(new Category("Titulo 2","Descripcion 2","https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjp9oianvfaAhVD7mMKHYtVAuMQjRx6BAgBEAU&url=http%3A%2F%2Fwww.iconarchive.com%2Fshow%2Fenkel-icons-by-froyoshark%2FBitcoin-icon.html&psig=AOvVaw3jqrO8VIwOeh-j1SUw5dR2&ust=1525907362905153"));
+        categories.add(new Category("Titulo 3","Descripcion 3","https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiW3uCgnvfaAhVM7GMKHeSUABwQjRx6BAgBEAU&url=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F291715%2Fbrowser_chrome_google_internet_logo_network_web_icon&psig=AOvVaw3jqrO8VIwOeh-j1SUw5dR2&ust=1525907362905153"));
+        slidePager = findViewById(R.id.slidePager);
+        dotsLayout = findViewById(R.id.dotsLayout);
+        sliderAdapter = new SliderAdapter(CategoriesActivity.this,categories);
+        slidePager.setAdapter(sliderAdapter);
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
@@ -63,6 +83,8 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
         // End Database Initialization
+
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
