@@ -38,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -76,6 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        progressDialog = new ProgressDialog(this);
         // Database Initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -86,8 +88,10 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                 user = dataSnapshot.getValue(User.class);
+                if(dataSnapshot.hasChild("profile_picture")){
+                    Picasso.get().load(dataSnapshot.child("profile_picture").getValue().toString()).into(imgProfilePicture);
+                }
                 fillFields();
-                progressDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -96,7 +100,6 @@ public class ProfileActivity extends AppCompatActivity {
         // End Database Initialization
 
         // UI Initialization
-        progressDialog = new ProgressDialog(this);
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -186,8 +189,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
@@ -199,7 +201,7 @@ public class ProfileActivity extends AppCompatActivity {
                     {
                         if(task.isSuccessful())
                         {
-                            Toast.makeText(ProfileActivity.this, "Uploaded to database", Toast.LENGTH_SHORT).show();
+                            displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
 
                             final String downloadUrl = task.getResult().getDownloadUrl().toString();
 
@@ -211,7 +213,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     {
                                         Intent selfIntent = new Intent(ProfileActivity.this, ProfileActivity.class);
                                         startActivity(selfIntent);
-
+                                        user.setProfile_picture(downloadUrl);
                                         Toast.makeText(ProfileActivity.this, "Profile Image stored to Firebase Database Successfully...", Toast.LENGTH_SHORT).show();
                                         progressDialog.dismiss();
                                     }
@@ -229,7 +231,7 @@ public class ProfileActivity extends AppCompatActivity {
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
-        }
+//        }
     }
 
     @Override
@@ -281,8 +283,8 @@ public class ProfileActivity extends AppCompatActivity {
         txtPhoneProfile.setText(user.getPhone());
 //        txtPasswordProfile
         txtBirthDateProfile.setText(user.getBirth_date());
-
         viewMode();
+        progressDialog.dismiss();
     }
 
     protected void saveChanges(){
