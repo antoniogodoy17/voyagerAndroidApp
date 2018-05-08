@@ -168,6 +168,14 @@ public class ProfileActivity extends AppCompatActivity {
         // Database Initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() == null){
+                    goToLogin();
+                }
+            }
+        });
         fbUserId = firebaseAuth.getCurrentUser().getUid();
         userRef = database.getReference("User").child(fbUserId);
         userRef.addValueEventListener(new ValueEventListener() {
@@ -261,29 +269,39 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void selectDrawerMenu(MenuItem menu){
-        Intent next = null;
+        Class intentClass = null;
         switch (menu.getItemId()){
             case R.id.homeMenu:
-                next = new Intent(this,homeActivity.class);
+                intentClass = homeActivity.class;
                 break;
             case R.id.categoriesMenu:
-                next = new Intent(this,CategoriesActivity.class);
+                intentClass = CategoriesActivity.class;
                 break;
             case R.id.favoritesMenu:
-                next = new Intent(this,FavoritesActivity.class);
+                intentClass = ListActivity.class;
                 break;
             case R.id.listsMenu:
-                next = new Intent(this,ListsActivity.class);
+                intentClass = ListsActivity.class;
                 break;
             case R.id.switchLocationMenu:
-                next = new Intent(this,SwitchLocationActivity.class);
+                intentClass = SwitchLocationActivity.class;
                 break;
             case R.id.logoutMenu:
+                intentClass = LogInActivity.class;
                 firebaseAuth.signOut();
-                next = new Intent(this,LogInActivity.class);
                 break;
         }
-        startActivity(next);
+        if(intentClass != this.getClass() && intentClass != null){
+            Intent nextView = new Intent(this,intentClass);
+            startActivity(nextView);
+            finish();
+        }
+    }
+    public void goToLogin(){
+        Intent login = new Intent(this,LogInActivity.class);
+        login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(login);
+        finish();
     }
     protected void fillFields(){
         txtNameProfile.setText(user.getName());
