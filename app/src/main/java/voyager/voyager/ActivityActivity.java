@@ -119,6 +119,14 @@ public class ActivityActivity extends AppCompatActivity {
 //        activityLocation.setText(activity.getLocation().get("address"));
         activityLocation.setVisibility(View.GONE);
         activityCategory.setText(activity.getCategory());
+        if(isFavorite(activity._id)){
+            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+
+        }
+        else{
+            favButton.setImageResource(R.drawable.ic_favorited_24dp);
+
+        }
         progressDialog.dismiss();
     }
     String makeCost(int i){
