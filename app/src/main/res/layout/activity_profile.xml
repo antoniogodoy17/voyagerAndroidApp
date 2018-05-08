@@ -35,7 +35,7 @@
                         android:layout_height="200dp"
                         android:layout_weight="0"
                         android:layout_gravity="center"
-                        android:layout_margin="20dp"
+                        android:layout_marginTop="20dp"
                         android:src="@drawable/ic_account_circle_white_200dp"
                         android:clickable="false"/>
 
@@ -43,6 +43,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_margin="20dp"
                         android:paddingLeft="24dp"
                         android:orientation="horizontal">
 
@@ -192,29 +193,34 @@
                     android:textColorHint="@color/colorSecondaryLight"
                     android:visibility="gone" />
 
-                <Button
-                    android:id="@+id/btnSaveChanges"
+                <TableRow
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    android:backgroundTint="@color/colorSecondary"
-                    android:fontFamily="@font/quicksand"
-                    android:text="@string/Save_Changes"
-                    android:textColor="@color/white"
-                    android:visibility="gone" />
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnCancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:text="@string/Cancel"
-                    android:textColor="@color/colorSecondary"
-                    android:visibility="gone" />
+                    <Button
+                        android:id="@+id/btnSaveChanges"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/colorSecondary"
+                        android:fontFamily="@font/quicksand"
+                        android:text="@string/Save_Changes"
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btnCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:text="@string/Cancel"
+                        android:textColor="@color/colorSecondary"
+                        android:visibility="gone" />
+                </TableRow>
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
