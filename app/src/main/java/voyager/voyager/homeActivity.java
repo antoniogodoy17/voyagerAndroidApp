@@ -20,6 +20,8 @@ import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -64,6 +66,11 @@ public class homeActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,String>> favoriteList;
     //
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(authListener);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,30 +82,22 @@ public class homeActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         fbUser = firebaseAuth.getCurrentUser();
-        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+
+        authListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(fbUser == null){
                     goToLogin();
                 }
                 else{
-                    synchronized (firebaseAuth){
-
+                    synchronized (authListener) {
+                        fbUserId = fbUser.getUid();
+                        setDrawerUserName();
+                        System.out.println("----------------------------- > " + fbUser.getDisplayName() + " < ---------------------------");
                     }
-//                    synchronized (authListener) {
-//                        fbUserId = fbUser.getUid();
-//                        setDrawerUserName();
-//                        System.out.println("----------------------------- > " + fbUser.getDisplayName() + " < ---------------------------");
-//                    }
                 }
             }
-        });
-//          {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//
-//            }
-//        };
+        };
 //        usersDatabase = database.getReference("User").child(fbUserId);
         usersDatabase = database.getReference("User");
         usersDatabase.addValueEventListener(new ValueEventListener() {
@@ -225,8 +224,8 @@ public class homeActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 if(!query.isEmpty()){
                     displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
-                    listView.setVisibility(View.GONE);
                     activities = searchActivity(query);
+                    updateActivities();
                 }
                 searchView.setQuery("", false);
                 searchView.setIconified(true);
