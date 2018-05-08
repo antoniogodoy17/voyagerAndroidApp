@@ -120,7 +120,12 @@ public class homeActivity extends AppCompatActivity {
                 displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                 user = dataSnapshot.getValue(User.class);
                 setDrawerUserName();
-                System.out.println("--------------------->" + user.getName());
+                if(dataSnapshot.hasChild("list")){
+                    System.out.println("------------> Entreee al if prrooooo");
+                    setFavoriteList();
+                }
+
+                //System.out.println("--------------------->" + user.getName());
                 progressDialog.dismiss();
             }
             @Override
@@ -293,7 +298,7 @@ public class homeActivity extends AppCompatActivity {
         switch (menu.getItemId()){
             case R.id.homeMenu:
                 next = new Intent(this,homeActivity.class);
-                setFavoriteList();
+                removeFavorite("-LBJVw7wQPaqyBHNwOz1");
                 break;
             case R.id.categoriesMenu:
                 next = new Intent(this,CategoriesActivity.class);
@@ -349,20 +354,22 @@ public class homeActivity extends AppCompatActivity {
         favoriteList.add(newFavorite);
         try {
 //            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-            usersDatabase.child(fbUserId).child("list").child("favorite").setValue(favoriteList);
-            usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
+            usersDatabase.child(fbUser.getUid()).child("list").child("favorite").setValue(favoriteList);
+            usersDatabase.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                     user = dataSnapshot.getValue(User.class);
+                    setDrawerUserName();
+                    if(dataSnapshot.hasChild("list")){
+                        System.out.println("------------> Entreee al if2 prrooooo");
+                        setFavoriteList();
+                    }
+                    System.out.println("--------------------->" + favoriteList.size());
+                    progressDialog.dismiss();
                 }
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) { }
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
-                @Override
-                public void onCancelled(DatabaseError databaseError) { }
+                public void onCancelled(DatabaseError databaseError) {}
             });
 
         }
@@ -378,6 +385,33 @@ public class homeActivity extends AppCompatActivity {
             Toast.makeText(this, "-------------------------->"+hm.get("id"), Toast.LENGTH_SHORT).show();
 
         }
+    }
+    public void removeFavorite(String idRemove){
+        for(int i =0;i<favoriteList.size();i++){
+            if(favoriteList.get(i).get("id").equals(idRemove)){
+                favoriteList.remove(i);
+            }
+        }
+
+        System.out.println("*********************sizeeeeee---->" + favoriteList.size());
+        usersDatabase.child(fbUser.getUid()).child("list").child("favorite").setValue(favoriteList);
+        usersDatabase.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
+                user = dataSnapshot.getValue(User.class);
+                setDrawerUserName();
+                if(dataSnapshot.hasChild("list")){
+                    //System.out.println("------------> Entreee al if2 prrooooo");
+                    setFavoriteList();
+                }
+                System.out.println("--------------------->" + favoriteList.size());
+                progressDialog.dismiss();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
     }
 //    public void removeFavorite(){
 //        System.out.println("----------------------------> "+ user.getId());
