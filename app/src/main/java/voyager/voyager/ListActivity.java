@@ -133,6 +133,7 @@ public class ListActivity extends AppCompatActivity {
 //        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 3"));
 //        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 4"));
 //        cardsList.add(new Card("drawable://"+R.drawable.logo512,"Actividad 5"));
+        favoriteList = new ArrayList<>();
 
 
         // Database Initialization
