@@ -20,6 +20,7 @@ import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.StringResourceValueReader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,6 +66,7 @@ public class homeActivity extends AppCompatActivity {
     private static homeVM vm;
     private User user;
     private ArrayList<HashMap<String,String>> favoriteList;
+    private  HashMap<String,ArrayList<HashMap<String,String>>> list;
     //
 
     @Override
@@ -73,6 +75,8 @@ public class homeActivity extends AppCompatActivity {
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             goToLogin();
         }
+
+
     }
 
     @Override
@@ -108,13 +112,15 @@ public class homeActivity extends AppCompatActivity {
 //                }
 //            }
 //        };
-//        usersDatabase = database.getReference("User").child(fbUserId);
+       // usersDatabase = database.getReference("User").child(fbUserId);
         usersDatabase = database.getReference("User");
-        usersDatabase.addValueEventListener(new ValueEventListener() {
+        usersDatabase.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                 user = dataSnapshot.getValue(User.class);
+                setDrawerUserName();
+                System.out.println("--------------------->" + user.getName());
                 progressDialog.dismiss();
             }
             @Override
@@ -287,6 +293,7 @@ public class homeActivity extends AppCompatActivity {
         switch (menu.getItemId()){
             case R.id.homeMenu:
                 next = new Intent(this,homeActivity.class);
+                setFavoriteList();
                 break;
             case R.id.categoriesMenu:
                 next = new Intent(this,CategoriesActivity.class);
@@ -342,7 +349,7 @@ public class homeActivity extends AppCompatActivity {
         favoriteList.add(newFavorite);
         try {
 //            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-            usersDatabase.child("-LAnypCKztq8359duHiA").child("list").child("favorite").setValue(favoriteList);
+            usersDatabase.child(fbUserId).child("list").child("favorite").setValue(favoriteList);
             usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -364,6 +371,14 @@ public class homeActivity extends AppCompatActivity {
         }
     }
 
+    public void setFavoriteList(){
+        list = user.getLists();
+        favoriteList = list.get("favorite");
+        for(HashMap<String,String> hm:favoriteList){
+            Toast.makeText(this, "-------------------------->"+hm.get("id"), Toast.LENGTH_SHORT).show();
+
+        }
+    }
 //    public void removeFavorite(){
 //        System.out.println("----------------------------> "+ user.getId());
 //
