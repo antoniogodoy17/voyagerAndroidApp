@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class ActivityActivity extends AppCompatActivity {
 
     // UI Setup
     TextView activityPrice, activityDescription, activityDate, activityLocation, activityCategory;
+    ImageView activityHeader;
     RatingBar activityRating;
     ImageButton favButton;
     //
@@ -42,6 +44,7 @@ public class ActivityActivity extends AppCompatActivity {
 
         activity = (Activity) getIntent().getSerializableExtra("activity");
 
+        activityHeader = findViewById(R.id.activityHeader);
         activityPrice = findViewById(R.id.activityPrice);
         activityRating = findViewById(R.id.activityRating);
         activityDescription = findViewById(R.id.activityDescription);
@@ -86,6 +89,7 @@ public class ActivityActivity extends AppCompatActivity {
     }
 
     void fillData(){
+//        if (activity.getImages() != null) activityHeader.setImageURI();
         setTitle(activity.getTitle());
         activityPrice.setText(makeCost(activity.getCost()));
 //        activityRating.setRating(activity.getReviews());

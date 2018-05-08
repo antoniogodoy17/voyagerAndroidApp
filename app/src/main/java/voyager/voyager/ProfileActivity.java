@@ -1,9 +1,11 @@
 package voyager.voyager;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -17,10 +19,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -30,9 +35,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.IOException;
 import java.util.Calendar;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
     // Database Setup
@@ -40,6 +52,8 @@ public class ProfileActivity extends AppCompatActivity {
     private DatabaseReference usersDatabase;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
+    private StorageReference userProfileImageRef;
+    private ProgressDialog loadingBar;
     //
     // UI Setup
     private DrawerLayout drawerLayout;
@@ -48,7 +62,8 @@ public class ProfileActivity extends AppCompatActivity {
     EditText txtNameProfile, txtLastNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtLocationProfile;
     TextView txtBirthDateProfile;
     Button btnSaveChanges, btnCancel;
-    ImageButton btnProfilePic, btnEditProfile;
+    ImageButton btnEditProfile;
+    CircleImageView imgProfilePicture;
     Spinner sprCountryProfile, sprStateProfile, sprCityProfile;
     DatePickerDialog datePicker;
     //
@@ -56,9 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
     private static homeVM vm;
     User user;
     String name, lastname, email, phone, birth_date, location, password;
-    private Uri filePath;
-    private final int PICK_IMAGE_REQUEST = 71;
-    //
+    final static int Gallery_Pick = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         fbUser = firebaseAuth.getCurrentUser();
         usersDatabase = database.getReference("User");
+        userProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile pictures");
 
         usersDatabase.orderByChild("email").startAt(fbUser.getEmail()).endAt(fbUser.getEmail() + "\uf8ff").addChildEventListener(new ChildEventListener() {
             @Override
@@ -103,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(next);
             }
         });
-        btnProfilePic = findViewById(R.id.btnProfilePic);
+        imgProfilePicture = findViewById(R.id.imgProfilePicture);
         txtNameProfile = findViewById(R.id.txtNameProfile);
         txtLastNameProfile = findViewById(R.id.txtLastNameProfile);
         txtEmailProfile = findViewById(R.id.txtEmailProfile);
@@ -114,12 +128,25 @@ public class ProfileActivity extends AppCompatActivity {
         sprStateProfile = findViewById(R.id.sprStateProfile);
         sprCityProfile = findViewById(R.id.sprCityProfile);
         btnEditProfile = findViewById(R.id.btnEditProfile);
+        loadingBar = new ProgressDialog(this);
+
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editMode();
             }
         });
+
+        imgProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, Gallery_Pick);
+            }
+        });
+
         btnCancel = findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +188,74 @@ public class ProfileActivity extends AppCompatActivity {
         // End UI Initialization
 //        fillFields();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == Gallery_Pick && resultCode == RESULT_OK && data != null){
+            Uri ImageUri = data.getData();
+
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1,1)
+                    .start(this);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (requestCode == RESULT_OK) {
+                loadingBar.setTitle("Profile Image");
+                loadingBar.setMessage("Please wait, while we updating your profile image...");
+                loadingBar.show();
+                loadingBar.setCanceledOnTouchOutside(true);
+
+                Uri resultUri = result.getUri();
+
+                StorageReference filePath = userProfileImageRef.child(fbUser.getUid() + ".jpg");
+
+                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task)
+                    {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(ProfileActivity.this, "Uploaded to database", Toast.LENGTH_SHORT).show();
+
+                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
+
+                            usersDatabase.child("profileimage").setValue(downloadUrl)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task)
+                                        {
+                                            if(task.isSuccessful())
+                                            {
+                                                Intent selfIntent = new Intent(ProfileActivity.this, ProfileActivity.class);
+                                                startActivity(selfIntent);
+
+                                                Toast.makeText(ProfileActivity.this, "Profile Image stored to Firebase Database Successfully...", Toast.LENGTH_SHORT).show();
+                                                loadingBar.dismiss();
+                                            }
+                                            else
+                                            {
+                                                String message = task.getException().getMessage();
+                                                Toast.makeText(ProfileActivity.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
+                                                loadingBar.dismiss();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
+            }
+            else{
+                Toast.makeText(this, "Error cropping image", Toast.LENGTH_SHORT).show();
+                loadingBar.dismiss();
+            }
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(drawerToggle.onOptionsItemSelected(item)){
@@ -212,36 +307,6 @@ public class ProfileActivity extends AppCompatActivity {
         txtBirthDateProfile.setText(user.getBirth_date());
 
         viewMode();
-
-        btnProfilePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chooseImage();
-            }
-        });
-    }
-
-    private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null ){
-            filePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                btnProfilePic.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
     }
 
     protected void saveChanges(){
@@ -291,7 +356,7 @@ public class ProfileActivity extends AppCompatActivity {
         sprStateProfile.setVisibility(View.VISIBLE);
         sprCityProfile.setVisibility(View.VISIBLE);
 
-        btnProfilePic.setEnabled(true);
+        imgProfilePicture.setEnabled(true);
         btnEditProfile.setVisibility(View.INVISIBLE);
         btnSaveChanges.setVisibility(View.VISIBLE);
         btnCancel.setVisibility(View.VISIBLE);
@@ -327,7 +392,7 @@ public class ProfileActivity extends AppCompatActivity {
         sprStateProfile.setVisibility(View.GONE);
         sprCityProfile.setVisibility(View.GONE);
 
-        btnProfilePic.setEnabled(false);
+        imgProfilePicture.setEnabled(false);
         btnEditProfile.setVisibility(View.VISIBLE);
         btnSaveChanges.setVisibility(View.GONE);
         btnCancel.setVisibility(View.GONE);
