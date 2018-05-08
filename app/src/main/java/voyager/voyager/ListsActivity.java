@@ -9,17 +9,93 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import java.security.Key;
+import java.util.ArrayList;
 
 public class ListsActivity extends AppCompatActivity {
+    //UI initialization
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     View header;
+    ListView listView;
+    //
+
+    // Database Initialization
+    private FirebaseDatabase database;
+    private DatabaseReference listsDatabase, usersDatabase;
+    private FirebaseUser fbUser;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authListener;
+    //
+
+    private ArrayList<String> lists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lists);
 
+        // Variables initialization
+        lists = new ArrayList<>();
+        //
+
+        // Database Initialization
+        database = FirebaseDatabase.getInstance();
+        usersDatabase = database.getReference("User");
+        firebaseAuth = FirebaseAuth.getInstance();
+        fbUser = firebaseAuth.getCurrentUser();
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(fbUser == null){
+                    goToLogin();
+                }
+            }
+        });
+
+        Query listsDatabaseQuery = database.getReference().child("User").child(fbUser.getUid()).child("lists")
+            .orderByKey();
+        listsDatabaseQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    lists.add(ds.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //Header
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -35,6 +111,13 @@ public class ListsActivity extends AppCompatActivity {
                 goToProfile();
             }
         });
+
+        //Layout initialization
+        listView = findViewById(R.id.listView);
+        //
+
+        listView.setAdapter(new ListsAdapter(this, lists));
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -51,6 +134,8 @@ public class ListsActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        listsDatabase = database.getReference("User");
     }
 
     public void selectDrawerMenu(MenuItem menu){
@@ -80,6 +165,12 @@ public class ListsActivity extends AppCompatActivity {
     public void goToProfile(){
         Intent profile = new Intent(this,ProfileActivity.class);
         startActivity(profile);
+        finish();
+    }
+    public void goToLogin(){
+        Intent login = new Intent(this,LogInActivity.class);
+        login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(login);
         finish();
     }
 }
