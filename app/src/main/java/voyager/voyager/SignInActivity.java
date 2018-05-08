@@ -126,7 +126,9 @@ public class SignInActivity extends AppCompatActivity {
         countryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 saveCountries(dataSnapshot);
+
             }
 
             @Override
@@ -139,6 +141,7 @@ public class SignInActivity extends AppCompatActivity {
     //Save all countries on a list
         public void saveCountries(DataSnapshot data){
         countries = new ArrayList<>();
+            Toast.makeText(this, "Ando por aqui", Toast.LENGTH_LONG).show();
             for(DataSnapshot ds:data.getChildren()){
                 countries.add((HashMap<String,String>)data.getValue());
             }
