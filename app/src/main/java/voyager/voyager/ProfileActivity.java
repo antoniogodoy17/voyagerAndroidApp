@@ -293,6 +293,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
         if(intentClass != this.getClass() && intentClass != null){
             Intent nextView = new Intent(this,intentClass);
+            if(intentClass == homeActivity.class){
+                nextView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            }
             startActivity(nextView);
             finish();
         }
