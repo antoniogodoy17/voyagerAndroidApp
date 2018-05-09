@@ -78,16 +78,6 @@ public class homeActivity extends AppCompatActivity {
         //
 
         @Override
-        protected void onStart() {
-            super.onStart();
-            if(FirebaseAuth.getInstance().getCurrentUser() == null){
-                goToLogin();
-            }
-
-
-        }
-
-        @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_home);
@@ -133,7 +123,6 @@ public class homeActivity extends AppCompatActivity {
             userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                     user = dataSnapshot.getValue(User.class);
                     setupDrawerUsername();
                     if(dataSnapshot.hasChild("profile_picture")){
@@ -148,7 +137,6 @@ public class homeActivity extends AppCompatActivity {
             activityDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
                     saveActivities(dataSnapshot);
                     progressDialog.dismiss();
                 }
@@ -240,7 +228,6 @@ public class homeActivity extends AppCompatActivity {
                     displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                     if(!query.isEmpty()){
                         searched = true;
-                        displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
                         activities = searchActivity(query);
                         updateActivities();
                         hideKeyboard();

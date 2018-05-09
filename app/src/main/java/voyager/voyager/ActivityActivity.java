@@ -71,11 +71,6 @@ public class ActivityActivity extends AppCompatActivity {
                     displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                     addFavorite(activity.get_id());
                 }
-                //if favorited
-                //favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                //else
-
-
             }
         });
         favoriteList = new ArrayList<>();
@@ -99,6 +94,7 @@ public class ActivityActivity extends AppCompatActivity {
         // End Database Initialization
 
         fillData();
+        addToList("prueba", "-LBJY-3GpfSEin-Omo0I");
     }
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
@@ -107,6 +103,14 @@ public class ActivityActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
     }
     void fillData(){
+        if(isFavorite(activity._id)){
+
+            favButton.setImageResource(R.drawable.ic_favorited_24dp);
+        }
+        else{
+            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+
+        }
 //        if (activity.getImages() != null) activityHeader.setImageURI();
         setTitle(activity.getTitle());
         activityPrice.setText(makeCost(activity.getCost()));
@@ -167,5 +171,19 @@ public class ActivityActivity extends AppCompatActivity {
             }
         }
         userRef.child("list").child("favorite").setValue(favoriteList);
+    }
+    public void addToList (String listName, String activityid){
+        System.out.println("----------------------->  Llegue");
+        ArrayList<HashMap<String, String>> newList = new ArrayList<>();
+        HashMap<String , String> listItem = new HashMap<>();
+        listItem.put("id", activityid);
+        newList.add(listItem);
+        try{
+            userRef.child("lists").child(listName).setValue(newList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
