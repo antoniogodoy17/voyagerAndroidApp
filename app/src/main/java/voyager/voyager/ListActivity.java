@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,13 +61,29 @@ public class ListActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,String>> favoriteList;
     private ArrayList<Activity> favoriteActivites;
     private CardListAdapter cardAdapter;
-
+    boolean paused = false;
 
     // Variables Setup
     String fbUserId;
 
     //
 
+
+    @Override
+    protected void onPause() {
+        paused = true;
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(paused){
+            setFavoriteList();
+            paused = !paused;
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,20 +97,7 @@ public class ListActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         fbUserId = firebaseAuth.getCurrentUser().getUid();
-        userRef = database.getReference("User").child(fbUserId);
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                setupDrawerUsername();
-                if(dataSnapshot.hasChild("profile_picture")){
-                    setupDrawerProfilePicture(user.getProfile_picture());
-                }
-                progressDialog.dismiss();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+
         //
 
         //Header
@@ -132,16 +136,21 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 saveActivities(dataSnapshot);
+                Toast.makeText(ListActivity.this, "------> ", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-        userRef = database.getReference("User").child(fbUser.getUid());
+        userRef = database.getReference("User").child(fbUserId);
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
+                setupDrawerUsername();
+                if(dataSnapshot.hasChild("profile_picture")){
+                    setupDrawerProfilePicture(user.getProfile_picture());
+                }
                 if(dataSnapshot.hasChild("list")){
                     setFavoriteList();
                 }
@@ -168,6 +177,7 @@ public class ListActivity extends AppCompatActivity {
         }
     }
     public void displayActivities(){
+        cardsList.clear();
         for(Activity activity:favoriteActivites){
             cardsList.add(new Card(activity));
         }
@@ -176,7 +186,7 @@ public class ListActivity extends AppCompatActivity {
         progressDialog.dismiss();
     }
     public void setFavoriteList(){
-
+        favoriteActivites.clear();
         favoriteList = user.getLists().get("favorite");
         for(int i=0;i<activities.size();i++){
             for(HashMap<String,String> hm:favoriteList){

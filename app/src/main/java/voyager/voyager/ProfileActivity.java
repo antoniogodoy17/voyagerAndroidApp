@@ -181,7 +181,6 @@ public class ProfileActivity extends AppCompatActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                 user = dataSnapshot.getValue(User.class);
                 setupDrawerUsername();
                 if(dataSnapshot.hasChild("profile_picture")){
