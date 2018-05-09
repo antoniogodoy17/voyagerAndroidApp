@@ -26,6 +26,7 @@ public class Activity implements Serializable, Comparator {
     public String type;
     public String title;
     public HashMap<String , String> location;
+    public String image_principal;
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
@@ -122,6 +123,10 @@ public class Activity implements Serializable, Comparator {
         return title;
     }
 
+    public String getImage_principal() {
+        return image_principal;
+    }
+
     public HashMap<String, String> getLocation() {
         return location;
     }
@@ -177,5 +182,9 @@ public class Activity implements Serializable, Comparator {
 
     public void setLocation(HashMap<String, String> location) {
         this.location = location;
+    }
+
+    public void setImage_principal(String image_principal) {
+        this.image_principal = image_principal;
     }
 }
