@@ -279,6 +279,7 @@ public class homeActivity extends AppCompatActivity {
             if(intentClass != this.getClass() && intentClass != null){
                 Intent nextView = new Intent(this,intentClass);
                 startActivity(nextView);
+                drawerLayout.closeDrawers();
             }
         }
         private void setupDrawerContent(NavigationView navigationView){

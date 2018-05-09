@@ -120,9 +120,9 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .setAspectRatio(1,1)
-                        .start(ProfileActivity.this);
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1,1)
+                    .start(ProfileActivity.this);
             }
         });
         btnCancel = findViewById(R.id.btnCancel);
@@ -203,51 +203,14 @@ public class ProfileActivity extends AppCompatActivity {
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-//                Uri resultUri = result.getUri();
-                tempImgUrl = result.getUri();
-                Picasso.get().load(tempImgUrl).into(imgProfilePicture);
-//                StorageReference filePath = userProfileImageRef.child(fbUserId + ".jpg");
-//
-//                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task)
-//                    {
-//                        if(task.isSuccessful())
-//                        {
-//                            displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
-//
-//                            final String downloadUrl = task.getResult().getDownloadUrl().toString();
-//
-//                            userRef.child("profile_picture").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task)
-//                                {
-//                                    if(task.isSuccessful())
-//                                    {
-//                                        Intent selfIntent = new Intent(ProfileActivity.this, ProfileActivity.class);
-//                                        startActivity(selfIntent);
-//                                        user.setProfile_picture(downloadUrl);
-//                                        Toast.makeText(ProfileActivity.this, "Profile Image stored to Firebase Database Successfully...", Toast.LENGTH_SHORT).show();
-//                                        progressDialog.dismiss();
-//                                    }
-//                                    else
-//                                    {
-//                                        String message = task.getException().getMessage();
-//                                        Toast.makeText(ProfileActivity.this, "Error Occured: " + message, Toast.LENGTH_SHORT).show();
-//                                        progressDialog.dismiss();
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    }
-//                });
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-//        }
+        CropImage.ActivityResult result = CropImage.getActivityResult(data);
+        if (resultCode == RESULT_OK) {
+            tempImgUrl = result.getUri();
+            Picasso.get().load(tempImgUrl).into(imgProfilePicture);
+        }
+        else {
+            Toast.makeText(this, R.string.Error_ocurred, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -327,8 +290,7 @@ public class ProfileActivity extends AppCompatActivity {
         user.setBirth_date(txtBirthDateProfile.getText().toString().trim());
         updateProfilePicture();
 
-        //Agregar aqui los cambios a la base de datos
-
+        //Save changes to database here
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(user.getName()+" "+user.getLastname()).build();
         firebaseAuth.getCurrentUser().updateProfile(profileUpdates);
         setupDrawerUsername();

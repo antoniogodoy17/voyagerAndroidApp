@@ -8,10 +8,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,6 +37,7 @@ public class CategoriesActivity extends AppCompatActivity {
     private ViewPager slidePager;
     private LinearLayout dotsLayout;
     private SliderAdapter sliderAdapter;
+    private TextView[] dots;
     //
     //
     ArrayList<Category> categories;
@@ -53,6 +56,10 @@ public class CategoriesActivity extends AppCompatActivity {
         dotsLayout = findViewById(R.id.dotsLayout);
         sliderAdapter = new SliderAdapter(CategoriesActivity.this,categories);
         slidePager.setAdapter(sliderAdapter);
+
+        addDotsIndicator(0);
+
+        slidePager.addOnPageChangeListener(viewListener);
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
@@ -86,6 +93,37 @@ public class CategoriesActivity extends AppCompatActivity {
 
 
     }
+    public void addDotsIndicator(int position){
+        dots = new TextView[categories.size()];
+        dotsLayout.removeAllViews();
+
+        for(int i=0; i < dots.length; i++){
+            dots[i] = new TextView(this);
+            dots[i].setText(Html.fromHtml("&#8226"));
+            dots[i].setTextSize(35);
+            dots[i].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+            dotsLayout.addView(dots[i]);
+        }
+        if(dots.length > 0){
+            dots[position].setTextColor(getResources().getColor(R.color.colorSecondaryDark));
+        }
+    }
+    ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener(){
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            addDotsIndicator(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(drawerToggle.onOptionsItemSelected(item)){
