@@ -94,7 +94,7 @@ public class ActivityActivity extends AppCompatActivity {
         // End Database Initialization
 
         fillData();
-        addToList("prueba", "-LBJY-3GpfSEin-Omo0I");
+//        addToList("prueba", "-LBJY-3GpfSEin-Omo0I");
     }
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
@@ -173,13 +173,12 @@ public class ActivityActivity extends AppCompatActivity {
         userRef.child("list").child("favorite").setValue(favoriteList);
     }
     public void addToList (String listName, String activityid){
-        System.out.println("----------------------->  Llegue");
         ArrayList<HashMap<String, String>> newList = new ArrayList<>();
         HashMap<String , String> listItem = new HashMap<>();
         listItem.put("id", activityid);
         newList.add(listItem);
         try{
-            userRef.child("lists").child(listName).setValue(newList);
+            userRef.child("list").child(listName).setValue(newList);
         }
         catch (Exception e){
             e.printStackTrace();

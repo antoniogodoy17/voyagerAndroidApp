@@ -52,6 +52,7 @@ public class ListActivity extends AppCompatActivity {
     // Database Setup
     private FirebaseDatabase database;
     private DatabaseReference userRef, activityDatabase;
+    private ValueEventListener activityListener, userListener;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     //
@@ -61,7 +62,6 @@ public class ListActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,String>> favoriteList;
     private ArrayList<Activity> favoriteActivites;
     private CardListAdapter cardAdapter;
-    boolean paused = false;
 
     // Variables Setup
     String fbUserId;
@@ -71,34 +71,25 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        paused = true;
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(paused){
-            setFavoriteList();
-            paused = !paused;
-        }
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        //
-            //Check the list name and place that as a title
+        //Check the list name and place that as a title
         setTitle("Favorites");
 
         // Database initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         fbUserId = firebaseAuth.getCurrentUser().getUid();
-
-        //
 
         //Header
         NavigationView navigationView = findViewById(R.id.navigationView);
@@ -126,7 +117,6 @@ public class ListActivity extends AppCompatActivity {
         favoriteList = new ArrayList<>();
         favoriteActivites = new ArrayList<>();
 
-
         // Database Initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -136,7 +126,7 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 saveActivities(dataSnapshot);
-                Toast.makeText(ListActivity.this, "------> ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ListActivity.this, "------> ", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
             @Override

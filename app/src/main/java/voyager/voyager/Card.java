@@ -8,7 +8,7 @@ public class Card {
     public Card(Activity activity){
         this.activity = activity;
         this.title = activity.getTitle();
-        this.imgUrl = "drawable://"+R.drawable.logo512;
+        this.imgUrl = activity.getImage_principal();
 //        imgUrl = activity.getImages();
     }
 

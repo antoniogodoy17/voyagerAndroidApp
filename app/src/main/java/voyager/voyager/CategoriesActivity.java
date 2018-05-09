@@ -17,10 +17,16 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CategoriesActivity extends AppCompatActivity {
     // Database Initialization
@@ -34,6 +40,8 @@ public class CategoriesActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     View header;
+    TextView drawerUsername;
+    CircleImageView drawerProfilePicture;
     private ViewPager slidePager;
     private LinearLayout dotsLayout;
     private SliderAdapter sliderAdapter;
@@ -41,6 +49,7 @@ public class CategoriesActivity extends AppCompatActivity {
     //
     //
     ArrayList<Category> categories;
+    private User user;
     //
 
     @Override
@@ -49,9 +58,9 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
 
         categories = new ArrayList<>();
-        categories.add(new Category("Titulo 1","Descripcion 1","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FbR3zmD1qVyX1ZTlEkF0KlDC2tvr2.jpg?alt=media&token=5b2a905f-a4be-44a3-bb0b-652df6a25656"));
-        categories.add(new Category("Titulo 2","Descripcion 2","https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjp9oianvfaAhVD7mMKHYtVAuMQjRx6BAgBEAU&url=http%3A%2F%2Fwww.iconarchive.com%2Fshow%2Fenkel-icons-by-froyoshark%2FBitcoin-icon.html&psig=AOvVaw3jqrO8VIwOeh-j1SUw5dR2&ust=1525907362905153"));
-        categories.add(new Category("Titulo 3","Descripcion 3","https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiW3uCgnvfaAhVM7GMKHeSUABwQjRx6BAgBEAU&url=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F291715%2Fbrowser_chrome_google_internet_logo_network_web_icon&psig=AOvVaw3jqrO8VIwOeh-j1SUw5dR2&ust=1525907362905153"));
+        categories.add(new Category("Titulo 1","Descripcion 1","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2F1HRhMs9DyFgBOe98jPLLP5ouG162.jpg?alt=media&token=c2968c64-c5d5-4680-9f45-08767a45379c"));
+        categories.add(new Category("Titulo 2","Descripcion 2","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FhIlAKCaUzCQ4i6KxgN2vcW2YQlo1.jpg?alt=media&token=9f16f20f-752a-49a8-a1cd-32e0e595d0a0"));
+        categories.add(new Category("Titulo 3","Descripcion 3","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FhIlAKCaUzCQ4i6KxgN2vcW2YQlo1.jpg?alt=media&token=9f16f20f-752a-49a8-a1cd-32e0e595d0a0"));
         slidePager = findViewById(R.id.slidePager);
         dotsLayout = findViewById(R.id.dotsLayout);
         sliderAdapter = new SliderAdapter(CategoriesActivity.this,categories);
@@ -70,6 +79,8 @@ public class CategoriesActivity extends AppCompatActivity {
         setupDrawerContent(navigationView);
 
         header = navigationView.getHeaderView(0);
+        drawerUsername = header.findViewById(R.id.drawerUsername);
+        drawerProfilePicture = header.findViewById(R.id.drawerProfilePicture);
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,9 +100,29 @@ public class CategoriesActivity extends AppCompatActivity {
                 }
             }
         });
+        userRef = database.getReference("User");
+        userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                setupDrawerUsername();
+                if(dataSnapshot.hasChild("profile_picture")){
+                    setupDrawerProfilePicture(user.getProfile_picture());
+                }
+//                progressDialog.dismiss();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
         // End Database Initialization
 
 
+    }
+    public void setupDrawerUsername(){
+        drawerUsername.setText(user.name + " " + user.lastname);
+    }
+    public void setupDrawerProfilePicture(String url){
+        Picasso.get().load(url).into(drawerProfilePicture);
     }
     public void addDotsIndicator(int position){
         dots = new TextView[categories.size()];

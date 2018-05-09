@@ -56,6 +56,9 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         final Card card = cards.get(position);
         String title = getItem(position).getTitle();
         String imgUrl = getItem(position).getImgUrl();
+        if(imgUrl == null){
+            imgUrl = "drawable://"+R.drawable.logo512;
+        }
 
         try{
             //ViewHolder object
