@@ -142,7 +142,13 @@ public class ListActivity extends AppCompatActivity {
                     setupDrawerProfilePicture(user.getProfile_picture());
                 }
                 if(dataSnapshot.hasChild("list")){
-                    setFavoriteList();
+                    if(dataSnapshot.child("list").hasChild("favorite")){
+                        Toast.makeText(ListActivity.this, "Tienes lista de favoritos", Toast.LENGTH_SHORT).show();
+//                        setFavoriteList();
+                    }
+                    else if(dataSnapshot.child("list").hasChildren()){
+                        Toast.makeText(ListActivity.this, "Tienes algo mas que favoritos", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 progressDialog.dismiss();
             }
