@@ -57,7 +57,8 @@
             android:label="@string/profile"
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ActivityActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SliderActivityTheme"/>
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"/>
     </application>
