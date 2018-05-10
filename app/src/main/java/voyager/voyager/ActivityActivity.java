@@ -18,6 +18,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrConfig;
+import com.r0adkll.slidr.model.SlidrPosition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +50,10 @@ public class ActivityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity);
+        SlidrConfig config = new SlidrConfig.Builder()
+                .position(SlidrPosition.VERTICAL)
+                .build();
+        Slidr.attach(this, config);
 
         activity = (Activity) getIntent().getSerializableExtra("activity");
         progressDialog = new ProgressDialog(this);

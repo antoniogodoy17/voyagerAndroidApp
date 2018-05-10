@@ -33,6 +33,7 @@ import com.squareup.picasso.Picasso;
 
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,6 +61,7 @@ public class ListsActivity extends AppCompatActivity {
     String fbUserId;
     User user;
     private ArrayList<String> lists;
+    ArrayList<HashMap<String,String>> list;
     //
 
 
@@ -70,6 +72,7 @@ public class ListsActivity extends AppCompatActivity {
 
         // Variables setup
         lists = new ArrayList<>();
+        list = new ArrayList<>();
         //
 
         database = FirebaseDatabase.getInstance();
