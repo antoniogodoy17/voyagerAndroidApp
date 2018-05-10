@@ -51,7 +51,7 @@ public class ListActivity extends AppCompatActivity {
 
     // Database Setup
     private FirebaseDatabase database;
-    private DatabaseReference userRef, activityDatabase;
+    private DatabaseReference userRef, activityDatabase, listRef;
     private ValueEventListener activityListener, userListener;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
@@ -133,7 +133,7 @@ public class ListActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {}
         });
         userRef = database.getReference("User").child(fbUserId);
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
@@ -142,13 +142,23 @@ public class ListActivity extends AppCompatActivity {
                     setupDrawerProfilePicture(user.getProfile_picture());
                 }
                 if(dataSnapshot.hasChild("list")){
-                    if(dataSnapshot.child("list").hasChild("favorite")){
-                        Toast.makeText(ListActivity.this, "Tienes lista de favoritos", Toast.LENGTH_SHORT).show();
-//                        setFavoriteList();
-                    }
-                    else if(dataSnapshot.child("list").hasChildren()){
-                        Toast.makeText(ListActivity.this, "Tienes algo mas que favoritos", Toast.LENGTH_SHORT).show();
-                    }
+                    listRef = userRef.child("list");
+                    listRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.hasChild("favorite")){
+                                setFavoriteList();
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
                 progressDialog.dismiss();
             }

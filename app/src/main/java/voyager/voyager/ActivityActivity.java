@@ -25,7 +25,7 @@ import java.util.HashMap;
 public class ActivityActivity extends AppCompatActivity {
     // Database Setup
     private FirebaseDatabase database;
-    private DatabaseReference userRef, activityDatabase;
+    private DatabaseReference userRef, activityDatabase,listRef;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     //
@@ -80,12 +80,28 @@ public class ActivityActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         fbUser = firebaseAuth.getCurrentUser();
         userRef = database.getReference("User").child(fbUser.getUid());
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
                 if(dataSnapshot.hasChild("list")){
-                    setFavoriteList();
+                    listRef = userRef.child("list");
+                    listRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.hasChild("favorite")){
+                                setFavoriteList();
+                                fillData();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
             }
             @Override
@@ -123,14 +139,6 @@ public class ActivityActivity extends AppCompatActivity {
 //        activityLocation.setText(activity.getLocation().get("address"));
         activityLocation.setVisibility(View.GONE);
         activityCategory.setText(activity.getCategory());
-        if(isFavorite(activity._id)){
-            favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-
-        }
-        else{
-            favButton.setImageResource(R.drawable.ic_favorited_24dp);
-
-        }
         progressDialog.dismiss();
     }
     String makeCost(int i){
