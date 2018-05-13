@@ -24,20 +24,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Map;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     String lattitude,longitude;
-
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-       // Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
-//        Log.d(TAG, "onMapReady: map is ready");
-        mMap = googleMap;
-    }
-
 
     private GoogleMap mMap;
     private static final String FINE_LOCATION  = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -66,6 +59,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             getLocation();
         }
 
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        // Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
+//        Log.d(TAG, "onMapReady: map is ready");
+        mMap = googleMap;
+
+        LatLng coordinates = getLocation();
+        setUserMarker(coordinates);
     }
 
 
@@ -118,7 +122,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void getLocation() {
+    private LatLng getLocation() {
+        LatLng latlng;
         if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                 (MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -130,44 +135,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             Location location1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-            Location location2 = locationManager.getLastKnownLocation(LocationManager. PASSIVE_PROVIDER);
+            Location location2 = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+
 
             if (location != null) {
                 double latti = location.getLatitude();
                 double longi = location.getLongitude();
+                latlng = new LatLng(latti, longi);
+//                setUserMarker(latlng);
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
 
-                Toast.makeText(this,"Your current location is"+ "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude,Toast.LENGTH_SHORT).show();
 
+                Toast.makeText(this, "Your current location is" + "\n" + "Lattitude = " + lattitude
+                        + "\n" + "Longitude = " + longitude, Toast.LENGTH_SHORT).show();
 
-            } else  if (location1 != null) {
+                return latlng;
+
+            } else if (location1 != null) {
                 double latti = location1.getLatitude();
                 double longi = location1.getLongitude();
+                latlng = new LatLng(latti, longi);
+//                setUserMarker(latlng);
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
 
-                Toast.makeText(this,"Your current location is"+ "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude,Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Your current location is" + "\n" + "Lattitude = " + lattitude
+                        + "\n" + "Longitude = " + longitude, Toast.LENGTH_SHORT).show();
 
+                return latlng;
 
-            } else  if (location2 != null) {
+            } else if (location2 != null) {
                 double latti = location2.getLatitude();
                 double longi = location2.getLongitude();
+                latlng = new LatLng(latti, longi);
+//                setUserMarker(latlng);
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
 
-                Toast.makeText(this,"Your current location is"+ "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude,Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Your current location is" + "\n" + "Lattitude = " + lattitude
+                        + "\n" + "Longitude = " + longitude, Toast.LENGTH_SHORT).show();
 
-            }else{
-
-                Toast.makeText(this,"Unble to Trace your location",Toast.LENGTH_SHORT).show();
+                return latlng;
 
             }
+
+
+//            else{
+//
+//                Toast.makeText(this,"Unble to Trace your location",Toast.LENGTH_SHORT).show();
+//
+//            }
         }
+        latlng = null;
+        return latlng;
     }
+
 
     protected void buildAlertMessageNoGps() {
 
@@ -206,5 +229,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         }
+    }
+
+
+    public void setUserMarker(LatLng latlng){
+        if(latlng == null){
+            Toast.makeText(this,"  Trace your location",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            mMap.addMarker(new MarkerOptions().position(latlng).title("User"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        }
+
     }
 }
