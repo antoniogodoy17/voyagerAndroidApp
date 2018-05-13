@@ -28,7 +28,6 @@
     <string name="Error"> There was a problem registering user </string>
     <string name="switch_location">Switch Location</string>
     <string name="logout">Logout</string>
-    <string name="nearMe"> Near Me</string>
     <string name="open" translatable="false">Open</string>
     <string name="close" translatable="false">Close</string>
     <string name="username">Username</string>
@@ -38,10 +37,11 @@
     <string name="Please_Wait">Please Wait</string>
     <string name="Logging_In">Logging In</string>
     <string name="Creating_Account">Creating Account</string>
-    <string name="Error_ocurred">Error Ocurred</string>
+    <string name="Error_occurred">Error Occurred</string>
     <string name="Password_length">Password must contain at least 6 characters</string>
     <string-array name="countriesList">
         <item>Country</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+    <string name="nearMe">Near Me</string>
 </resources>

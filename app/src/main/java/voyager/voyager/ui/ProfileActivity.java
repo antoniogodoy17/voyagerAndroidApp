@@ -204,7 +204,7 @@ public class ProfileActivity extends AppCompatActivity {
             Picasso.get().load(tempImgUrl).into(imgProfilePicture);
         }
         else {
-            Toast.makeText(this, R.string.Error_ocurred, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.Error_occurred, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -34,7 +34,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import voyager.voyager.MapsActivity;
 import voyager.voyager.R;
 import voyager.voyager.adapters.CardListAdapter;
 import voyager.voyager.homeVM;
@@ -43,45 +42,40 @@ import voyager.voyager.models.Card;
 import voyager.voyager.models.User;
 
 public class HomeActivity extends AppCompatActivity {
-    // Database Initialization
-
+    // Database Declarations
     private DatabaseReference userRef, activityDatabase;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authListener;
     private ValueEventListener activityValueListener;
-
-    // UI Initialization
+    //
+    // UI Declarations
+    private SearchView searchView;
+    private MenuItem searchItem;
+    private View header;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private MenuItem searchItem;
-    private SearchView searchView;
-    View header;
-    TextView drawerUsername;
-    CircleImageView drawerProfilePicture;
-    ProgressDialog progressDialog;
+    private CircleImageView drawerProfilePicture;
+    private TextView drawerUsername;
     private ListView listView;
     private CardListAdapter cardAdapter;
-
-    // Variables Initialization
-    String fbUserId;
-    boolean searched = false;
+    private ProgressDialog progressDialog;
+    //
+    // Variables Declarations
+    private User user;
     private ArrayList<Card> cardsList;
     private ArrayList<Activity> activities, activitiesBackup;
-    private static homeVM vm;
-    private User user;
-    private ArrayList<HashMap<String,String>> favoriteList;
-    private  HashMap<String,ArrayList<HashMap<String,String>>> list;
+    boolean searched = false;
     //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        vm = ViewModelProviders.of(this).get(homeVM.class);
-        activities = new ArrayList<>();
 
         // UI Initialization
+        activities = new ArrayList<>();
+        cardsList = new ArrayList<Card>();
         progressDialog = new ProgressDialog(this);
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
@@ -90,9 +84,7 @@ public class HomeActivity extends AppCompatActivity {
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
-        favoriteList = new ArrayList<>();
         listView = findViewById(R.id.listView);
-        cardsList = new ArrayList<Card>();
         header = navigationView.getHeaderView(0);
         drawerUsername = header.findViewById(R.id.drawerUsername);
         drawerProfilePicture = header.findViewById(R.id.drawerProfilePicture);
@@ -103,21 +95,20 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(next);
             }
         });
+        displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
         // End UI Initialization
 
         // Database Initialization
         firebaseAuth = FirebaseAuth.getInstance();
         fbUser = firebaseAuth.getCurrentUser();
-//            firebaseAuth.signOut();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(fbUser == null){
+                if(firebaseAuth.getCurrentUser() == null){
                     goToLogin();
                 }
             }
         };
-
         firebaseAuth .addAuthStateListener(authListener);
         userRef = FirebaseDatabase.getInstance().getReference("User");
         userRef.child(fbUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -128,7 +119,6 @@ public class HomeActivity extends AppCompatActivity {
                     setupDrawerProfilePicture(user.getProfile_picture());
                 }
                 setupDrawerUsername();
-                progressDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -138,36 +128,33 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 loadActivities(dataSnapshot);
-                progressDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
         activityDatabase.addValueEventListener(activityValueListener);
         // End Database Initialization
-
-        displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         firebaseAuth.removeAuthStateListener(authListener);
         activityDatabase.removeEventListener(activityValueListener);
+        super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
         if(searched){
             activities = activitiesBackup;
-            updateActivities();
-            activitiesBackup.clear();
             searched = false;
+            displayActivities();
         }
         else {
             super.onBackPressed();
         }
     }
+
     public void hideKeyboard(){
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -175,19 +162,23 @@ public class HomeActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
         progressDialog.setMessage(getApplicationContext().getString(message));
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
     }
+
     public void goToLogin(){
         Intent login = new Intent(this,LogInActivity.class);
         login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(login);
         finish();
     }
+
     public void loadActivities(DataSnapshot data){
+        displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
         activities.clear();
         for(DataSnapshot ds : data.getChildren()){
             activities.add(ds.getValue(Activity.class));
@@ -196,23 +187,17 @@ public class HomeActivity extends AppCompatActivity {
         sortDate();
         displayActivities();
     }
-    public void updateActivities(){
-        cardAdapter.clear();
-        for(Activity activity:activities){
-            cardAdapter.add(new Card(activity));
-        }
-        HomeActivity.this.runOnUiThread(new Runnable() {
+
+    private void sortDate(){
+        Collections.sort(activities, new Comparator<Activity>() {
             @Override
-            public void run() {
-                cardAdapter.notifyDataSetChanged();
+            public int compare(Activity o1, Activity o2) {
+                return o1.getDate().compareTo(o2.getDate());
             }
         });
-        progressDialog.dismiss();
     }
+
     public void displayActivities(){
-//            for(Activity activity:activities){
-//                cardsList.add(new Card(activity));
-//            }
         cardsList.clear();
         for(Activity activity:activities){
             cardsList.add(new Card(activity));
@@ -227,12 +212,27 @@ public class HomeActivity extends AppCompatActivity {
         });
         progressDialog.dismiss();
     }
+
+    private ArrayList<Activity> searchActivity(String search) {
+        ArrayList<Activity> searchActivity = new ArrayList<>();
+        for (Activity a: activities) {
+            for (int i =0; i < a.getTags().size();i ++){
+                if(search.equals( a.getTags().get(i).get("tag"))){
+                    searchActivity.add(a);
+                }
+            }
+        }
+        return searchActivity;
+    }
+
     public void setupDrawerUsername(){
         drawerUsername.setText(user.getName() + " " + user.getLastname());
     }
+
     public void setupDrawerProfilePicture(String url){
         Picasso.get().load(url).into(drawerProfilePicture);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -247,16 +247,12 @@ public class HomeActivity extends AppCompatActivity {
                 if(!query.isEmpty()){
                     searched = true;
                     activities = searchActivity(query);
-//                        updateActivities();
                     displayActivities();
                     hideKeyboard();
                 }
                 searchView.setQuery("", false);
                 searchView.setIconified(true);
                 return true;
-                // Save an alternate list for the query result.
-                // Add a variable to track if a search has been made
-                // If so, track when the BACK button is pressed and reset the list
             }
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -265,6 +261,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(drawerToggle.onOptionsItemSelected(item)){
@@ -272,6 +269,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void selectDrawerMenu(MenuItem menu){
         Class intentClass = null;
         switch (menu.getItemId()){
@@ -304,6 +302,7 @@ public class HomeActivity extends AppCompatActivity {
             drawerLayout.closeDrawers();
         }
     }
+
     private void setupDrawerContent(NavigationView navigationView){
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -312,24 +311,5 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
-    private void sortDate(){
-        Collections.sort(activities, new Comparator<Activity>() {
-            @Override
-            public int compare(Activity o1, Activity o2) {
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
-    }
-    private ArrayList<Activity> searchActivity(String search) {
-        ArrayList<Activity> searchActivity = new ArrayList<>();
-        for (Activity a: activities) {
-            for (int i =0; i < a.getTags().size();i ++){
-                if(search.equals( a.getTags().get(i).get("tag"))){
-                    searchActivity.add(a);
-                }
-            }
-        }
-        return searchActivity;
     }
 }

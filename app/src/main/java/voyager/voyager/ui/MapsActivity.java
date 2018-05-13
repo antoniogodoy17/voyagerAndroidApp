@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.ui;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -12,6 +12,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import voyager.voyager.R;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
