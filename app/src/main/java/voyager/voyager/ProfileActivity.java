@@ -3,10 +3,7 @@ package voyager.voyager;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -19,7 +16,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,9 +23,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,7 +36,6 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -234,7 +227,7 @@ public class ProfileActivity extends AppCompatActivity {
         Class intentClass = null;
         switch (menu.getItemId()){
             case R.id.homeMenu:
-                intentClass = homeActivity.class;
+                intentClass = HomeActivity.class;
                 break;
             case R.id.categoriesMenu:
                 intentClass = CategoriesActivity.class;
@@ -255,7 +248,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         if(intentClass != this.getClass() && intentClass != null){
             Intent nextView = new Intent(this,intentClass);
-            if(intentClass == homeActivity.class){
+            if(intentClass == HomeActivity.class){
                 nextView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
             startActivity(nextView);

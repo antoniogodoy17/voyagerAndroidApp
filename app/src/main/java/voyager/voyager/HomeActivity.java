@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,25 +15,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.support.v7.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.internal.StringResourceValueReader;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -45,7 +35,7 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class homeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
         // Database Initialization
         private FirebaseDatabase database;
         private DatabaseReference userRef, activityDatabase;
@@ -101,7 +91,7 @@ public class homeActivity extends AppCompatActivity {
             header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent next = new Intent(homeActivity.this, ProfileActivity.class);
+                    Intent next = new Intent(HomeActivity.this, ProfileActivity.class);
                     startActivity(next);
                 }
             });
@@ -193,7 +183,7 @@ public class homeActivity extends AppCompatActivity {
             for(Activity activity:activities){
                 cardAdapter.add(new Card(activity));
             }
-            homeActivity.this.runOnUiThread(new Runnable() {
+            HomeActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     cardAdapter.notifyDataSetChanged();
@@ -257,7 +247,7 @@ public class homeActivity extends AppCompatActivity {
             Class intentClass = null;
             switch (menu.getItemId()){
                 case R.id.homeMenu:
-                    intentClass = homeActivity.class;
+                    intentClass = HomeActivity.class;
                     break;
                 case R.id.categoriesMenu:
                     intentClass = CategoriesActivity.class;

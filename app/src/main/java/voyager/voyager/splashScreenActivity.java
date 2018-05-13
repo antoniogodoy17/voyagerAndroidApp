@@ -1,7 +1,6 @@
 package voyager.voyager;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -26,7 +25,7 @@ public class splashScreenActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
-            Intent home = new Intent(getApplicationContext(), homeActivity.class);
+            Intent home = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(home);
             finish();
         } else {

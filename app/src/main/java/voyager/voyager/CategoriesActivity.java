@@ -12,7 +12,6 @@ import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -176,7 +175,7 @@ public class CategoriesActivity extends AppCompatActivity {
         Class intentClass = null;
         switch (menu.getItemId()){
             case R.id.homeMenu:
-                intentClass = homeActivity.class;
+                intentClass = HomeActivity.class;
                 break;
             case R.id.categoriesMenu:
                 intentClass = CategoriesActivity.class;
@@ -197,7 +196,7 @@ public class CategoriesActivity extends AppCompatActivity {
         }
         if(intentClass != this.getClass() && intentClass != null){
             Intent nextView = new Intent(this,intentClass);
-            if(intentClass == homeActivity.class){
+            if(intentClass == HomeActivity.class){
                 nextView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
             startActivity(nextView);

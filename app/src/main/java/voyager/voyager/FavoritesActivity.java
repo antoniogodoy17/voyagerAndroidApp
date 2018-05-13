@@ -83,7 +83,7 @@ public class FavoritesActivity extends AppCompatActivity {
         Class intentClass = null;
         switch (menu.getItemId()){
             case R.id.homeMenu:
-                intentClass = homeActivity.class;
+                intentClass = HomeActivity.class;
                 break;
             case R.id.categoriesMenu:
                 intentClass = CategoriesActivity.class;
@@ -104,7 +104,7 @@ public class FavoritesActivity extends AppCompatActivity {
         }
         if(intentClass != this.getClass() && intentClass != null){
             Intent nextView = new Intent(this,intentClass);
-            if(intentClass == homeActivity.class){
+            if(intentClass == HomeActivity.class){
                 nextView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
             startActivity(nextView);

@@ -2,7 +2,6 @@ package voyager.voyager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,10 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -26,12 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -178,7 +170,7 @@ public class ListsActivity extends AppCompatActivity {
         Class intentClass = null;
         switch (menu.getItemId()){
             case R.id.homeMenu:
-                intentClass = homeActivity.class;
+                intentClass = HomeActivity.class;
                 break;
             case R.id.categoriesMenu:
                 intentClass = CategoriesActivity.class;
@@ -199,7 +191,7 @@ public class ListsActivity extends AppCompatActivity {
         }
         if(intentClass != this.getClass() && intentClass != null){
             Intent nextView = new Intent(this,intentClass);
-            if(intentClass == homeActivity.class){
+            if(intentClass == HomeActivity.class){
                 nextView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
             startActivity(nextView);

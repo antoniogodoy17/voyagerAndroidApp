@@ -12,9 +12,7 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.StorageReference;
 
 public class SwitchLocationActivity extends AppCompatActivity {// Database Initialization
     private FirebaseDatabase database;
@@ -82,7 +80,7 @@ public class SwitchLocationActivity extends AppCompatActivity {// Database Initi
         Class intentClass = null;
         switch (menu.getItemId()){
             case R.id.homeMenu:
-                intentClass = homeActivity.class;
+                intentClass = HomeActivity.class;
                 break;
             case R.id.categoriesMenu:
                 intentClass = CategoriesActivity.class;
@@ -103,7 +101,7 @@ public class SwitchLocationActivity extends AppCompatActivity {// Database Initi
         }
         if(intentClass != this.getClass() && intentClass != null){
             Intent nextView = new Intent(this,intentClass);
-            if(intentClass == homeActivity.class){
+            if(intentClass == HomeActivity.class){
                 nextView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             }
             startActivity(nextView);
