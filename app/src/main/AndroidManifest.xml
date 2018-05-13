@@ -72,7 +72,7 @@
         <activity
             android:name=".ui.ActivityActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.SliderActivityTheme" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.SliderActivityTheme" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

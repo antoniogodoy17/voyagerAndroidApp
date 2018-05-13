@@ -53,7 +53,7 @@ public class ActivityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity);
         SlidrConfig config = new SlidrConfig.Builder()
-                .position(SlidrPosition.VERTICAL)
+                .position(SlidrPosition.TOP)
                 .build();
         Slidr.attach(this, config);
 
