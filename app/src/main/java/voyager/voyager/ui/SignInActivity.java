@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.ui;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -31,6 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import voyager.voyager.R;
+import voyager.voyager.models.User;
 
 public class SignInActivity extends AppCompatActivity {
     // Database Initialization

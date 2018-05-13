@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import voyager.voyager.R;
 
 public class splashScreenActivity extends AppCompatActivity {
     private LinearLayout l1;

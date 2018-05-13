@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.ui;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -39,6 +39,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import voyager.voyager.R;
+import voyager.voyager.models.User;
 
 public class ProfileActivity extends AppCompatActivity {
     // Database Setup
@@ -324,7 +326,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
     public void setupDrawerUsername(){
-        drawerUsername.setText(user.name + " " + user.lastname);
+        drawerUsername.setText(user.getName() + " " + user.getLastname());
     }
     public void setupDrawerProfilePicture(String url){
         Picasso.get().load(url).into(drawerProfilePicture);

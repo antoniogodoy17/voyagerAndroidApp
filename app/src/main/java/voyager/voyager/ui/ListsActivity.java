@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import voyager.voyager.adapters.ListsAdapter;
+import voyager.voyager.R;
+import voyager.voyager.models.User;
 
 public class ListsActivity extends AppCompatActivity {
     //UI initialization
@@ -199,7 +202,7 @@ public class ListsActivity extends AppCompatActivity {
         }
     }
     public void setupDrawerUsername(){
-        drawerUsername.setText(user.name + " " + user.lastname);
+        drawerUsername.setText(user.getName() + " " + user.getLastname());
     }
     public void setupDrawerProfilePicture(String url){
         Picasso.get().load(url).into(drawerProfilePicture);

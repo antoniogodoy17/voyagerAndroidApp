@@ -1,32 +1,29 @@
-package voyager.voyager;
+package voyager.voyager.models;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
 public class Activity implements Serializable, Comparator {
 
-    public HashMap<String, String> score;
-    public String _id;
-    public int cost;
-    public HashMap<String, String> images;
-    public String category;
-    public String description;
-    public String status;
-    public  String date;
-    public String schedule;
-    public HashMap<String, String> reviews;
-    public ArrayList<HashMap<String,String>> tags;
-    public String type;
-    public String title;
-    public HashMap<String , String> location;
-    public String image_principal;
+    private HashMap<String, String> score;
+    private String _id;
+    private int cost;
+    private HashMap<String, String> images;
+    private String category;
+    private String description;
+    private String status;
+    private String date;
+    private String schedule;
+    private HashMap<String, String> reviews;
+    private ArrayList<HashMap<String,String>> tags;
+    private String type;
+    private String title;
+    private HashMap<String , String> location;
+    private String image_principal;
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 

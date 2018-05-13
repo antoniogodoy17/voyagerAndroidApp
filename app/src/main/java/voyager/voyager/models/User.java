@@ -1,21 +1,21 @@
-package voyager.voyager;
+package voyager.voyager.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class User {
-    String id;
-    String name;
-    String lastname;
-    String email;
-    //String password;
-    String birth_date;
-    String nationality;
-    String state;
-    String city;
-    String phone;
-    String profile_picture;
-    HashMap<String,ArrayList<HashMap<String,String>>> list;
+    private String id;
+    private String name;
+    private String lastname;
+    private String email;
+//    private String password;
+    private String birth_date;
+    private String nationality;
+    private String state;
+    private String city;
+    private String phone;
+    private String profile_picture;
+    private HashMap<String,ArrayList<HashMap<String,String>>> list;
 
     public User(String id, String name, String lastname, String email, String birth_date, String nationality){
         this.id = id;

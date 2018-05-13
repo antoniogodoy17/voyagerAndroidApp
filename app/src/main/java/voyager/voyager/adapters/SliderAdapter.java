@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.adapters;
 
 
 import android.content.Context;
@@ -14,6 +14,9 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import voyager.voyager.R;
+import voyager.voyager.models.Category;
 
 public class SliderAdapter extends PagerAdapter {
     Context context;
@@ -43,10 +46,9 @@ public class SliderAdapter extends PagerAdapter {
         TextView categoryTitle = view.findViewById(R.id.categoryTitle);
         ImageView categoryImage = view.findViewById(R.id.categoryImage);
         TextView categoryDescription = view.findViewById(R.id.categoryDescription);
-//
+
         categoryTitle.setText(categories.get(position).getTitle());
         Picasso.get().load(categories.get(position).getUrl()).into(categoryImage);
-//        categoryImage.setImageResource(R.drawable.ic_favorited_24dp);
         categoryDescription.setText(categories.get(position).getDescription());
 
         container.addView(view);

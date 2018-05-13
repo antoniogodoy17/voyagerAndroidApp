@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".splashScreenActivity"
+    tools:context=".ui.splashScreenActivity"
     android:background="@color/colorPrimaryLight">
 
     <!-- Margin top: 40dp added due to hidden action and status bar-->

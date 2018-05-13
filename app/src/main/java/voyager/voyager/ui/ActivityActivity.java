@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.ui;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +8,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +22,10 @@ import com.r0adkll.slidr.model.SlidrPosition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import voyager.voyager.models.Activity;
+import voyager.voyager.R;
+import voyager.voyager.models.User;
 
 public class ActivityActivity extends AppCompatActivity {
     // Database Setup
@@ -69,9 +71,9 @@ public class ActivityActivity extends AppCompatActivity {
         favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isFavorite(activity._id)){
+                if(isFavorite(activity.get_id())){
                     favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    removeFavorite(activity._id);
+                    removeFavorite(activity.get_id());
                 }
                 else{
                     favButton.setImageResource(R.drawable.ic_favorited_24dp);
@@ -126,7 +128,7 @@ public class ActivityActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
     }
     void fillData(){
-        if(isFavorite(activity._id)){
+        if(isFavorite(activity.get_id())){
 
             favButton.setImageResource(R.drawable.ic_favorited_24dp);
         }

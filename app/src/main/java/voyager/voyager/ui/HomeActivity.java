@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.ui;
 
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
@@ -34,6 +34,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import voyager.voyager.R;
+import voyager.voyager.adapters.CardListAdapter;
+import voyager.voyager.homeVM;
+import voyager.voyager.models.Activity;
+import voyager.voyager.models.Card;
+import voyager.voyager.models.User;
 
 public class HomeActivity extends AppCompatActivity {
     // Database Initialization
@@ -221,7 +227,7 @@ public class HomeActivity extends AppCompatActivity {
         progressDialog.dismiss();
     }
     public void setupDrawerUsername(){
-        drawerUsername.setText(user.name + " " + user.lastname);
+        drawerUsername.setText(user.getName() + " " + user.getLastname());
     }
     public void setupDrawerProfilePicture(String url){
         Picasso.get().load(url).into(drawerProfilePicture);

@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.models;
 
 import java.io.Serializable;
 

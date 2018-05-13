@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".splashScreenActivity"
+            android:name=".ui.splashScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,35 +28,35 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".LogInActivity"
+            android:name=".ui.LogInActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".ui.SignInActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.HomeActivity"
             android:screenOrientation="portrait"
             android:label="@string/home"/>
-        <activity android:name=".CategoriesActivity"
+        <activity android:name=".ui.CategoriesActivity"
             android:screenOrientation="portrait"
             android:label="@string/categories"/>
-        <activity android:name=".FavoritesActivity"
+        <activity android:name=".ui.FavoritesActivity"
             android:screenOrientation="portrait"
             android:label="@string/favorites"/>
-        <activity android:name=".ListActivity"
+        <activity android:name=".ui.ListActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ListsActivity"
+        <activity android:name=".ui.ListsActivity"
             android:screenOrientation="portrait"
             android:label="@string/lists"/>
-        <activity android:name=".SwitchLocationActivity"
+        <activity android:name=".ui.SwitchLocationActivity"
             android:screenOrientation="portrait"
             android:label="@string/switch_location"/>
-        <activity android:name=".ProfileActivity"
+        <activity android:name=".ui.ProfileActivity"
             android:screenOrientation="portrait"
             android:label="@string/profile"
             android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".ActivityActivity"
+        <activity android:name=".ui.ActivityActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SliderActivityTheme"/>
 

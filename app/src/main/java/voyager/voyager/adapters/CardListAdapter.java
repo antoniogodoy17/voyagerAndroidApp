@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -20,25 +19,21 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import java.util.ArrayList;
 
+import voyager.voyager.R;
+import voyager.voyager.models.Activity;
+import voyager.voyager.models.Card;
+import voyager.voyager.ui.ActivityActivity;
+
 public class CardListAdapter extends ArrayAdapter<Card> {
     private Context context;
     private int resource;
     private ArrayList<Card> cards;
 
-    /**
-     * Holds variables in a View
-     */
     private static class ViewHolder {
         TextView title;
         ImageView image;
     }
 
-    /**
-     * Default constructor for the PersonListAdapter
-     * @param context
-     * @param resource
-     * @param objects
-     */
     public CardListAdapter(Context context, int resource, ArrayList<Card> objects) {
         super(context, resource, objects);
         this.context = context;
@@ -57,7 +52,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         String title = getItem(position).getTitle();
         String imgUrl = getItem(position).getImgUrl();
         if(imgUrl == null){
-            imgUrl = "drawable://"+R.drawable.logo512;
+            imgUrl = "drawable://"+ R.drawable.logo512;
         }
 
         try{

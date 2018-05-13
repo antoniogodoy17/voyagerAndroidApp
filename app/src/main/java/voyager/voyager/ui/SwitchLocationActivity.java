@@ -1,4 +1,4 @@
-package voyager.voyager;
+package voyager.voyager.ui;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -12,17 +12,16 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class FavoritesActivity extends AppCompatActivity {
-    // Database Initialization
+import voyager.voyager.R;
+
+public class SwitchLocationActivity extends AppCompatActivity {// Database Initialization
     private FirebaseDatabase database;
-    private DatabaseReference userRef, activityDatabase;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authListener;
     //
+    // UI Declarations
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     View header;
@@ -30,7 +29,7 @@ public class FavoritesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorites);
+        setContentView(R.layout.activity_switch_location);
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
@@ -60,7 +59,7 @@ public class FavoritesActivity extends AppCompatActivity {
                 }
             }
         });
-        // End Database Initialization
+        //End Database Initialization
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
