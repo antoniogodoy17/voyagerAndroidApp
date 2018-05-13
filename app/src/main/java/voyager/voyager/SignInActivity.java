@@ -271,6 +271,11 @@ public class SignInActivity extends AppCompatActivity {
 //            Toast.makeText(this,R.string.Nationality,Toast.LENGTH_LONG).show();
 //            return false;
 //        }
+        if(password.length() < 5  || passwordconfirm.length() < 5 ){
+            Toast.makeText(this, R.string.Password_length, Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+            return false;
+        }
         if (!password.equals(passwordconfirm)) {
             Toast.makeText(this, R.string.Password_match, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
