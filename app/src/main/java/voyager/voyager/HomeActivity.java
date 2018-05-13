@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,12 +38,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends AppCompatActivity {
         // Database Initialization
-        private FirebaseDatabase database;
+
         private DatabaseReference userRef, activityDatabase;
         private FirebaseUser fbUser;
         private FirebaseAuth firebaseAuth;
         private FirebaseAuth.AuthStateListener authListener;
-
+        private ChildEventListener activitiesChildListener;
 
         // UI Initialization
         private DrawerLayout drawerLayout;
@@ -98,7 +99,6 @@ public class HomeActivity extends AppCompatActivity {
             // End UI Initialization
 
             // Database Initialization
-            database = FirebaseDatabase.getInstance();
             firebaseAuth = FirebaseAuth.getInstance();
             fbUser = firebaseAuth.getCurrentUser();
             authListener = new FirebaseAuth.AuthStateListener() {
@@ -109,9 +109,10 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
             };
+
             firebaseAuth .addAuthStateListener(authListener);
-            userRef = database.getReference("User");
-            userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
+            userRef = FirebaseDatabase.getInstance().getReference("User");
+            userRef.child(fbUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(User.class);
@@ -124,8 +125,8 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {}
             });
-            activityDatabase = database.getReference("Activities");
-            activityDatabase.addValueEventListener(new ValueEventListener() {
+            activityDatabase = FirebaseDatabase.getInstance().getReference("Activities");
+            activityDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     saveActivities(dataSnapshot);
@@ -134,6 +135,33 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {}
             });
+
+            activitiesChildListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
             // End Database Initialization
 
             displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
