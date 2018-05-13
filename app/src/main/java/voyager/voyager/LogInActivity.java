@@ -39,7 +39,7 @@ public class LogInActivity extends AppCompatActivity {
 
         // Database Setup
         firebaseAuth = FirebaseAuth.getInstance();
-        authListener = new FirebaseAuth.AuthStateListener(){
+        authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 fbUser = firebaseAuth.getCurrentUser();
@@ -48,7 +48,10 @@ public class LogInActivity extends AppCompatActivity {
                 }
             }
         };
+        firebaseAuth.addAuthStateListener(authListener);
         // End Database Setup
+
+
 
         // UI Setup
         progressDialog = new ProgressDialog(this);
@@ -74,6 +77,14 @@ public class LogInActivity extends AppCompatActivity {
         });
         // End UI Setup
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        firebaseAuth.removeAuthStateListener(authListener);
+    }
+
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
         progressDialog.setMessage(getApplicationContext().getString(message));

@@ -37,6 +37,7 @@ public class SignInActivity extends AppCompatActivity {
     private DatabaseReference database,countryRef;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser fbUser;
+
     //
     // UI Initialization
     Button btnLogIn, btnSignIn;
@@ -314,16 +315,12 @@ public class SignInActivity extends AppCompatActivity {
             });
     }
 
-    protected  void fillSpinner(){
-
-
-
-    }
 
     protected void registerUser(){
         fbUserId = firebaseAuth.getCurrentUser().getUid();
         final User user = new User(fbUserId,name,lastname,email,birth_date,nationality);
-        database.addValueEventListener(new ValueEventListener() {
+
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.hasChild(fbUserId)){
@@ -338,8 +335,30 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         });
+
+//        database.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if(!dataSnapshot.hasChild(fbUserId)){
+//                    try{
+//                        database.child(fbUserId).setValue(user);
+//                        progressDialog.dismiss();
+//                        goToLogin();
+//                    }
+//                    catch (DatabaseException e){
+//                        progressDialog.dismiss();
+//                        Toast.makeText(SignInActivity.this, "ERROR: " + e.toString(), Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {}
+//        });
     }
 }

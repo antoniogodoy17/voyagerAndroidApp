@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         private FirebaseUser fbUser;
         private FirebaseAuth firebaseAuth;
         private FirebaseAuth.AuthStateListener authListener;
-        //
+
 
         // UI Initialization
         private DrawerLayout drawerLayout;
@@ -101,14 +101,15 @@ public class HomeActivity extends AppCompatActivity {
             database = FirebaseDatabase.getInstance();
             firebaseAuth = FirebaseAuth.getInstance();
             fbUser = firebaseAuth.getCurrentUser();
-            firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            authListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     if(fbUser == null){
                         goToLogin();
                     }
                 }
-            });
+            };
+            firebaseAuth .addAuthStateListener(authListener);
             userRef = database.getReference("User");
             userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -137,6 +138,12 @@ public class HomeActivity extends AppCompatActivity {
 
             displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
         }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        firebaseAuth.removeAuthStateListener(authListener);
+    }
 
     @Override
         public void onBackPressed() {
