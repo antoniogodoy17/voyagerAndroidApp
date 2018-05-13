@@ -21,7 +21,14 @@
         android:title="@string/switch_location"
         android:icon="@drawable/ic_edit_location_black_24dp"/>
     <item
+        android:id="@+id/nearMeMenu"
+        android:title="@string/nearMe"
+        android:icon="@drawable/ic_edit_location_black_24dp"/>
+    <item
         android:id="@+id/logoutMenu"
         android:title="@string/logout"
         android:icon="@drawable/ic_exit_to_app_black_24dp"/>
+
+
+
 </menu>

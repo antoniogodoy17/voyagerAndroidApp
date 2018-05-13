@@ -28,6 +28,7 @@
     <string name="Error"> There was a problem registering user </string>
     <string name="switch_location">Switch Location</string>
     <string name="logout">Logout</string>
+    <string name="nearMe"> Near Me</string>
     <string name="open" translatable="false">Open</string>
     <string name="close" translatable="false">Close</string>
     <string name="username">Username</string>
@@ -42,4 +43,5 @@
     <string-array name="countriesList">
         <item>Country</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 </resources>
