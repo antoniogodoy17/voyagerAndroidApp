@@ -1,10 +1,11 @@
-package voyager.voyager;
+package voyager.voyager.ui;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
@@ -21,22 +22,31 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Map;
+
+import voyager.voyager.R;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int REQUEST_LOCATION = 1;
-    LocationManager locationManager;
-    String lattitude,longitude;
 
     private GoogleMap mMap;
     private static final String FINE_LOCATION  = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private boolean mLocationPermissionGranted = false;
     private final static int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private DatabaseReference activityDatabase;
+
+    private LocationManager locationManager;
+    private String lattitude,longitude;
+
 
 
 
@@ -59,6 +69,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             getLocation();
         }
 
+        activityDatabase = FirebaseDatabase.getInstance().getReference("Activities");
+
+
     }
 
 
@@ -69,19 +82,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         LatLng coordinates = getLocation();
+        Circle circle = mMap.addCircle(new CircleOptions()
+        .center(coordinates).radius(10000).strokeColor(Color.argb(0,0,0,0)).fillColor(Color.argb(110,128,203,196)));
         setUserMarker(coordinates);
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
 //    @Override
 //    public void onMapReady(GoogleMap googleMap) {
 //        mMap = googleMap;
@@ -131,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
         } else {
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Location location =    locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
             Location location1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -234,7 +239,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void setUserMarker(LatLng latlng){
         if(latlng == null){
-            Toast.makeText(this,"  Trace your location",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this," Unable to Trace your location",Toast.LENGTH_SHORT).show();
         }
         else{
             mMap.addMarker(new MarkerOptions().position(latlng).title("User"));
@@ -242,4 +247,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
     }
+
+    public void getActivitiesLatLon(){
+
+    }
+
+
 }
