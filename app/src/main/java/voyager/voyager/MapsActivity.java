@@ -147,7 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 longitude = String.valueOf(longi);
 
 
-                Toast.makeText(this, "Your current location is" + "\n" + "Lattitude = " + lattitude
+                Toast.makeText(this, "Your current location is 1111" + "\n" + "Lattitude = " + lattitude
                         + "\n" + "Longitude = " + longitude, Toast.LENGTH_SHORT).show();
 
                 return latlng;
@@ -160,7 +160,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
 
-                Toast.makeText(this, "Your current location is" + "\n" + "Lattitude = " + lattitude
+                Toast.makeText(this, "Your current location is 2222" + "\n" + "Lattitude = " + lattitude
                         + "\n" + "Longitude = " + longitude, Toast.LENGTH_SHORT).show();
 
                 return latlng;
@@ -173,7 +173,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
 
-                Toast.makeText(this, "Your current location is" + "\n" + "Lattitude = " + lattitude
+                Toast.makeText(this, "Your current location is  3333" + "\n" + "Lattitude = " + lattitude
                         + "\n" + "Longitude = " + longitude, Toast.LENGTH_SHORT).show();
 
                 return latlng;
