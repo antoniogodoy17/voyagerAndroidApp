@@ -15,16 +15,29 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="20dp">
 
-            <ImageView
-                android:id="@+id/activityHeader"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/logo512" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/activityHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo512" />
+
+                <Button
+                    android:id="@+id/closeButton"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_keyboard_arrow_down_black_24dp"/>
+
+
+            </android.support.constraint.ConstraintLayout>
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -114,7 +127,5 @@
                 android:textSize="18sp" />
 
         </LinearLayout>
-
     </ScrollView>
-
 </android.support.constraint.ConstraintLayout>
