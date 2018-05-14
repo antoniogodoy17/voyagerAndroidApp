@@ -9,7 +9,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/quicksand_regular</item>
     </style>
-    <style name="AppTheme.SliderActivityTheme">
+    <style name="Theme.AppCompat.Light.NoActionBar.SliderActivityTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>

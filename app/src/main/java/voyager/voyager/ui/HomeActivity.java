@@ -289,9 +289,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.switchLocationMenu:
                 intentClass = SwitchLocationActivity.class;
                 break;
-            case R.id.nearMeMenu:
-                intentClass = MapsActivity.class;
-                break;
+//            case R.id.nearMeMenu:
+//                intentClass = MapsActivity.class;
+//                break;
             case R.id.logoutMenu:
                 intentClass = LogInActivity.class;
                 firebaseAuth.signOut();

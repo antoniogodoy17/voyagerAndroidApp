@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class ActivityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity);
         SlidrConfig config = new SlidrConfig.Builder()
-                .position(SlidrPosition.VERTICAL)
+                .position(SlidrPosition.TOP)
                 .build();
         Slidr.attach(this, config);
 
@@ -129,12 +130,18 @@ public class ActivityActivity extends AppCompatActivity {
     }
     void fillData(){
         if(isFavorite(activity.get_id())){
-
             favButton.setImageResource(R.drawable.ic_favorited_24dp);
         }
         else{
             favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
 
+        }
+
+        if (activity.getImage_principal() != null){
+            Picasso.get().load(activity.getImage_principal()).into(activityHeader);
+        }
+        else {
+            Picasso.get().load(R.drawable.logo512).into(activityHeader);
         }
 //        if (activity.getImages() != null) activityHeader.setImageURI();
         setTitle(activity.getTitle());

@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Category implements Serializable {
     String title, description, url;
 
+
     public Category(String title, String description, String url){
         this.title = title;
         this.description = description;
