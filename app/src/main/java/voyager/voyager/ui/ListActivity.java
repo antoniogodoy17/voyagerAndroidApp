@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -44,6 +45,7 @@ public class ListActivity extends AppCompatActivity {
     TextView drawerUsername;
     CircleImageView drawerProfilePicture;
     ProgressDialog progressDialog;
+    FloatingActionButton btnEditList;
 
     // Database Setup
     private DatabaseReference userRef, activitiesRef;
@@ -82,6 +84,7 @@ public class ListActivity extends AppCompatActivity {
         setupDrawerContent(navigationView);
         header = navigationView.getHeaderView(0);
         drawerUsername = header.findViewById(R.id.drawerUsername);
+        btnEditList = findViewById(R.id.btnEditList);
         drawerProfilePicture = header.findViewById(R.id.drawerProfilePicture);
         header.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +143,15 @@ public class ListActivity extends AppCompatActivity {
         userRef.addValueEventListener(userListener);
 
         // End Database Initialization
+
+        btnEditList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent EditListActivity = new Intent(ListActivity.this, EditListActivity.class);
+                EditListActivity.putExtra("list",listName);
+                startActivity(EditListActivity);
+            }
+        });
     }
 
     @Override

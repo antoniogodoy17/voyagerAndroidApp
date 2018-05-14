@@ -90,7 +90,10 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".ui.EditListActivity"></activity>
+        <activity
+            android:name=".ui.EditListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Translucent"/>
     </application>
 
 </manifest>
