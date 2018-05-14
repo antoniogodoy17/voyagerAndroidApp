@@ -86,10 +86,10 @@
         <activity
             android:name=".ui.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".ui.EditListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Translucent"/>
+        <!--<activity-->
+            <!--android:name=".ui.EditListActivity"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar.SliderActivityTheme"/>-->
     </application>
 
 </manifest>

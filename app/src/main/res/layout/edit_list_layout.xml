@@ -2,31 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="-10dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:padding="@dimen/cardview_compat_inset_shadow"
     android:layout_gravity="center"
-    tools:context=".ui.EditListActivity"
+    tools:context=".ui.ListActivity"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/txtListName"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
+    <TableRow
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/white"
-        android:hint="@string/Name"
-        android:inputType="textCapWords|textNoSuggestions"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/txtListName"
+            android:layout_width="276dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorSecondary"
+            android:hint="@string/list_name"
+            android:inputType="date"
+            android:textColor="@color/colorSecondary"
+            android:textColorHint="@color/colorSecondaryLight"
+            android:enabled="false" />
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+    </TableRow>
 
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
         <Button

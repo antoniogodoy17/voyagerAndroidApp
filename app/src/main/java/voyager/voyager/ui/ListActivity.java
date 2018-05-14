@@ -1,5 +1,6 @@
 package voyager.voyager.ui;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 
 import android.content.Intent;
@@ -13,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +31,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import voyager.voyager.models.Activity;
@@ -46,6 +49,10 @@ public class ListActivity extends AppCompatActivity {
     CircleImageView drawerProfilePicture;
     ProgressDialog progressDialog;
     FloatingActionButton btnEditList;
+    Dialog editListDialog;
+    Button btnSaveChanges, btnCancel;
+    ImageButton btnDelete;
+    EditText txtListName;
 
     // Database Setup
     private DatabaseReference userRef, activitiesRef;
@@ -67,10 +74,10 @@ public class ListActivity extends AppCompatActivity {
         //Check the list name and place that as a title
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            listName= extras.getString("list");
+            listName = extras.getString("list");
         }
         else {
-            listName= (String) savedInstanceState.getSerializable("list");
+            listName = (String) savedInstanceState.getSerializable("list");
         }
         setTitle(listName);
 
@@ -84,8 +91,14 @@ public class ListActivity extends AppCompatActivity {
         setupDrawerContent(navigationView);
         header = navigationView.getHeaderView(0);
         drawerUsername = header.findViewById(R.id.drawerUsername);
-        btnEditList = findViewById(R.id.btnEditList);
         drawerProfilePicture = header.findViewById(R.id.drawerProfilePicture);
+        btnEditList = findViewById(R.id.btnEditList);
+        btnEditList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog(listName);
+            }
+        });
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +114,15 @@ public class ListActivity extends AppCompatActivity {
         activities = new ArrayList<>();
         favoriteList = new ArrayList<>();
         favoriteActivites = new ArrayList<>();
+
+        // UI initialization
+        editListDialog = new Dialog(ListActivity.this);
+        editListDialog.setContentView(R.layout.edit_list_layout);
+        txtListName = editListDialog.findViewById(R.id.txtListName);
+        btnSaveChanges = editListDialog.findViewById(R.id.btnSaveChanges);
+        btnCancel = editListDialog.findViewById(R.id.btnCancel);
+        btnDelete = editListDialog.findViewById(R.id.btnDelete);
+        //
 
         // Database Initialization
         firebaseAuth = FirebaseAuth.getInstance();
@@ -131,15 +153,25 @@ public class ListActivity extends AppCompatActivity {
         };
         userRef.addValueEventListener(userListener);
         // End Database Initialization
+    }
 
-        btnEditList.setOnClickListener(new View.OnClickListener() {
+    private void openDialog(String listName) {
+        txtListName.setText(listName);
+        btnSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent EditListActivity = new Intent(ListActivity.this, EditListActivity.class);
-                EditListActivity.putExtra("list",listName);
-                startActivity(EditListActivity);
+
             }
         });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editListDialog.cancel();
+            }
+        });
+
+        editListDialog.show();
     }
 
     @Override
