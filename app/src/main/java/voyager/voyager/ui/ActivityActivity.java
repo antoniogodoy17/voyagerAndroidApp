@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -41,6 +42,7 @@ public class ActivityActivity extends AppCompatActivity {
     ImageView activityHeader;
     RatingBar activityRating;
     ImageButton favButton;
+    Button closeButton;
     ProgressDialog progressDialog;
     //
     // Variables Setup
@@ -68,6 +70,13 @@ public class ActivityActivity extends AppCompatActivity {
         activityDate = findViewById(R.id.activityDate);
         activityLocation = findViewById(R.id.activityLocation);
         activityCategory = findViewById(R.id.activityCategory);
+        closeButton = findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         favButton = findViewById(R.id.favButton);
         favButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,12 +103,12 @@ public class ActivityActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                if(dataSnapshot.hasChild("list")){
-                    listRef = userRef.child("list");
+                if(dataSnapshot.hasChild("lists")){
+                    listRef = userRef.child("lists");
                     listRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.hasChild("favorite")){
+                            if(dataSnapshot.hasChild("favorites")){
                                 setFavoriteList();
                                 fillData();
                             }
@@ -164,7 +173,7 @@ public class ActivityActivity extends AppCompatActivity {
     }
     public void setFavoriteList(){
         list = user.getLists();
-        favoriteList = list.get("favorite");
+        favoriteList = list.get("favorites");
         progressDialog.dismiss();
     }
     public void addFavorite(String id ){
@@ -172,7 +181,7 @@ public class ActivityActivity extends AppCompatActivity {
         newFavorite.put("id", id);
         favoriteList.add(newFavorite);
         try {
-            userRef.child("list").child("favorite").setValue(favoriteList);
+            userRef.child("lists").child("favorites").setValue(favoriteList);
             progressDialog.dismiss();
         }
         catch (Exception e){
@@ -194,7 +203,7 @@ public class ActivityActivity extends AppCompatActivity {
                 favoriteList.remove(i);
             }
         }
-        userRef.child("list").child("favorite").setValue(favoriteList);
+        userRef.child("lists").child("favorites").setValue(favoriteList);
     }
     public void addToList (String listName, String activityid){
         ArrayList<HashMap<String, String>> newList = new ArrayList<>();
@@ -202,7 +211,7 @@ public class ActivityActivity extends AppCompatActivity {
         listItem.put("id", activityid);
         newList.add(listItem);
         try{
-            userRef.child("list").child(listName).setValue(newList);
+            userRef.child("lists").child(listName).setValue(newList);
         }
         catch (Exception e){
             e.printStackTrace();

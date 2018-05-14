@@ -22,6 +22,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -54,7 +56,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private String lattitude,longitude;
     private ArrayList<Activity> activitiesList;
+
     Circle circle;
+
 
 
 
@@ -268,10 +272,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(this," Unable to Trace your location",Toast.LENGTH_SHORT).show();
         }
         else{
+//            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(R.drawable.ic_person_pin_circle_black_24dp);
             mMap.addMarker(new MarkerOptions().position(latlng).title("User"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
             mMap.animateCamera( CameraUpdateFactory.zoomTo( 11.0f ) );
+
             circle = mMap.addCircle(new CircleOptions().center(latlng)
+
                     .radius(10000)
                     .strokeColor(Color.argb(0,0,0,0)).fillColor(Color.argb(110,128,203,196)));
         }
@@ -281,6 +288,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void getActivitiesLatLon(){
         if(activitiesList.size() > 0 || activitiesList != null){
             for(int i = 0 ; i < activitiesList.size(); i++ ){
+
 
                 String lat = activitiesList.get(i).getLocation().get("latitude");
                 String lon = activitiesList.get(i).getLocation().get("longitude");
@@ -299,6 +307,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
             }
+
+
+
         }
     }
 
@@ -308,8 +319,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         getActivitiesLatLon();
+
     }
 
 
 
 }
+

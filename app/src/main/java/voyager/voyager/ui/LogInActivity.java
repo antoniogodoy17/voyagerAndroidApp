@@ -23,29 +23,26 @@ import com.google.firebase.auth.FirebaseUser;
 import voyager.voyager.R;
 
 public class LogInActivity extends AppCompatActivity {
-    // Database Initialization
+    // Database Declarations
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseUser fbUser;
     //
-    // UI Initialization
+    // UI Declarations
     Button btnSignIn, btnLogin;
     EditText txtEmail, txtPassword;
     ProgressDialog progressDialog;
     //
-    // Variables Initialization
+    // Variables Declarations
     String email, password;
     //
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-
-        // Database Setup
+        // Database Initialization
         firebaseAuth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -57,11 +54,9 @@ public class LogInActivity extends AppCompatActivity {
             }
         };
         firebaseAuth.addAuthStateListener(authListener);
-        // End Database Setup
+        // End Database Initialization
 
-
-
-        // UI Setup
+        // UI Initialization
         progressDialog = new ProgressDialog(this);
         //Hiding status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -83,14 +78,13 @@ public class LogInActivity extends AppCompatActivity {
                 goToSignin();
             }
         });
-        // End UI Setup
+        // End UI Initialization
     }
-
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         firebaseAuth.removeAuthStateListener(authListener);
+        super.onDestroy();
     }
 
     public void displayProgressDialog(int title, int message){
@@ -99,6 +93,7 @@ public class LogInActivity extends AppCompatActivity {
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(true);
     }
+
     public void logIn(){
         displayProgressDialog(R.string.Logging_In,R.string.Please_Wait);
         setUserValues();
@@ -106,10 +101,12 @@ public class LogInActivity extends AppCompatActivity {
             authLogin();
         }
     }
+
     public void setUserValues(){
         email = txtEmail.getText().toString().trim();
         password = txtPassword.getText().toString().trim();
     }
+
     protected boolean verifyData() {
         if (email.isEmpty()) {
             Toast.makeText(this, R.string.Enter_your_email, Toast.LENGTH_LONG).show();
@@ -123,6 +120,7 @@ public class LogInActivity extends AppCompatActivity {
         }
         return true;
     }
+
     protected void authLogin(){
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -144,16 +142,15 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
     }
+
     public void goToHome(){
         Intent home = new Intent(getApplicationContext(),HomeActivity.class);
         startActivity(home);
         finish();
     }
+
     public void goToSignin(){
         Intent signin = new Intent(getApplicationContext(),SignInActivity.class);
         startActivity(signin);
     }
-
-
-
 }

@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -32,6 +34,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
     private static class ViewHolder {
         TextView title;
         ImageView image;
+        ImageButton favIcon;
     }
 
     public CardListAdapter(Context context, int resource, ArrayList<Card> objects) {
@@ -65,6 +68,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
                 holder = new ViewHolder();
                 holder.title = convertView.findViewById(R.id.CardTitle);
                 holder.image = convertView.findViewById(R.id.CardImage);
+                holder.favIcon = convertView.findViewById(R.id.FavButton);
                 convertView.setTag(holder);
             }
             else{
@@ -88,10 +92,22 @@ public class CardListAdapter extends ArrayAdapter<Card> {
             //download and display image from url
             imageLoader.displayImage(imgUrl, holder.image, options);
 
-            convertView.setOnClickListener(new View.OnClickListener(){
+            holder.image.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     openCard(card.getActivity());
+                }
+            });
+            holder.title.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    openCard(card.getActivity());
+                }
+            });
+            holder.favIcon.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    addFavorite(card.getActivity());
                 }
             });
 
@@ -108,9 +124,11 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         cardActivity.putExtra("activity",activity);
         context.startActivity(cardActivity);
     }
-    /**
-     * Required for setting up the Universal Image loader Library
-     */
+
+    private void addFavorite(Activity activity){
+        Toast.makeText(context, activity.get_id(), Toast.LENGTH_SHORT).show();
+    }
+
     private void setupImageLoader(){
         // UNIVERSAL IMAGE LOADER SETUP
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
