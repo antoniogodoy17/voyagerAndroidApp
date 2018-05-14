@@ -216,6 +216,5 @@ public class ActivityActivity extends AppCompatActivity {
         catch (Exception e){
             e.printStackTrace();
         }
-
     }
 }

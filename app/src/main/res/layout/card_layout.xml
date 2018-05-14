@@ -40,11 +40,21 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/CardImage"
+                android:layout_toStartOf="@+id/FavButton"
+                android:layout_marginEnd="60dp"
+                android:background="@null"
+                android:src="@drawable/bookmark_border"
+                android:id="@+id/bookmarkIcon"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/CardImage"
                 android:layout_marginEnd="15dp"
                 android:background="@null"
                 android:src="@drawable/ic_favorite_border_black_24dp"
                 android:id="@+id/FavButton"/>
-
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

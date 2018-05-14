@@ -1,17 +1,28 @@
 package voyager.voyager.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -20,21 +31,28 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import voyager.voyager.R;
 import voyager.voyager.models.Activity;
 import voyager.voyager.models.Card;
+import voyager.voyager.models.User;
 import voyager.voyager.ui.ActivityActivity;
 
 public class CardListAdapter extends ArrayAdapter<Card> {
     private Context context;
     private int resource;
     private ArrayList<Card> cards;
+    private User user;
+    private DatabaseReference userRef, listRef;
+    private ArrayList<HashMap<String,String>> favoriteList;
+    private ArrayList<String> lists;
 
     private static class ViewHolder {
         TextView title;
         ImageView image;
         ImageButton favIcon;
+        ImageButton bookmarkIcon;
     }
 
     public CardListAdapter(Context context, int resource, ArrayList<Card> objects) {
@@ -42,6 +60,37 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         this.context = context;
         this.resource = resource;
         this.cards = objects;
+
+        // Get Firebase Information
+        favoriteList = new ArrayList<>();
+        lists = new ArrayList<>();
+        userRef = FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                if(dataSnapshot.hasChild("lists")){
+                    listRef = userRef.child("lists");
+                    listRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot ds : dataSnapshot.getChildren()){
+//                                if(!ds.getKey().equals("favorites")){
+                                    lists.add(ds.getKey());
+//                                }
+                            }
+                            if(dataSnapshot.hasChild("favorites")){
+                                favoriteList = user.getLists().get("favorites");
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) { }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     @NonNull
@@ -49,6 +98,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
     public View getView(int position, View convertView, ViewGroup parent) {
         //sets up the image loader library
         setupImageLoader();
+
 
         //get the cards information
         final Card card = cards.get(position);
@@ -59,7 +109,6 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         }
 
         try{
-            //ViewHolder object
             ViewHolder holder;
 
             if(convertView == null){
@@ -69,6 +118,10 @@ public class CardListAdapter extends ArrayAdapter<Card> {
                 holder.title = convertView.findViewById(R.id.CardTitle);
                 holder.image = convertView.findViewById(R.id.CardImage);
                 holder.favIcon = convertView.findViewById(R.id.FavButton);
+                if(isFavorite(card.getActivity().get_id())){
+                    holder.favIcon.setImageResource(R.drawable.ic_favorited_24dp);
+                }
+                holder.bookmarkIcon = convertView.findViewById(R.id.bookmarkIcon);
                 convertView.setTag(holder);
             }
             else{
@@ -104,10 +157,26 @@ public class CardListAdapter extends ArrayAdapter<Card> {
                     openCard(card.getActivity());
                 }
             });
+            holder.bookmarkIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.lists_dialog);
+                    // Create a layout for the lists
+                    // Pass the activity as an extra for the listsAdapter
+                    // Under that adapter, set a click listener to every list
+                    // When a list is selected, (or the + button) create/add the activity to that list
+                    dialog.setTitle("Title...");
+                    final ListView listListView = (ListView) dialog.findViewById(R.id.List);
+                    ListAdapter adapter = new ListsAdapter(context,R.layout.list_layout, lists);
+                    listListView.setAdapter(adapter);
+                    dialog.show();
+                }
+            });
             holder.favIcon.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    addFavorite(card.getActivity());
+                    toggleFavorite(card.getActivity());
                 }
             });
 
@@ -125,8 +194,33 @@ public class CardListAdapter extends ArrayAdapter<Card> {
         context.startActivity(cardActivity);
     }
 
-    private void addFavorite(Activity activity){
-        Toast.makeText(context, activity.get_id(), Toast.LENGTH_SHORT).show();
+    private void toggleFavorite(Activity activity){
+        if(isFavorite(activity.get_id())){
+            removeFavorite(activity);
+        }
+        else{
+            addFavorite(activity);
+        }
+    }
+
+    public boolean isFavorite(String actId){
+        for(HashMap<String, String> hm:favoriteList){
+            if(hm.get("id").equals(actId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addFavorite(Activity activity){
+        HashMap<String,String> newFavorite = new HashMap<>();
+        newFavorite.put("id", activity.get_id());
+        favoriteList.add(newFavorite);
+        userRef.child("lists").child("favorites").setValue(favoriteList);
+    }
+
+    public void removeFavorite(Activity activity){
+        userRef.child("lists").child("favorites").child(activity.get_id()).removeValue();
     }
 
     private void setupImageLoader(){
