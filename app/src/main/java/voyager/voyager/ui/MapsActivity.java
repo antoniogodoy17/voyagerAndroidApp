@@ -54,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private String lattitude,longitude;
     private ArrayList<Activity> activitiesList;
+    Circle circle;
 
 
 
@@ -270,7 +271,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(latlng).title("User"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
             mMap.animateCamera( CameraUpdateFactory.zoomTo( 11.0f ) );
-            Circle circle = mMap.addCircle(new CircleOptions().center(latlng)
+            circle = mMap.addCircle(new CircleOptions().center(latlng)
                     .radius(10000)
                     .strokeColor(Color.argb(0,0,0,0)).fillColor(Color.argb(110,128,203,196)));
         }
@@ -283,8 +284,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 String lat = activitiesList.get(i).getLocation().get("latitude");
                 String lon = activitiesList.get(i).getLocation().get("longitude");
-                LatLng newMarker = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
-                mMap.addMarker(new MarkerOptions().position(newMarker));
+                float[] disResultado = new float[2];
+
+                Location.distanceBetween( Double.parseDouble(lat),Double.parseDouble(lon),
+                        circle.getCenter().latitude,
+                        circle.getCenter().longitude,
+                        disResultado);
+
+                if(disResultado[0] < circle.getRadius()){
+                    LatLng newMarker = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
+                    mMap.addMarker(new MarkerOptions().position(newMarker));
+                }
+
 
 
             }
