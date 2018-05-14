@@ -1,7 +1,9 @@
 package voyager.voyager.ui;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -33,30 +35,25 @@ import voyager.voyager.R;
 import voyager.voyager.models.User;
 
 public class ListsActivity extends AppCompatActivity {
-    //UI initialization
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle drawerToggle;
-    View header;
-    ListView listView;
-    TextView drawerUsername;
-    CircleImageView imgProfilePicture;
-    CircleImageView drawerProfilePicture;
-    ProgressDialog progressDialog;
-    //
-
-    // Database Initialization
-    private FirebaseDatabase database;
-    private DatabaseReference listsDatabase, userRef;
-    private FirebaseUser fbUser;
+    // Database Declarations
+    private DatabaseReference listsRef, userRef;
+    private ValueEventListener listsListener;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authListener;
     //
-
-    // Variables initialization
-    String fbUserId;
-    User user;
+    //UI Declarations
+    private View header;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    private CircleImageView drawerProfilePicture;
+    private TextView drawerUsername;
+    private ListView listView;
+    private ProgressDialog progressDialog;
+    //
+    // Variables Declarations
+    private User user;
     private ArrayList<String> lists;
-    ArrayList<HashMap<String,String>> list;
+    private ListsAdapter listsAdapter;
     //
 
 
@@ -65,62 +62,46 @@ public class ListsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lists);
 
-        // Variables setup
+        // Variables Initialization
         lists = new ArrayList<>();
-        list = new ArrayList<>();
-        //
-
-        database = FirebaseDatabase.getInstance();
+        progressDialog = new ProgressDialog(this);
+        // Variables Initialization
+        // Database Initialization
         firebaseAuth = FirebaseAuth.getInstance();
-        fbUserId = firebaseAuth.getCurrentUser().getUid();
-        userRef = database.getReference("User").child(fbUserId);
-        userRef.addValueEventListener(new ValueEventListener() {
+        authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() == null){
+                    goToLogin();
+                }
+            }
+        };
+        firebaseAuth .addAuthStateListener(authListener);
+        userRef = FirebaseDatabase.getInstance().getReference("User");
+        userRef.child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
                 user = dataSnapshot.getValue(User.class);
-                setupDrawerUsername();
                 if(dataSnapshot.hasChild("profile_picture")){
                     setupDrawerProfilePicture(user.getProfile_picture());
                 }
-//                progressDialog.dismiss();
+                setupDrawerUsername();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
-        Query listsDatabaseQuery = database.getReference().child("User").child(fbUserId).child("lists")
-            .orderByKey();
-        listsDatabaseQuery.addChildEventListener(new ChildEventListener() {
+        listsRef = FirebaseDatabase.getInstance().getReference("User")
+                .child(firebaseAuth.getCurrentUser().getUid())
+                .child("lists");
+        listsListener = new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                loadLists(dataSnapshot);
             }
-
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    lists.add(ds.getValue().toString());
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        //Header
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        listsRef.addValueEventListener(listsListener);
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -138,15 +119,20 @@ public class ListsActivity extends AppCompatActivity {
                 startActivity(next);
             }
         });
-        //
+        // End Database Initialization
 
-        //Layout initialization
+        // UI Initialization
         listView = findViewById(R.id.listView);
-        //
-
-        listView.setAdapter(new ListsAdapter(this, lists));
-
+        // UI Initialization
     }
+
+    @Override
+    protected void onDestroy() {
+        firebaseAuth.removeAuthStateListener(authListener);
+        listsRef.removeEventListener(listsListener);
+        super.onDestroy();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(drawerToggle.onOptionsItemSelected(item)){
@@ -154,6 +140,7 @@ public class ListsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     private void setupDrawerContent(NavigationView navigationView){
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -163,12 +150,44 @@ public class ListsActivity extends AppCompatActivity {
             }
         });
     }
+
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
         progressDialog.setMessage(getApplicationContext().getString(message));
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
     }
+
+    public void loadLists(DataSnapshot data){
+        displayProgressDialog(R.string.Loading_lists,R.string.Please_Wait);
+        lists.clear();
+        for(DataSnapshot ds : data.getChildren()){
+            if(!ds.getKey().equals("favorites")){
+                lists.add(ds.getKey());
+            }
+        }
+        displayLists();
+    }
+
+    public void displayLists(){
+        listsAdapter = new ListsAdapter(this,R.layout.list_layout,lists);
+        listView.setAdapter(listsAdapter);
+        ListsActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                listsAdapter.notifyDataSetChanged();
+            }
+        });
+        progressDialog.dismiss();
+    }
+
+    public void goToLogin(){
+        Intent login = new Intent(this,LogInActivity.class);
+        login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(login);
+        finish();
+    }
+
     public void selectDrawerMenu(MenuItem menu){
         Class intentClass = null;
         switch (menu.getItemId()){
@@ -201,9 +220,11 @@ public class ListsActivity extends AppCompatActivity {
             finish();
         }
     }
+
     public void setupDrawerUsername(){
         drawerUsername.setText(user.getName() + " " + user.getLastname());
     }
+
     public void setupDrawerProfilePicture(String url){
         Picasso.get().load(url).into(drawerProfilePicture);
     }

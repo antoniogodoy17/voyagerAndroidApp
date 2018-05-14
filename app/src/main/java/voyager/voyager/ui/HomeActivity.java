@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteAccessPermException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -298,6 +299,9 @@ public class HomeActivity extends AppCompatActivity {
         }
         if(intentClass != this.getClass() && intentClass != null){
             Intent nextView = new Intent(this,intentClass);
+            if(intentClass == ListActivity.class){
+                nextView.putExtra("list","favorites");
+            }
             startActivity(nextView);
             drawerLayout.closeDrawers();
         }
