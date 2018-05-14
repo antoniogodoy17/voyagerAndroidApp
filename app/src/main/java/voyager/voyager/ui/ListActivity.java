@@ -125,23 +125,11 @@ public class ListActivity extends AppCompatActivity {
                     setupDrawerProfilePicture(user.getProfile_picture());
                 }
                 setFavoriteList();
-//
-//                userRef.child("lists").addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        if(dataSnapshot.hasChild(listName)){
-//                            setFavoriteList();
-//                        }
-//                    }
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {}
-//                });
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
         userRef.addValueEventListener(userListener);
-
         // End Database Initialization
 
         btnEditList.setOnClickListener(new View.OnClickListener() {

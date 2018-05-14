@@ -36,22 +36,21 @@ import voyager.voyager.R;
 import voyager.voyager.models.User;
 
 public class SignInActivity extends AppCompatActivity {
-    // Database Initialization
+    // Database Declarations
     private DatabaseReference database,countryRef;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser fbUser;
-
     //
-    // UI Initialization
+    // UI Declarations
     Button btnLogIn, btnSignIn;
     EditText txtname,txtemail,txtpassword,txtlastname,txtpasswordconfirm;
     Spinner spnnationality,spnstate,spncity;
-    String name,lastname,email,password,passwordconfirm,nationality,state,city,birth_date;
+    String name,lastname,email,password,passwordconfirm,nationality,birth_date;
     TextView txtbirth_date;
     DatePickerDialog datePicker;
     ProgressDialog progressDialog;
     //
-    // Variables Initialization
+    // Variables Declarations
     String fbUserId;
     private ArrayList<HashMap<String,String>> countries;
     //
@@ -61,15 +60,9 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        // Database Setup
-        database = FirebaseDatabase.getInstance().getReference("User");
-        countryRef = FirebaseDatabase.getInstance().getReference("Paises");
-        firebaseAuth = FirebaseAuth.getInstance();
-        // End Database Setup
-
-        countries = new ArrayList<>();
-        // UI Setup
+        // UI Initialization
         progressDialog = new ProgressDialog(this);
+        countries = new ArrayList<>();
         //Hiding status bar
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //Hiding action bar
@@ -104,9 +97,6 @@ public class SignInActivity extends AppCompatActivity {
                 int year = c.get(Calendar.YEAR); // current year
                 int month = c.get(Calendar.MONTH); // current month
                 int day = c.get(Calendar.DAY_OF_MONTH); // current day
-
-
-
                 //Date picker dialog
                 datePicker = new DatePickerDialog(SignInActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -124,12 +114,13 @@ public class SignInActivity extends AppCompatActivity {
                 datePicker.show();
             }
         });
-        // End UI Setup
+        // End UI Initialization
 
-        //Get countries snapshot
-        displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
+        // Database Initialization
+        database = FirebaseDatabase.getInstance().getReference("User");
+        countryRef = FirebaseDatabase.getInstance().getReference("Paises");
+        firebaseAuth = FirebaseAuth.getInstance();
         countryRef.addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 saveCountries(dataSnapshot);
@@ -137,10 +128,11 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+        // End Database Initialization
     }
-    //Save all countries on a list
+
     public void saveCountries(DataSnapshot data){
-        // = new ArrayList<>();
+        displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
         for(DataSnapshot ds : data.getChildren()){
             countries.add((HashMap<String, String>) ds.getValue());
         }
@@ -155,19 +147,21 @@ public class SignInActivity extends AppCompatActivity {
         progressDialog.dismiss();
 
     }
-    //End method save countries
+
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
         progressDialog.setMessage(getApplicationContext().getString(message));
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(true);
     }
+
     public void goToLogin(){
         Intent login = new Intent(getApplicationContext(),LogInActivity.class);
         login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(login);
         finish();
     }
+
     public void signIn(){
         displayProgressDialog(R.string.Creating_Account,R.string.Please_Wait);
         setUserValues();
@@ -175,6 +169,7 @@ public class SignInActivity extends AppCompatActivity {
             authRegister();
         }
     }
+
     public void setUserValues(){
         name = txtname.getText().toString().trim();
         lastname = txtlastname.getText().toString().trim();
@@ -184,6 +179,7 @@ public class SignInActivity extends AppCompatActivity {
         birth_date = txtbirth_date.getText().toString().trim();
         nationality = spnnationality.getSelectedItem().toString().trim();
     }
+
     protected boolean verifyData() {
         if (name.isEmpty()) {
             Toast.makeText(this, R.string.Name, Toast.LENGTH_LONG).show();
@@ -227,6 +223,7 @@ public class SignInActivity extends AppCompatActivity {
         }
         return true;
     }
+
     protected void authRegister(){
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -243,6 +240,7 @@ public class SignInActivity extends AppCompatActivity {
                 }
             });
     }
+
     protected void sendEmailVerification(){
         fbUser = firebaseAuth.getCurrentUser();
         fbUser.sendEmailVerification()
@@ -263,8 +261,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     protected void registerUser(){
-        fbUserId = firebaseAuth.getCurrentUser().getUid();
-        final User user = new User(fbUserId,name,lastname,email,birth_date,nationality);
+        final User user = new User(firebaseAuth.getCurrentUser().getUid(),name,lastname,email,birth_date,nationality);
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -281,8 +278,7 @@ public class SignInActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
+            public void onCancelled(DatabaseError databaseError) { }
         });
 
     }

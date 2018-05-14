@@ -51,10 +51,6 @@
             android:label="@string/categories"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.FavoritesActivity"
-            android:label="@string/favorites"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.ListActivity"
             android:screenOrientation="portrait" />
         <activity

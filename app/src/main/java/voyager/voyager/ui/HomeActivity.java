@@ -1,10 +1,8 @@
 package voyager.voyager.ui;
 
 import android.app.ProgressDialog;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteAccessPermException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -32,13 +30,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import voyager.voyager.R;
 import voyager.voyager.adapters.CardListAdapter;
-import voyager.voyager.homeVM;
 import voyager.voyager.models.Activity;
 import voyager.voyager.models.Card;
 import voyager.voyager.models.User;

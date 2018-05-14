@@ -22,16 +22,25 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import voyager.voyager.R;
+import voyager.voyager.models.Activity;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -43,9 +52,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean mLocationPermissionGranted = false;
     private final static int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private DatabaseReference activityDatabase;
-
+    private ValueEventListener activityValueListener;
     private LocationManager locationManager;
     private String lattitude,longitude;
+    private ArrayList<Activity> activitiesList;
 
 
 
@@ -53,7 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-
+        activitiesList = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -70,6 +80,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         activityDatabase = FirebaseDatabase.getInstance().getReference("Activities");
+        activityValueListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                loadActivities(dataSnapshot);
+                activitiesList.add(dataSnapshot.getValue(Activity.class));
+//                System.out.println("$$$$--------------------> "+ dataSnapshot.getValue());
+//                Toast.makeText(MapsActivity.this,"Tamano" +  activitiesList.size(), Toast.LENGTH_LONG).show();
+                //activitiesList.size();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        activityDatabase.addValueEventListener(activityValueListener);
 
 
     }
@@ -82,9 +110,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         LatLng coordinates = getLocation();
-        Circle circle = mMap.addCircle(new CircleOptions()
-        .center(coordinates).radius(10000).strokeColor(Color.argb(0,0,0,0)).fillColor(Color.argb(110,128,203,196)));
         setUserMarker(coordinates);
+
     }
 
 //    @Override
@@ -242,15 +269,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(this," Unable to Trace your location",Toast.LENGTH_SHORT).show();
         }
         else{
+//            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(R.drawable.ic_person_pin_circle_black_24dp);
             mMap.addMarker(new MarkerOptions().position(latlng).title("User"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+            mMap.animateCamera( CameraUpdateFactory.zoomTo( 11.0f ) );
+            Circle circle = mMap.addCircle(new CircleOptions().center(latlng)
+                    .radius(10000)
+                    .strokeColor(Color.argb(0,0,0,0)).fillColor(Color.argb(110,128,203,196)));
         }
 
     }
 
     public void getActivitiesLatLon(){
+        if(activitiesList.size() > 0 || activitiesList != null){
+            for(int i = 0 ; i < activitiesList.size(); i++ ){
 
+                  String lat = activitiesList.get(i).getLocation().get("latitude");
+                  String lon = activitiesList.get(i).getLocation().get("longitude");
+                  LatLng newMarker = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
+                  mMap.addMarker(new MarkerOptions().position(newMarker).title(activitiesList.get(i).getTitle()));
+
+
+            }
+        }
     }
+
+    public void loadActivities(DataSnapshot data){
+        for(DataSnapshot ds : data.getChildren()){
+            activitiesList.add(ds.getValue(Activity.class));
+        }
+
+        getActivitiesLatLon();
+    }
+
 
 
 }
