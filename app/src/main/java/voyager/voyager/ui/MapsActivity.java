@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -56,8 +58,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private String lattitude,longitude;
     private ArrayList<Activity> activitiesList;
+    LocationListener locationListener;
 
     Circle circle;
+    LatLng latlng;
 
 
 
@@ -101,6 +105,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
 
         activityDatabase.addValueEventListener(activityValueListener);
+
+
+
+        /////
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                double latti = location.getLatitude();
+                double longi = location.getLongitude();
+                latlng = new LatLng(latti, longi);
+//                setUserMarker(latlng);
+                lattitude = String.valueOf(latti);
+                longitude = String.valueOf(longi);
+
+                System.out.println("----------------> Your current location is " + "\n" + "Lattitude = " + lattitude
+                        + "\n" + "Longitude = " + longitude);
+                setUserMarker(latlng);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        ////
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                return;
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
+        } else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
 
 
     }
@@ -158,7 +208,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private LatLng getLocation() {
-        LatLng latlng;
+
         if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                 (MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
