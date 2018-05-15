@@ -47,7 +47,6 @@ import voyager.voyager.models.Activity;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final int REQUEST_LOCATION = 1;
-
     private GoogleMap mMap;
     private static final String FINE_LOCATION  = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -59,13 +58,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String lattitude,longitude;
     private ArrayList<Activity> activitiesList;
     LocationListener locationListener;
-
     Circle circle;
     LatLng latlng;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +87,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 loadActivities(dataSnapshot);
                 activitiesList.add(dataSnapshot.getValue(Activity.class));
-//                System.out.println("$$$$--------------------> "+ dataSnapshot.getValue());
-//                Toast.makeText(MapsActivity.this,"Tamano" +  activitiesList.size(), Toast.LENGTH_LONG).show();
-                //activitiesList.size();
             }
 
             @Override
@@ -106,16 +97,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         activityDatabase.addValueEventListener(activityValueListener);
 
-
-
-        /////
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 double latti = location.getLatitude();
                 double longi = location.getLongitude();
                 latlng = new LatLng(latti, longi);
-//                setUserMarker(latlng);
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
 
@@ -139,7 +126,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         };
-        ////
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -152,61 +139,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
 
-
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
-//        Log.d(TAG, "onMapReady: map is ready");
         mMap = googleMap;
 
         LatLng coordinates = getLocation();
         setUserMarker(coordinates);
 
     }
-
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//
-//        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//
-////        initMap();
-//    }
-
-    private  void initMap( ){
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
-        mapFragment.getMapAsync(MapsActivity.this);
-    }
-
-    private void getLocationPermission(){
-//        Log.d(TAG, "getLocationPermission: getting location permissions");
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION};
-
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                mLocationPermissionGranted = true;
-            }else{
-                ActivityCompat.requestPermissions(this,
-                        permissions,
-                        LOCATION_PERMISSION_REQUEST_CODE);
-            }
-        }else{
-            ActivityCompat.requestPermissions(this,
-                    permissions,
-                    LOCATION_PERMISSION_REQUEST_CODE);
-        }
-    }
-
     private LatLng getLocation() {
 
         if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -227,13 +169,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 double latti = location.getLatitude();
                 double longi = location.getLongitude();
                 latlng = new LatLng(latti, longi);
-//                setUserMarker(latlng);
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
-
-
-                Toast.makeText(this, "Your current location is 1111" + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude, Toast.LENGTH_SHORT).show();
 
                 return latlng;
 
@@ -241,12 +178,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 double latti = location1.getLatitude();
                 double longi = location1.getLongitude();
                 latlng = new LatLng(latti, longi);
-//                setUserMarker(latlng);
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
-
-                Toast.makeText(this, "Your current location is 2222" + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude, Toast.LENGTH_SHORT).show();
 
                 return latlng;
 
@@ -254,29 +187,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 double latti = location2.getLatitude();
                 double longi = location2.getLongitude();
                 latlng = new LatLng(latti, longi);
-//                setUserMarker(latlng);
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
-
-                Toast.makeText(this, "Your current location is  3333" + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude, Toast.LENGTH_SHORT).show();
-
                 return latlng;
 
             }
-
-
-//            else{
-//
-//                Toast.makeText(this,"Unble to Trace your location",Toast.LENGTH_SHORT).show();
-//
-//            }
         }
         latlng = null;
         return latlng;
     }
-
-
+//
     protected void buildAlertMessageNoGps() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -316,13 +236,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
     public void setUserMarker(LatLng latlng){
         if(latlng == null){
             Toast.makeText(this," Unable to Trace your location",Toast.LENGTH_SHORT).show();
         }
         else{
-//            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(R.drawable.ic_person_pin_circle_black_24dp);
             mMap.addMarker(new MarkerOptions().position(latlng).title("User"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
             mMap.animateCamera( CameraUpdateFactory.zoomTo( 11.0f ) );
@@ -330,7 +248,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             circle = mMap.addCircle(new CircleOptions().center(latlng)
 
                     .radius(10000)
-                    .strokeColor(Color.argb(0,0,0,0)).fillColor(Color.argb(110,128,203,196)));
+                    .strokeColor(Color.argb(0,0,0,0)).fillColor(Color.argb(80,128,203,196)));
         }
 
     }
@@ -338,8 +256,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void getActivitiesLatLon(){
         if(activitiesList.size() > 0 || activitiesList != null){
             for(int i = 0 ; i < activitiesList.size(); i++ ){
-
-
                 String lat = activitiesList.get(i).getLocation().get("latitude");
                 String lon = activitiesList.get(i).getLocation().get("longitude");
                 float[] disResultado = new float[2];
@@ -353,12 +269,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     LatLng newMarker = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
                     mMap.addMarker(new MarkerOptions().position(newMarker));
                 }
-
-
-
             }
-
-
 
         }
     }
@@ -371,8 +282,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getActivitiesLatLon();
 
     }
-
-
-
 }
 
