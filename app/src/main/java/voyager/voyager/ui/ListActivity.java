@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import voyager.voyager.models.Activity;
@@ -154,19 +155,30 @@ public class ListActivity extends AppCompatActivity {
         // End Database Initialization
     }
 
-    private void openDialog(String listName) {
+    private void openDialog(final String listName) {
         txtListName.setText(listName);
+        final DatabaseReference listReference = userRef.child("lists").child(listName);
         btnSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                final String newListName = txtListName.getText().toString();
+                if (!newListName.equals("") | !newListName.equals(listName)){
+                    final DatabaseReference newListReference = userRef.child("lists").child(newListName);
+                    moveListChild(listReference, newListReference);
+                    startActivity(getIntent().putExtra("list", newListName));
+                    removeList(listReference);
+                    editListDialog.cancel();
+                } else {
+                    Toast.makeText(ListActivity.this, "Pick a new name for your list", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //delete
+                removeList(listReference);
+                editListDialog.cancel();
             }
         });
 
@@ -178,8 +190,33 @@ public class ListActivity extends AppCompatActivity {
         });
         editListDialog.show();
     }
-    private void removeList(){
+    private void removeList(DatabaseReference listReference){
+        listReference.removeValue();
+        finish();
+    }
+    private void moveListChild(final DatabaseReference fromPath, final DatabaseReference toPath) {
+        fromPath.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                toPath.setValue(dataSnapshot.getValue(), new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError firebaseError, DatabaseReference firebase) {
+                        if (firebaseError != null) {
+                            System.out.println("Copy failed");
+                        } else {
+                            System.out.println("Success");
 
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
