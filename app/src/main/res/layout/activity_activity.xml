@@ -64,7 +64,17 @@
                     android:numStars="5"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
-                    android:stepSize="1" />
+                    android:stepSize="1"
+                    android:layout_marginEnd="-25dp"/>
+
+                <ImageButton
+                    android:id="@+id/bookmarkButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:src="@drawable/bookmark_border"
+                    android:layout_marginEnd="10dp"
+                    />
 
                 <ImageButton
                     android:id="@+id/favButton"
@@ -72,6 +82,7 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:src="@drawable/ic_favorite_border_black_24dp" />
+
             </TableRow>
 
             <TextView

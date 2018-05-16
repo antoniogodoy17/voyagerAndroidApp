@@ -15,7 +15,7 @@ public class User {
     private String city;
     private String phone;
     private String profile_picture;
-    private HashMap<String,ArrayList<HashMap<String,String>>> list;
+    private HashMap<String,ArrayList<HashMap<String,String>>> lists;
 
     public User(String id, String name, String lastname, String email, String birth_date, String nationality){
         this.id = id;
@@ -85,10 +85,10 @@ public class User {
     }
     public void setPhone(String phone) { this.phone = phone; }
     public String getPhone(){ return phone; }
-    public void setLists(HashMap<String, ArrayList<HashMap<String, String>>> list) {
-        this.list = list;
+    public void setLists(HashMap<String, ArrayList<HashMap<String, String>>> lists) {
+        this.lists = lists;
     }
     public HashMap<String, ArrayList<HashMap<String, String>>> getLists() {
-        return list;
+        return lists;
     }
 }

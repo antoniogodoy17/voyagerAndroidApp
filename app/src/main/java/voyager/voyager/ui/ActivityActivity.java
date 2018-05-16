@@ -1,6 +1,7 @@
 package voyager.voyager.ui;
 
 import android.app.ProgressDialog;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,19 +31,19 @@ import voyager.voyager.models.Activity;
 import voyager.voyager.R;
 import voyager.voyager.models.User;
 
-public class ActivityActivity extends AppCompatActivity {
+public class ActivityActivity extends AppCompatActivity implements ListSelectorDialog.NoticeDialogListener, ListCreationDialog.NoticeDialogListener {
     // Database Setup
     private FirebaseDatabase database;
     private DatabaseReference userRef, activityDatabase,listRef;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     //
-
     // UI Setup
     TextView activityPrice, activityDescription, activityDate, activityLocation, activityCategory;
     ImageView activityHeader;
     RatingBar activityRating;
     ImageButton favButton;
+    ImageButton bookmarkButton;
     Button closeButton;
     ProgressDialog progressDialog;
     //
@@ -49,7 +51,8 @@ public class ActivityActivity extends AppCompatActivity {
     private User user;
     Activity activity;
     private ArrayList<HashMap<String,String>> favoriteList;
-    private HashMap<String,ArrayList<HashMap<String,String>>> list;
+    private HashMap<String,ArrayList<HashMap<String,String>>> lists;
+    private ArrayList<String> listNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,9 @@ public class ActivityActivity extends AppCompatActivity {
         Slidr.attach(this, config);
 
         activity = (Activity) getIntent().getSerializableExtra("activity");
+        favoriteList = new ArrayList<>();
+        listNames = new ArrayList<>();
+        lists = new HashMap<>();
         progressDialog = new ProgressDialog(this);
         displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
         activityHeader = findViewById(R.id.activityHeader);
@@ -92,8 +98,18 @@ public class ActivityActivity extends AppCompatActivity {
                 }
             }
         });
-        favoriteList = new ArrayList<>();
+        bookmarkButton = findViewById(R.id.bookmarkButton);
+        bookmarkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("lists",listNames);
 
+                ListSelectorDialog dialog = new ListSelectorDialog();
+                dialog.setArguments(bundle);
+                dialog.show(getSupportFragmentManager(),"Select a list");
+            }
+        });
         // Database Initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -108,42 +124,60 @@ public class ActivityActivity extends AppCompatActivity {
                     listRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            lists = user.getLists();
+                            listNames.clear();
                             if(dataSnapshot.hasChild("favorites")){
                                 setFavoriteList();
                                 fillData();
                             }
-
+                            for(DataSnapshot ds:dataSnapshot.getChildren()){
+                                if(!ds.getKey().equals("favorites")){
+                                    listNames.add(ds.getKey());
+                                }
+                            }
                         }
-
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
+                        public void onCancelled(DatabaseError databaseError) { }
                     });
-
                 }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
         // End Database Initialization
-
         fillData();
-//        addToList("prueba", "-LBJY-3GpfSEin-Omo0I");
     }
+
+    @Override
+    public void onListSelected(String list) {
+        addToList(list,activity.get_id());
+    }
+
+    @Override
+    public void onCreateListSelected(DialogFragment dialog) {
+        dialog.show(getSupportFragmentManager(),"Create a list");
+    }
+
+    @Override
+    public void onListCreated(String list) {
+        addToList(list,activity.get_id());
+    }
+
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
         progressDialog.setMessage(getApplicationContext().getString(message));
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
     }
+
     void fillData(){
+        setTitle(activity.getTitle());
+
         if(isFavorite(activity.get_id())){
             favButton.setImageResource(R.drawable.ic_favorited_24dp);
         }
-        else{
+        else {
             favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-
         }
 
         if (activity.getImage_principal() != null){
@@ -152,31 +186,35 @@ public class ActivityActivity extends AppCompatActivity {
         else {
             Picasso.get().load(R.drawable.logo512).into(activityHeader);
         }
+
 //        if (activity.getImages() != null) activityHeader.setImageURI();
-        setTitle(activity.getTitle());
         activityPrice.setText(makeCost(activity.getCost()));
 //        activityRating.setRating(activity.getReviews());
         if (activity.getDescription() != "") activityDescription.setText(activity.getDescription());
         else activityCategory.setVisibility(View.GONE);
+
         if (activity.getDate() != "") activityDate.setText(activity.getDate());
         else if (activity.getSchedule() != "") activityDate.setText(activity.getSchedule());
         else activityDate.setVisibility(View.GONE);
 //        activityLocation.setText(activity.getLocation().get("address"));
+
         activityLocation.setVisibility(View.GONE);
         activityCategory.setText(activity.getCategory());
         progressDialog.dismiss();
     }
+
     String makeCost(int i){
         String cost = "";
         for (int j =0; j<i; j++){ cost += "$"; }
         return cost;
     }
+
     public void setFavoriteList(){
-        list = user.getLists();
-        favoriteList = list.get("favorites");
+        favoriteList = lists.get("favorites");
         progressDialog.dismiss();
     }
-    public void addFavorite(String id ){
+
+    public void addFavorite(String id){
         HashMap<String,String> newFavorite = new HashMap<>();
         newFavorite.put("id", id);
         favoriteList.add(newFavorite);
@@ -189,6 +227,7 @@ public class ActivityActivity extends AppCompatActivity {
             progressDialog.dismiss();
         }
     }
+
     public boolean isFavorite(String actId){
         for(HashMap<String, String> hm:favoriteList){
             if(hm.get("id").equals(actId)){
@@ -197,6 +236,16 @@ public class ActivityActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    public boolean hashMapContains(ArrayList<HashMap<String,String>> list, String id){
+        for(HashMap hm : list){
+            if(hm.containsValue(id)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void removeFavorite(String idRemove){
         for(int i =0;i<favoriteList.size();i++){
             if(favoriteList.get(i).get("id").equals(idRemove)){
@@ -205,16 +254,40 @@ public class ActivityActivity extends AppCompatActivity {
         }
         userRef.child("lists").child("favorites").setValue(favoriteList);
     }
-    public void addToList (String listName, String activityid){
-        ArrayList<HashMap<String, String>> newList = new ArrayList<>();
+
+    public void addToList (String listName, String activityId){
+        ArrayList<HashMap<String, String>> bookmarkedList;
         HashMap<String , String> listItem = new HashMap<>();
-        listItem.put("id", activityid);
-        newList.add(listItem);
-        try{
-            userRef.child("lists").child(listName).setValue(newList);
+        listItem.put("id", activityId);
+
+        if(lists.isEmpty()){
+            bookmarkedList = new ArrayList<>();
+            bookmarkedList.add(listItem);
+            HashMap<String,ArrayList<HashMap<String,String>>> list = new HashMap<>();
+            list.put(listName,bookmarkedList);
+
+            userRef.child("lists").setValue(list);
+            Toast.makeText(this, getResources().getString(R.string.Activity_added_to_list), Toast.LENGTH_SHORT).show();
+            finish();
         }
-        catch (Exception e){
-            e.printStackTrace();
+        else if(lists.containsKey(listName)){
+            bookmarkedList = lists.get(listName);
+            if(hashMapContains(bookmarkedList,activityId)){
+                Toast.makeText(this, getResources().getString(R.string.Activity_already_on_list), Toast.LENGTH_SHORT).show();
+            }
+            else{
+                bookmarkedList.add(listItem);
+                listRef.child(listName).setValue(bookmarkedList);
+                Toast.makeText(this, getResources().getString(R.string.Activity_added_to_list), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+        else{
+            bookmarkedList = new ArrayList<>();
+            bookmarkedList.add(listItem);
+            listRef.child(listName).setValue(bookmarkedList);
+            Toast.makeText(this, getResources().getString(R.string.Activity_added_to_list), Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 }
