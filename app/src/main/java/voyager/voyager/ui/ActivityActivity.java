@@ -75,28 +75,31 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
 
         activitiesReference = FirebaseDatabase.getInstance().getReference("Activities")
                 .child(activity.get_id()).child("ratings");
+        if(activity.getRatings() != null){
+            ratings = activity.getRatings();
+        }
 
-        activitiesReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ratings = new ArrayList<>();
-                for(DataSnapshot ds:dataSnapshot.getChildren()){
-                    HashMap<String,String> userRating = new HashMap<>();
-                    userRating.put("id",ds.child("id").getValue().toString());
-                    userRating.put("rating",String.valueOf(ds.child("id").getValue()));
-                    ratings.add(userRating);
-                }
-                System.out.println("***************************************************");
-                for (HashMap hm:ratings){
-                    System.out.println(" ID: " + hm.get("id") + "; RATING: " + hm.get("rating"));
-                    System.out.println(hm.get("rating"));
-                }
-                System.out.println("***************************************************");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        });
+//        activitiesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                ratings = new ArrayList<>();
+//                for(DataSnapshot ds:dataSnapshot.getChildren()){
+//                    HashMap<String,String> userRating = new HashMap<>();
+//                    userRating.put("id",ds.child("id").getValue().toString());
+//                    userRating.put("rating",String.valueOf(ds.child("id").getValue()));
+//                    ratings.add(userRating);
+//                }
+//                System.out.println("***************************************************");
+//                for (HashMap hm:ratings){
+//                    System.out.println(" ID: " + hm.get("id") + "; RATING: " + hm.get("rating"));
+//                    System.out.println(hm.get("rating"));
+//                }
+//                System.out.println("***************************************************");
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) { }
+//        });
 
         activityHeader = findViewById(R.id.activityHeader);
         activityPrice = findViewById(R.id.activityPrice);
@@ -342,6 +345,7 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             if(hashMapContains(ratings,userId)){
                 ArrayList<HashMap<String,String>> tempRatings = new ArrayList<>();
                 for(HashMap hm:ratings){
+                    System.out.println("--------------->" +hm.get("rating"));
                     if(!hm.get("id").equals(userId)){
                         tempRatings.add(hm);
                     }
