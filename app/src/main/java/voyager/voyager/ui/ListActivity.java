@@ -71,14 +71,13 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null)
+        {
+            listName = bundle.getString("list");
+        }
         //Check the list name and place that as a title
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            listName = extras.getString("list");
-        }
-        else {
-            listName = (String) savedInstanceState.getSerializable("list");
-        }
         setTitle(listName);
 
         //Header
@@ -170,7 +169,6 @@ public class ListActivity extends AppCompatActivity {
                 editListDialog.cancel();
             }
         });
-
         editListDialog.show();
     }
 

@@ -265,9 +265,9 @@ public class SignInActivity extends AppCompatActivity {
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.hasChild(fbUserId)){
+                if(!dataSnapshot.hasChild(firebaseAuth.getCurrentUser().getUid())){
                     try{
-                        database.child(fbUserId).setValue(user);
+                        database.child(firebaseAuth.getCurrentUser().getUid()).setValue(user);
                         progressDialog.dismiss();
                         goToLogin();
                     }
