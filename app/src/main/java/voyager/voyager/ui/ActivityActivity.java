@@ -33,7 +33,7 @@ import voyager.voyager.models.User;
 
 public class ActivityActivity extends AppCompatActivity implements ListSelectorDialog.NoticeDialogListener, ListCreationDialog.NoticeDialogListener {
     // Database Setup
-    private DatabaseReference userRef, listRef;
+    private DatabaseReference userRef, listRef, activitiesReference;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     //
@@ -72,6 +72,32 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         ratings = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
         displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
+
+        activitiesReference = FirebaseDatabase.getInstance().getReference("Activities")
+                .child(activity.get_id()).child("ratings");
+
+        activitiesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ratings = new ArrayList<>();
+                for(DataSnapshot ds:dataSnapshot.getChildren()){
+                    HashMap<String,String> userRating = new HashMap<>();
+                    userRating.put("id",ds.child("id").getValue().toString());
+                    userRating.put("rating",String.valueOf(ds.child("id").getValue()));
+                    ratings.add(userRating);
+                }
+                System.out.println("***************************************************");
+                for (HashMap hm:ratings){
+                    System.out.println(" ID: " + hm.get("id") + "; RATING: " + hm.get("rating"));
+                    System.out.println(hm.get("rating"));
+                }
+                System.out.println("***************************************************");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+
         activityHeader = findViewById(R.id.activityHeader);
         activityPrice = findViewById(R.id.activityPrice);
         activityRating = findViewById(R.id.activityRating);
@@ -304,24 +330,30 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
     }
 
     public void updateUserRating(String userId, String activityId, final double rating){
+        HashMap<String,String> newRating = new HashMap<>();
+        newRating.put("id",userId);
+        newRating.put("rating",String.valueOf(rating));
+
         if(ratings.isEmpty()){
             ratings = new ArrayList<>();
-            HashMap<String,String> newRating = new HashMap<>();
-            newRating.put("id",userId);
-            newRating.put("rating",String.valueOf(rating));
             ratings.add(newRating);
         }
         else{
             if(hashMapContains(ratings,userId)){
-                Toast.makeText(this, "Ya hiciste un review", Toast.LENGTH_SHORT).show();
+                ArrayList<HashMap<String,String>> tempRatings = new ArrayList<>();
+                for(HashMap hm:ratings){
+                    if(!hm.get("id").equals(userId)){
+                        tempRatings.add(hm);
+                    }
+                }
+                tempRatings.add(newRating);
+                ratings = tempRatings;
             }
             else{
-                Toast.makeText(this, "No has hecho review", Toast.LENGTH_SHORT).show();
+                ratings = new ArrayList<>();
+                ratings.add(newRating);
             }
         }
-
-        DatabaseReference activitiesReference = FirebaseDatabase.getInstance().getReference("Activities")
-                .child(activityId).child("ratings");
 
         activitiesReference.setValue(ratings);
 
@@ -341,7 +373,7 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
                     System.out.println(hm.get("rating"));
                 }
                 System.out.println("***************************************************");
-            };
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
