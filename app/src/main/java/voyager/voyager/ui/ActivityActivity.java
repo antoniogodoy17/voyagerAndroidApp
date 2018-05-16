@@ -96,7 +96,7 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
                     ActivityActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            activityScore.setText(Double.toString(activity.getScore()));
+                            activityScore.setText(Double.toString(Math.round(activity.getScore()*100.0)/100.0));
                         }
                     });
                 }
