@@ -13,7 +13,6 @@
     <TableRow
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_margin="20dp"
         android:orientation="vertical">
 
@@ -21,19 +20,20 @@
             android:id="@+id/txtListName"
             android:layout_width="276dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="end|center_horizontal"
             android:backgroundTint="@color/colorSecondary"
             android:hint="@string/list_name"
-            android:inputType="date"
+            android:inputType="text"
             android:textColor="@color/colorSecondary"
-            android:textColorHint="@color/colorSecondaryLight"
-            android:enabled="false" />
+            android:textColorHint="@color/colorSecondaryLight" />
 
         <ImageButton
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/delete"
             app:srcCompat="@drawable/ic_delete_black_24dp" />
 
     </TableRow>

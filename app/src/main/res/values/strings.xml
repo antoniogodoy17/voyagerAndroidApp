@@ -47,4 +47,5 @@
     <string name="nearMe">Near Me</string>
     <string name="Loading_lists">Loading Your Lists</string>
     <string name="list_name">List Name</string>
+    <string name="delete">Delete</string>
 </resources>
