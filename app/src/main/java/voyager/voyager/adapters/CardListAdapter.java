@@ -1,7 +1,9 @@
 package voyager.voyager.adapters;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -160,17 +162,20 @@ public class CardListAdapter extends ArrayAdapter<Card> {
             holder.bookmarkIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Dialog dialog = new Dialog(context);
-                    dialog.setContentView(R.layout.lists_dialog);
-                    // Create a layout for the lists
-                    // Pass the activity as an extra for the listsAdapter
-                    // Under that adapter, set a click listener to every list
-                    // When a list is selected, (or the + button) create/add the activity to that list
-                    dialog.setTitle("Title...");
-                    final ListView listListView = (ListView) dialog.findViewById(R.id.List);
-                    ListAdapter adapter = new ListsAdapter(context,R.layout.list_layout, lists);
-                    listListView.setAdapter(adapter);
-                    dialog.show();
+//                    ArrayList<String> listsNamesArray = lists;
+//                    listsNamesArray.add("+");
+//
+//                    final CharSequence listsNames[] = lists.toArray(new CharSequence[lists.size()]);
+//
+//                    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+//                    dialog.setTitle("Selecciona una lista");
+//                    dialog.setItems(listsNames, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            Toast.makeText(context, listsNames[which], Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                    dialog.show();
                 }
             });
             holder.favIcon.setOnClickListener(new View.OnClickListener(){

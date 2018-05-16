@@ -1,6 +1,8 @@
 package voyager.voyager.ui;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import voyager.voyager.ListSelectorDialog;
 import voyager.voyager.models.Activity;
 import voyager.voyager.R;
 import voyager.voyager.models.User;
@@ -42,6 +46,7 @@ public class ActivityActivity extends AppCompatActivity {
     ImageView activityHeader;
     RatingBar activityRating;
     ImageButton favButton;
+    ImageButton bookmarkButton;
     Button closeButton;
     ProgressDialog progressDialog;
     //
@@ -50,6 +55,7 @@ public class ActivityActivity extends AppCompatActivity {
     Activity activity;
     private ArrayList<HashMap<String,String>> favoriteList;
     private HashMap<String,ArrayList<HashMap<String,String>>> list;
+    private ArrayList<String> listNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,8 @@ public class ActivityActivity extends AppCompatActivity {
         Slidr.attach(this, config);
 
         activity = (Activity) getIntent().getSerializableExtra("activity");
+        favoriteList = new ArrayList<>();
+        listNames = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
         displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
         activityHeader = findViewById(R.id.activityHeader);
@@ -92,8 +100,31 @@ public class ActivityActivity extends AppCompatActivity {
                 }
             }
         });
-        favoriteList = new ArrayList<>();
+        bookmarkButton = findViewById(R.id.bookmarkButton);
+        bookmarkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+
+
+                ListSelectorDialog dialog = new ListSelectorDialog();
+                dialog.show(getSupportFragmentManager(),"Select a list");
+//                ArrayList<String> listsNamesArray = listNames;
+//                listsNamesArray.add("+");
+//
+//                final CharSequence listsNamesSeq[] = listsNamesArray.toArray(new CharSequence[listsNamesArray.size()]);
+//
+//                AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityActivity.this);
+//                dialog.setTitle("Selecciona una lista");
+//                dialog.setItems(listsNamesSeq, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(ActivityActivity.this, listsNamesSeq[which], Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                dialog.show();
+            }
+        });
         // Database Initialization
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -111,6 +142,11 @@ public class ActivityActivity extends AppCompatActivity {
                             if(dataSnapshot.hasChild("favorites")){
                                 setFavoriteList();
                                 fillData();
+                            }
+                            for(DataSnapshot ds:dataSnapshot.getChildren()){
+                                if(!ds.getKey().equals("favorites")){
+                                    listNames.add(ds.getKey());
+                                }
                             }
 
                         }

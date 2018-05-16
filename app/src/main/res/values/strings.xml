@@ -47,4 +47,7 @@
     <string name="nearMe">Near Me</string>
     <string name="Loading_lists">Loading Your Lists</string>
     <string name="list_name">List Name</string>
+    <string name="Select_list">Select a list</string>
+    <string name="Accept">Accept</string>
+    <string name="Add_list">Add new list</string>
 </resources>
