@@ -50,18 +50,13 @@ public class Activity implements Serializable, Comparator {
         ArrayList<HashMap<String,String>> tempRatings = getRatings();
 
         for(HashMap hm : tempRatings){
-            tempScore += (Double) hm.get("rating");
+            tempScore += Double.valueOf(hm.get("rating").toString());
         }
         return tempScore/tempRatings.size();
     }
 
-    public Double getActivityScore() { return calculatedScore(); }
-
-    public void updateScore() {
-        this.setScore(calculatedScore());
-    }
-
     public double getScore() {
+        setScore(calculatedScore());
         return score;
     }
 
@@ -138,7 +133,9 @@ public class Activity implements Serializable, Comparator {
         return tags;
     }
 
-    public ArrayList<HashMap<String, String>> getRatings(){ return ratings; }
+    public ArrayList<HashMap<String, String>> getRatings(){
+        return ratings;
+    }
 
     public String getType() {
         return type;

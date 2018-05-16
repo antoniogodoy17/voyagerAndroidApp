@@ -36,11 +36,12 @@ import voyager.voyager.models.User;
 public class ActivityActivity extends AppCompatActivity implements ListSelectorDialog.NoticeDialogListener, ListCreationDialog.NoticeDialogListener {
     // Database Setup
     private DatabaseReference userRef, listRef, activitiesReference;
+    private ValueEventListener activityListener;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     //
     // UI Setup
-    TextView activityPrice, activityDescription, activityDate, activityLocation, activityCategory;
+    TextView activityPrice, activityDescription, activityDate, activityLocation, activityCategory, activityScore;
     ImageView activityHeader;
     RatingBar activityRating;
     ImageButton favButton;
@@ -72,39 +73,8 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         listNames = new ArrayList<>();
         lists = new HashMap<>();
         ratings = new ArrayList<>();
-        progressDialog = new ProgressDialog(this);
-        displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
 
-        activitiesReference = FirebaseDatabase.getInstance().getReference("Activities")
-                .child(activity.get_id()).child("ratings");
-        if(activity.getRatings() != null){
-            ratings = activity.getRatings();
-        }
-
-//        activitiesReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                ratings = new ArrayList<>();
-//                for(DataSnapshot ds:dataSnapshot.getChildren()){
-//                    HashMap<String,String> userRating = new HashMap<>();
-//                    userRating.put("id",ds.child("id").getValue().toString());
-//                    userRating.put("rating",String.valueOf(ds.child("id").getValue()));
-//                    ratings.add(userRating);
-//                }
-//                System.out.println("***************************************************");
-//                for (HashMap hm:ratings){
-//                    System.out.println(" ID: " + hm.get("id") + "; RATING: " + hm.get("rating"));
-//                    System.out.println(hm.get("rating"));
-//                }
-//                System.out.println("***************************************************");
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) { }
-//        });
-
-        activityHeader = findViewById(R.id.activityHeader);
-        activityPrice = findViewById(R.id.activityPrice);
+        activityScore = findViewById(R.id.activityScore);
         activityRating = findViewById(R.id.activityRating);
         activityRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -112,6 +82,36 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
                 updateUserRating(firebaseAuth.getCurrentUser().getUid(), activity.get_id(),activityRating.getRating());
             }
         });
+        progressDialog = new ProgressDialog(this);
+        displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
+
+        activitiesReference = FirebaseDatabase.getInstance().getReference("Activities")
+                .child(activity.get_id());
+
+        activityListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                activity = dataSnapshot.getValue(Activity.class);
+
+                if(activity.getRatings() != null){
+                    ratings = activity.getRatings();
+                    ActivityActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            activityScore.setText(Double.toString(Math.round(activity.getScore()*100.0)/100.0));
+                        }
+                    });
+                }
+                activitiesReference.child("score").setValue(activity.getScore());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        };
+
+        activitiesReference.addValueEventListener(activityListener);
+
+        activityHeader = findViewById(R.id.activityHeader);
+        activityPrice = findViewById(R.id.activityPrice);
         activityDescription = findViewById(R.id.activityDescription);
         activityDate = findViewById(R.id.activityDate);
         activityLocation = findViewById(R.id.activityLocation);
@@ -188,6 +188,12 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activitiesReference.removeEventListener(activityListener);
+    }
+
+    @Override
     public void onListSelected(String list) {
         addToList(list,activity.get_id());
     }
@@ -226,9 +232,18 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             Picasso.get().load(R.drawable.logo512).into(activityHeader);
         }
 
-//        if(activity.getRatings() != null){
-//            activityRating.setRating(activity.getActivityScore());
-//        }
+        if(ratings != null){
+            if(hashMapContains(ratings,FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                for (HashMap hm:ratings){
+                    if(hm.get("id").equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        activityRating.setRating(Float.valueOf(hm.get("rating").toString()));
+                    }
+                }
+            }
+        }
+        else {
+            activityRating.setRating(0);
+        }
 
 //        if (activity.getImages() != null) activityHeader.setImageURI();
         activityPrice.setText(makeCost(activity.getCost()));
@@ -348,7 +363,6 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             if(hashMapContains(ratings,userId)){
                 ArrayList<HashMap<String,String>> tempRatings = new ArrayList<>();
                 for(HashMap hm:ratings){
-                    System.out.println("--------------->" +hm.get("rating"));
                     if(!hm.get("id").equals(userId)){
                         tempRatings.add(hm);
                     }
@@ -357,34 +371,32 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
                 ratings = tempRatings;
             }
             else{
-                ratings = new ArrayList<>();
                 ratings.add(newRating);
             }
         }
 
-        activitiesReference.setValue(ratings);
+        activitiesReference.child("ratings").setValue(ratings);
 
-        activitiesReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ratings = new ArrayList<>();
-                for(DataSnapshot ds:dataSnapshot.getChildren()){
-                    HashMap<String,String> userRating = new HashMap<>();
-                    userRating.put("id",ds.child("id").getValue().toString());
-                    userRating.put("rating",String.valueOf(ds.child("id").getValue()));
-                    ratings.add(userRating);
-                }
-                System.out.println("***************************************************");
-                for (HashMap hm:ratings){
-                    System.out.println(" ID: " + hm.get("id") + "; RATING: " + hm.get("rating"));
-                    System.out.println(hm.get("rating"));
-                }
-                System.out.println("***************************************************");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        });
+//        activitiesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                ratings = new ArrayList<>();
+//                for(DataSnapshot ds:dataSnapshot.getChildren()){
+//                    HashMap<String,String> userRating = new HashMap<>();
+//                    userRating.put("id",ds.child("id").getValue().toString());
+//                    userRating.put("rating",String.valueOf(ds.child("rating").getValue()));
+//                    ratings.add(userRating);
+//                }
+//                System.out.println("***************************************************");
+//                for (HashMap hm:ratings){
+//                    System.out.println(" ID: " + hm.get("id") + "; RATING: " + hm.get("rating"));
+//                }
+//                System.out.println("***************************************************");
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) { }
+//        });
 
 //        activitiesReference.setValue(newRating);
     }
