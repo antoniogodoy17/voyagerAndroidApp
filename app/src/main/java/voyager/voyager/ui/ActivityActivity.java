@@ -1,6 +1,8 @@
 package voyager.voyager.ui;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -329,13 +331,14 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         else if(lists.containsKey(listName)){
             bookmarkedList = lists.get(listName);
             if(hashMapContains(bookmarkedList,activityId)){
-                Toast.makeText(this, getResources().getString(R.string.Activity_already_on_list), Toast.LENGTH_SHORT).show();
+                bookmarkedList.remove(listItem);
+                listRef.child(listName).setValue(bookmarkedList);
+                Toast.makeText(this, getResources().getString(R.string.Activity_removed_from_list), Toast.LENGTH_SHORT).show();
             }
             else{
                 bookmarkedList.add(listItem);
                 listRef.child(listName).setValue(bookmarkedList);
                 Toast.makeText(this, getResources().getString(R.string.Activity_added_to_list), Toast.LENGTH_SHORT).show();
-                finish();
             }
         }
         else{
