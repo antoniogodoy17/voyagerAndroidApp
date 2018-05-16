@@ -236,7 +236,9 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
                     }
                 }
             }
-            activityRating.setRating((float)activity.getScore());
+        }
+        else {
+            activityRating.setRating(0);
         }
 
 //        if (activity.getImages() != null) activityHeader.setImageURI();

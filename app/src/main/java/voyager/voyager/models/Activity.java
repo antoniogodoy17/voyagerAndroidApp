@@ -47,7 +47,7 @@ public class Activity implements Serializable, Comparator {
 
     public Double calculatedScore(){
         Double tempScore = 0.0;
-        ArrayList<HashMap<String,String>> tempRatings = ratings;
+        ArrayList<HashMap<String,String>> tempRatings = getRatings();
 
         for(HashMap hm : tempRatings){
             tempScore += Double.valueOf(hm.get("rating").toString());
@@ -56,6 +56,7 @@ public class Activity implements Serializable, Comparator {
     }
 
     public double getScore() {
+        setScore(calculatedScore());
         return score;
     }
 
@@ -133,8 +134,6 @@ public class Activity implements Serializable, Comparator {
     }
 
     public ArrayList<HashMap<String, String>> getRatings(){
-        this.setScore(calculatedScore());
-
         return ratings;
     }
 
