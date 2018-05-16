@@ -47,10 +47,14 @@
     <string name="nearMe">Near Me</string>
     <string name="Loading_lists">Loading Your Lists</string>
     <string name="list_name">List Name</string>
+<<<<<<< HEAD
+    <string name="delete">Delete</string>
+=======
     <string name="Select_list">Select a list</string>
     <string name="Accept">Accept</string>
     <string name="Add_list">Add new list</string>
     <string name="Activity_added_to_list">Activity added to selected list</string>
     <string name="Pleas_fill_listname">Please enter a list name</string>
     <string name="Activity_already_on_list">This activity is already on the selected list</string>
+>>>>>>> 3aa418ec6f0a5345245f834d185a6b20441b346f
 </resources>

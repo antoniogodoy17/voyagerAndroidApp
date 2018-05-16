@@ -163,6 +163,13 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //delete
+            }
+        });
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,6 +177,9 @@ public class ListActivity extends AppCompatActivity {
             }
         });
         editListDialog.show();
+    }
+    private void removeList(){
+
     }
 
     @Override
