@@ -33,8 +33,7 @@ import voyager.voyager.models.User;
 
 public class ActivityActivity extends AppCompatActivity implements ListSelectorDialog.NoticeDialogListener, ListCreationDialog.NoticeDialogListener {
     // Database Setup
-    private FirebaseDatabase database;
-    private DatabaseReference userRef, activityDatabase,listRef;
+    private DatabaseReference userRef, listRef;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     //
@@ -53,6 +52,8 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
     private ArrayList<HashMap<String,String>> favoriteList;
     private HashMap<String,ArrayList<HashMap<String,String>>> lists;
     private ArrayList<String> listNames;
+    ArrayList<HashMap<String,String>> ratings;
+    HashMap<String,String> userRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +65,22 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         Slidr.attach(this, config);
 
         activity = (Activity) getIntent().getSerializableExtra("activity");
+//        activity.updateScore();
         favoriteList = new ArrayList<>();
         listNames = new ArrayList<>();
         lists = new HashMap<>();
+        ratings = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
         displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
         activityHeader = findViewById(R.id.activityHeader);
         activityPrice = findViewById(R.id.activityPrice);
         activityRating = findViewById(R.id.activityRating);
+        activityRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                updateUserRating(firebaseAuth.getCurrentUser().getUid(), activity.get_id(),activityRating.getRating());
+            }
+        });
         activityDescription = findViewById(R.id.activityDescription);
         activityDate = findViewById(R.id.activityDate);
         activityLocation = findViewById(R.id.activityLocation);
@@ -111,10 +120,9 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             }
         });
         // Database Initialization
-        database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         fbUser = firebaseAuth.getCurrentUser();
-        userRef = database.getReference("User").child(fbUser.getUid());
+        userRef = FirebaseDatabase.getInstance().getReference("User").child(fbUser.getUid());
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -186,6 +194,10 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         else {
             Picasso.get().load(R.drawable.logo512).into(activityHeader);
         }
+
+//        if(activity.getRatings() != null){
+//            activityRating.setRating(activity.getActivityScore());
+//        }
 
 //        if (activity.getImages() != null) activityHeader.setImageURI();
         activityPrice.setText(makeCost(activity.getCost()));
@@ -289,5 +301,52 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             Toast.makeText(this, getResources().getString(R.string.Activity_added_to_list), Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
+
+    public void updateUserRating(String userId, String activityId, final double rating){
+        if(ratings.isEmpty()){
+            ratings = new ArrayList<>();
+            HashMap<String,String> newRating = new HashMap<>();
+            newRating.put("id",userId);
+            newRating.put("rating",String.valueOf(rating));
+            ratings.add(newRating);
+        }
+        else{
+            if(hashMapContains(ratings,userId)){
+                Toast.makeText(this, "Ya hiciste un review", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this, "No has hecho review", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        DatabaseReference activitiesReference = FirebaseDatabase.getInstance().getReference("Activities")
+                .child(activityId).child("ratings");
+
+        activitiesReference.setValue(ratings);
+
+        activitiesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ratings = new ArrayList<>();
+                for(DataSnapshot ds:dataSnapshot.getChildren()){
+                    HashMap<String,String> userRating = new HashMap<>();
+                    userRating.put("id",ds.child("id").getValue().toString());
+                    userRating.put("rating",String.valueOf(ds.child("id").getValue()));
+                    ratings.add(userRating);
+                }
+                System.out.println("***************************************************");
+                for (HashMap hm:ratings){
+                    System.out.println(" ID: " + hm.get("id") + "; RATING: " + hm.get("rating"));
+                    System.out.println(hm.get("rating"));
+                }
+                System.out.println("***************************************************");
+            };
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+
+//        activitiesReference.setValue(newRating);
     }
 }

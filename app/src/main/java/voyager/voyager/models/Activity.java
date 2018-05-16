@@ -1,29 +1,35 @@
 package voyager.voyager.models;
 
 import java.io.Serializable;
+import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+
+import voyager.voyager.ui.ListSelectorDialog;
 
 public class Activity implements Serializable, Comparator {
 
-    private HashMap<String, String> score;
     private String _id;
-    private int cost;
-    private HashMap<String, String> images;
     private String category;
-    private String description;
-    private String status;
+    private int cost;
     private String date;
-    private String schedule;
-    private HashMap<String, String> reviews;
-    private ArrayList<HashMap<String,String>> tags;
-    private String type;
-    private String title;
-    private HashMap<String , String> location;
+    private String description;
     private String image_principal;
+    private HashMap<String, String> images;
+    private HashMap<String , String> location;
+    private ArrayList<HashMap<String, String>> ratings;
+    private ArrayList<HashMap<String, String>> reviews;
+    private String schedule;
+    private double score;
+    private String status;
+    private ArrayList<HashMap<String,String>> tags;
+    private String title;
+    private String type;
 
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
@@ -39,6 +45,30 @@ public class Activity implements Serializable, Comparator {
 
     }
 
+    public Double calculatedScore(){
+        Double tempScore = 0.0;
+        ArrayList<HashMap<String,String>> tempRatings = getRatings();
+
+        for(HashMap hm : tempRatings){
+            tempScore += (Double) hm.get("rating");
+        }
+        return tempScore/tempRatings.size();
+    }
+
+    public Double getActivityScore() { return calculatedScore(); }
+
+    public void updateScore() {
+        this.setScore(calculatedScore());
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
     public String get_id() {
         return _id;
     }
@@ -49,10 +79,6 @@ public class Activity implements Serializable, Comparator {
     @Override
     public String toString() {
         return title;
-    }
-
-    public HashMap<String, String> getScore() {
-        return score;
     }
 
     public int getCost() {
@@ -104,13 +130,15 @@ public class Activity implements Serializable, Comparator {
         return schedule;
     }
 
-    public HashMap<String, String> getReviews() {
+    public ArrayList<HashMap<String, String>> getReviews() {
         return reviews;
     }
 
     public ArrayList<HashMap<String,String>> getTags() {
         return tags;
     }
+
+    public ArrayList<HashMap<String, String>> getRatings(){ return ratings; }
 
     public String getType() {
         return type;
@@ -126,10 +154,6 @@ public class Activity implements Serializable, Comparator {
 
     public HashMap<String, String> getLocation() {
         return location;
-    }
-
-    public void setScore(HashMap<String, String> score) {
-        this.score = score;
     }
 
     public void setCost(int cost) {
@@ -161,13 +185,15 @@ public class Activity implements Serializable, Comparator {
         this.schedule = schedule;
     }
 
-    public void setReviews(HashMap<String, String> reviews) {
+    public void setReviews(ArrayList<HashMap<String, String>> reviews) {
         this.reviews = reviews;
     }
 
     public void setTags(ArrayList<HashMap<String,String>>tags) {
         this.tags = tags;
     }
+
+    public void setRatings(ArrayList<HashMap<String,String>> ratings) { this.ratings = ratings; }
 
     public void setType(String type) {
         this.type = type;
