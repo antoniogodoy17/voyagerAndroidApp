@@ -1,5 +1,6 @@
 package voyager.voyager;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -19,6 +20,12 @@ public class ListSelectorDialog extends DialogFragment {
     ArrayList<String> lists = new ArrayList<>();
     CharSequence listNames[];
 
+    public interface NoticeDialogListener {
+        public void onListSelected(DialogFragment dialog, String list, int position);
+    }
+
+    NoticeDialogListener mListener;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -35,6 +42,9 @@ public class ListSelectorDialog extends DialogFragment {
             public void onCancelled(DatabaseError databaseError) { }
         });
 
+        mListener = (NoticeDialogListener) getActivity();
+
+        lists.add("Lista de prueba");
         lists.add(getResources().getString(R.string.Add_list));
         listNames = lists.toArray(new CharSequence[lists.size()]);
 
@@ -48,6 +58,7 @@ public class ListSelectorDialog extends DialogFragment {
                         }
                         else{
                             // Add activity to the selected list
+                            mListener.onListSelected(ListSelectorDialog.this, listNames[which].toString(), which);
                         }
                     }
                 });

@@ -1,5 +1,6 @@
 package voyager.voyager.ui;
 
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -33,7 +34,7 @@ import voyager.voyager.models.Activity;
 import voyager.voyager.R;
 import voyager.voyager.models.User;
 
-public class ActivityActivity extends AppCompatActivity {
+public class ActivityActivity extends AppCompatActivity implements ListSelectorDialog.NoticeDialogListener {
     // Database Setup
     private FirebaseDatabase database;
     private DatabaseReference userRef, activityDatabase,listRef;
@@ -104,25 +105,9 @@ public class ActivityActivity extends AppCompatActivity {
         bookmarkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
                 ListSelectorDialog dialog = new ListSelectorDialog();
                 dialog.show(getSupportFragmentManager(),"Select a list");
-//                ArrayList<String> listsNamesArray = listNames;
-//                listsNamesArray.add("+");
-//
-//                final CharSequence listsNamesSeq[] = listsNamesArray.toArray(new CharSequence[listsNamesArray.size()]);
-//
-//                AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityActivity.this);
-//                dialog.setTitle("Selecciona una lista");
-//                dialog.setItems(listsNamesSeq, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(ActivityActivity.this, listsNamesSeq[which], Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                dialog.show();
+                // If succeed -> Change image resource
             }
         });
         // Database Initialization
@@ -167,6 +152,12 @@ public class ActivityActivity extends AppCompatActivity {
         fillData();
 //        addToList("prueba", "-LBJY-3GpfSEin-Omo0I");
     }
+
+    @Override
+    public void onListSelected(android.support.v4.app.DialogFragment dialog, String list, int position) {
+        Toast.makeText(this, "Lista: " + list + " - Posicion: " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+    }
+
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
         progressDialog.setMessage(getApplicationContext().getString(message));
