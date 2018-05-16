@@ -39,7 +39,7 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
     private FirebaseAuth firebaseAuth;
     //
     // UI Setup
-    TextView activityPrice, activityDescription, activityDate, activityLocation, activityCategory;
+    TextView activityPrice, activityDescription, activityDate, activityLocation, activityCategory, activityScore;
     ImageView activityHeader;
     RatingBar activityRating;
     ImageButton favButton;
@@ -71,6 +71,15 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         listNames = new ArrayList<>();
         lists = new HashMap<>();
         ratings = new ArrayList<>();
+
+        activityScore = findViewById(R.id.activityScore);
+        activityRating = findViewById(R.id.activityRating);
+        activityRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                updateUserRating(firebaseAuth.getCurrentUser().getUid(), activity.get_id(),activityRating.getRating());
+            }
+        });
         progressDialog = new ProgressDialog(this);
         displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
 
@@ -83,6 +92,12 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
                 activity = dataSnapshot.getValue(Activity.class);
                 if(activity.getRatings() != null){
                     ratings = activity.getRatings();
+                    ActivityActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            activityScore.setText(Double.toString(activity.getScore()));
+                        }
+                    });
                 }
             }
             @Override
@@ -90,37 +105,9 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         };
 
         activitiesReference.addValueEventListener(activityListener);
-//        activityListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                ratings = new ArrayList<>();
-//                for(DataSnapshot ds:dataSnapshot.getChildren()){
-//                    HashMap<String,String> userRating = new HashMap<>();
-//                    userRating.put("id",ds.child("id").getValue().toString());
-//                    userRating.put("rating",String.valueOf(ds.child("id").getValue()));
-//                    ratings.add(userRating);
-//                }
-//                System.out.println("***************************************************");
-//                for (HashMap hm:ratings){
-//                    System.out.println(" ID: " + hm.get("id") + "; RATING: " + hm.get("rating"));
-//                    System.out.println(hm.get("rating"));
-//                }
-//                System.out.println("***************************************************");
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) { }
-//        };
 
         activityHeader = findViewById(R.id.activityHeader);
         activityPrice = findViewById(R.id.activityPrice);
-        activityRating = findViewById(R.id.activityRating);
-        activityRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                updateUserRating(firebaseAuth.getCurrentUser().getUid(), activity.get_id(),activityRating.getRating());
-            }
-        });
         activityDescription = findViewById(R.id.activityDescription);
         activityDate = findViewById(R.id.activityDate);
         activityLocation = findViewById(R.id.activityLocation);
@@ -241,9 +228,16 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             Picasso.get().load(R.drawable.logo512).into(activityHeader);
         }
 
-//        if(activity.getRatings() != null){
-//            activityRating.setRating(activity.getActivityScore());
-//        }
+        if(ratings != null){
+            if(hashMapContains(ratings,FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                for (HashMap hm:ratings){
+                    if(hm.get("id").equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        activityRating.setRating(Float.valueOf(hm.get("rating").toString()));
+                    }
+                }
+            }
+            activityRating.setRating((float)activity.getScore());
+        }
 
 //        if (activity.getImages() != null) activityHeader.setImageURI();
         activityPrice.setText(makeCost(activity.getCost()));

@@ -54,4 +54,5 @@
     <string name="Activity_added_to_list">Activity added to selected list</string>
     <string name="Pleas_fill_listname">Please enter a list name</string>
     <string name="Activity_already_on_list">This activity is already on the selected list</string>
+    <string name="Average_score">Average Score</string>
 </resources>
