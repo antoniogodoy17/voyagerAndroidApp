@@ -90,6 +90,7 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 activity = dataSnapshot.getValue(Activity.class);
+
                 if(activity.getRatings() != null){
                     ratings = activity.getRatings();
                     ActivityActivity.this.runOnUiThread(new Runnable() {
@@ -99,6 +100,7 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
                         }
                     });
                 }
+                activitiesReference.child("score").setValue(activity.getScore());
             }
             @Override
             public void onCancelled(DatabaseError databaseError) { }
