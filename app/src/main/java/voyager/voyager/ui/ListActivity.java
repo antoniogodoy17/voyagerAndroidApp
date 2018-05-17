@@ -65,7 +65,7 @@ public class ListActivity extends AppCompatActivity {
     private ArrayList<Card> cardsList;
     private ArrayList<Activity> activities;
     private ArrayList<HashMap<String,String>> favoriteList;
-    private ArrayList<Activity> favoriteActivites;
+    private ArrayList<Activity> favoriteActivities;
     private CardListAdapter cardAdapter;
     //
     @Override
@@ -113,7 +113,7 @@ public class ListActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         activities = new ArrayList<>();
         favoriteList = new ArrayList<>();
-        favoriteActivites = new ArrayList<>();
+        favoriteActivities = new ArrayList<>();
 
         // UI initialization
         editListDialog = new Dialog(ListActivity.this);
@@ -241,7 +241,7 @@ public class ListActivity extends AppCompatActivity {
     }
     public void displayActivities(){
         cardsList.clear();
-        for(Activity activity:favoriteActivites){
+        for(Activity activity:favoriteActivities){
             cardsList.add(new Card(activity));
         }
         cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
@@ -256,13 +256,13 @@ public class ListActivity extends AppCompatActivity {
     }
     public void setFavoriteList() {
         displayProgressDialog(R.string.Loading_events, R.string.Please_Wait);
-        favoriteActivites.clear();
+        favoriteActivities.clear();
         if (user.getLists() != null && user.getLists().containsKey(listName)) {
             favoriteList = user.getLists().get(listName);
             for (int i = 0; i < activities.size(); i++) {
                 for (HashMap<String, String> hm : favoriteList) {
                     if (hm.get("id").equals(activities.get(i).get_id())) {
-                        favoriteActivites.add(activities.get(i));
+                        favoriteActivities.add(activities.get(i));
                     }
                 }
             }

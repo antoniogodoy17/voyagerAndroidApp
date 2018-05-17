@@ -56,7 +56,7 @@ public class ListsAdapter extends BaseAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v){
-                Toast.makeText(context, list, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
                 return true;
             }
 

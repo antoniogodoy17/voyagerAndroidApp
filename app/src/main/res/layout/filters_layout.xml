@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/cardview_compat_inset_shadow"
+    android:layout_gravity="center"
+    tools:context=".ui.HomeActivity"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btnClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_close_black_24dp" />
+
+            <TextView
+                android:id="@+id/txtCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categories"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="24sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+
+            <CheckBox
+                android:id="@+id/checkBoxEntertainment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/colorSecondary"
+                android:text="@string/Entertainment" />
+
+            <CheckBox
+                android:id="@+id/checkBoxSocial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/colorSecondary"
+                android:text="@string/Social" />
+
+            <CheckBox
+                android:id="@+id/checkBoxSports"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/colorSecondary"
+                android:text="@string/Sports" />
+
+            <CheckBox
+                android:id="@+id/checkBoxCultural"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/colorSecondary"
+                android:text="@string/Cultural" />
+
+            <TextView
+                android:id="@+id/txtCost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:enabled="false"
+                android:text="@string/categories"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="24sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+
+            <SeekBar
+                android:id="@+id/seekBarCost"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="4"
+                android:progress="4" />
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_date_range_black_24dp"
+                android:hint="@string/Enter_date"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="18sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText"/>
+
+            <TextView
+                android:id="@+id/txtRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:enabled="false"
+                android:text="@string/rating"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="24sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+
+            <SeekBar
+                android:id="@+id/seekBarRating"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="4"
+                android:progress="4" />
+
+            <TextView
+                android:id="@+id/txtType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/type"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="24sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+
+            <CheckBox
+                android:id="@+id/checkBoxAttraction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/colorSecondary"
+                android:text="@string/Attraction" />
+
+            <CheckBox
+                android:id="@+id/checkBoxRest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/colorSecondary"
+                android:text="@string/Rest" />
+
+            <CheckBox
+                android:id="@+id/checkBoxEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/colorSecondary"
+                android:text="@string/Event" />
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnApplyFilters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:fontFamily="@font/quicksand"
+                    android:text="@string/Apply_Filters"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btnClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:text="@string/clear"
+                    android:textColor="@color/colorSecondary" />
+            </TableRow>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

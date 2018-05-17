@@ -1,9 +1,11 @@
 package voyager.voyager.ui;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -52,12 +54,14 @@ public class HomeActivity extends AppCompatActivity {
     private MenuItem searchItem;
     private View header;
     private DrawerLayout drawerLayout;
+    private FloatingActionButton btnFilters;
     private ActionBarDrawerToggle drawerToggle;
     private CircleImageView drawerProfilePicture;
     private TextView drawerUsername;
     private ListView listView;
     private CardListAdapter cardAdapter;
     private ProgressDialog progressDialog;
+    private Dialog filtersDialog;
     //
     // Variables Declarations
     private User user;
@@ -94,7 +98,26 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
+
+        filtersDialog = new Dialog(HomeActivity.this);
+        filtersDialog.setContentView(R.layout.filters_layout);
+        btnFilters = findViewById(R.id.btnFilters);
         // End UI Initialization
+
+        btnFilters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filtersDialog.show();
+            }
+        });
+
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent next = new Intent(getApplicationContext(),ProfileActivity.class);
+                startActivity(next);
+            }
+        });
 
         // Database Initialization
         firebaseAuth = FirebaseAuth.getInstance();

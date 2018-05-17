@@ -1,5 +1,6 @@
 package voyager.voyager.ui;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,8 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,6 +54,10 @@ public class ListsActivity extends AppCompatActivity {
     private TextView drawerUsername;
     private ListView listView;
     private ProgressDialog progressDialog;
+    private Dialog editListDialog;
+    private Button btnSaveChanges, btnCancel;
+    private ImageButton btnDelete;
+    private EditText txtListName;
     //
     // Variables Declarations
     private User user;
@@ -61,6 +70,13 @@ public class ListsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lists);
+
+        editListDialog = new Dialog(ListsActivity.this);
+        editListDialog.setContentView(R.layout.edit_list_layout);
+        txtListName = editListDialog.findViewById(R.id.txtListName);
+        btnSaveChanges = editListDialog.findViewById(R.id.btnSaveChanges);
+        btnCancel = editListDialog.findViewById(R.id.btnCancel);
+        btnDelete = editListDialog.findViewById(R.id.btnDelete);
 
         // Variables Initialization
         lists = new ArrayList<>();
@@ -156,6 +172,70 @@ public class ListsActivity extends AppCompatActivity {
         progressDialog.setMessage(getApplicationContext().getString(message));
         progressDialog.show();
         progressDialog.setCanceledOnTouchOutside(false);
+    }
+
+    private void openDialog(final String listName) {
+        txtListName.setText(listName);
+        final DatabaseReference listReference = userRef.child("lists").child(listName);
+        btnSaveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String newListName = txtListName.getText().toString();
+                if (!newListName.equals("") && !newListName.equals(listName)){
+                    final DatabaseReference newListReference = userRef.child("lists").child(newListName);
+                    moveListChild(listReference, newListReference);
+                    startActivity(getIntent().putExtra("list", newListName));
+                    removeList(listReference);
+                    editListDialog.cancel();
+                } else {
+                    Toast.makeText(ListsActivity.this, "Pick a new name for your list", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeList(listReference);
+                editListDialog.cancel();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editListDialog.cancel();
+            }
+        });
+        editListDialog.show();
+    }
+    private void removeList(DatabaseReference listReference){
+        listReference.removeValue();
+        finish();
+    }
+    private void moveListChild(final DatabaseReference fromPath, final DatabaseReference toPath) {
+        fromPath.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                toPath.setValue(dataSnapshot.getValue(), new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError firebaseError, DatabaseReference firebase) {
+                        if (firebaseError != null) {
+                            System.out.println("Copy failed");
+                        } else {
+                            System.out.println("Success");
+
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void loadLists(DataSnapshot data){
