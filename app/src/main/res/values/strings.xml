@@ -56,4 +56,8 @@
     <string name="Activity_already_on_list">This activity is already on the selected list</string>
     <string name="Activity_removed_from_list">Activity removed from list</string>
     <string name="Average_score">Average Score</string>
+    <string name="Rating">Rating</string>
+    <string name="Write_Review">Write a review</string>
+    <string name="Review">Review</string>
+    <string name="Please_Fill_Review">Review can\'t be empty</string>
 </resources>

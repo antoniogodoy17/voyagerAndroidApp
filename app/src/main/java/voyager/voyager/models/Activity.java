@@ -41,18 +41,19 @@ public class Activity implements Serializable, Comparator {
         Activity activity2 = (Activity) o2;
         return activity1.getTitle().
                 compareTo(activity2.getTitle());
-
-
     }
 
     public Double calculatedScore(){
         Double tempScore = 0.0;
-        ArrayList<HashMap<String,String>> tempRatings = getRatings();
+        ArrayList<HashMap<String,String>> tempRatings = getReviews();
 
-        for(HashMap hm : tempRatings){
-            tempScore += Double.valueOf(hm.get("rating").toString());
+        if(reviews != null) {
+            for (HashMap hm : tempRatings) {
+                tempScore += Double.valueOf(hm.get("rating").toString());
+            }
+            return tempScore / tempRatings.size();
         }
-        return tempScore/tempRatings.size();
+        return 0.0;
     }
 
     public double getScore() {
