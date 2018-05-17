@@ -71,4 +71,7 @@
     <string name="Entertainment">Entertainment</string>
     <string name="Review">Review</string>
     <string name="Rating">Rating</string>
+    <string name="Please_Fill_Review">Review can not be empty</string>
+    <string name="Filters">Filters</string>
+    <string name="Cost">Cost</string>
 </resources>

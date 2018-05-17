@@ -17,7 +17,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="10dp"
             android:orientation="vertical">
 
             <ImageButton
@@ -40,37 +44,44 @@
                 android:textSize="24sp"
                 android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
 
-            <CheckBox
-                android:id="@+id/checkBoxEntertainment"
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/colorSecondary"
-                android:text="@string/Entertainment" />
+                android:layout_marginStart="10dp">
 
-            <CheckBox
-                android:id="@+id/checkBoxSocial"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/colorSecondary"
-                android:text="@string/Social" />
+                <RadioButton
+                    android:id="@+id/checkBoxEntertainment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorSecondary"
+                    android:text="@string/Entertainment" />
 
-            <CheckBox
-                android:id="@+id/checkBoxSports"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/colorSecondary"
-                android:text="@string/Sports" />
+                <RadioButton
+                    android:id="@+id/checkBoxSocial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorSecondary"
+                    android:text="@string/Social" />
 
-            <CheckBox
-                android:id="@+id/checkBoxCultural"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/colorSecondary"
-                android:text="@string/Cultural" />
+                <RadioButton
+                    android:id="@+id/checkBoxSports"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorSecondary"
+                    android:text="@string/Sports" />
+
+                <RadioButton
+                    android:id="@+id/checkBoxCultural"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorSecondary"
+                    android:text="@string/Cultural" />
+
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/txtCost"
@@ -80,7 +91,7 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
                 android:enabled="false"
-                android:text="@string/categories"
+                android:text="@string/Cost"
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight"
                 android:textSize="24sp"
@@ -129,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="4"
-                android:progress="4" />
+                android:progress="0" />
 
             <TextView
                 android:id="@+id/txtType"
@@ -144,29 +155,36 @@
                 android:textSize="24sp"
                 android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
 
-            <CheckBox
-                android:id="@+id/checkBoxAttraction"
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/colorSecondary"
-                android:text="@string/Attraction" />
+                android:layout_marginStart="10dp">
 
-            <CheckBox
-                android:id="@+id/checkBoxRest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/colorSecondary"
-                android:text="@string/Restaurant" />
+                <RadioButton
+                    android:id="@+id/checkBoxAttraction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorSecondary"
+                    android:text="@string/Attraction" />
 
-            <CheckBox
-                android:id="@+id/checkBoxEvent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/colorSecondary"
-                android:text="@string/Event" />
+                <RadioButton
+                    android:id="@+id/checkBoxRest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorSecondary"
+                    android:text="@string/Restaurant" />
+
+                <RadioButton
+                    android:id="@+id/checkBoxEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorSecondary"
+                    android:text="@string/Event" />
+
+            </RadioGroup>
 
             <TableRow
                 android:layout_width="wrap_content"
@@ -186,13 +204,13 @@
                     android:textColor="@color/white" />
 
                 <Button
-                    android:id="@+id/btnClear"
+                    android:id="@+id/btnClearFilters"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:text="@string/clear"
-                    android:textColor="@color/colorSecondary" />
+                    android:textColor="@color/colorSecondary"/>
             </TableRow>
         </LinearLayout>
     </ScrollView>

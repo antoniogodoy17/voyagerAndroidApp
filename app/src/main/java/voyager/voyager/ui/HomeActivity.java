@@ -41,7 +41,7 @@ import voyager.voyager.models.Activity;
 import voyager.voyager.models.Card;
 import voyager.voyager.models.User;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements FilterDialog.NoticeDialogListener {
     // Database Declarations
     private DatabaseReference userRef, activityDatabase;
     private FirebaseUser fbUser;
@@ -99,15 +99,17 @@ public class HomeActivity extends AppCompatActivity {
         });
         displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
 
-        filtersDialog = new Dialog(HomeActivity.this);
-        filtersDialog.setContentView(R.layout.filters_layout);
+//        filtersDialog = new Dialog(HomeActivity.this);
+//        filtersDialog.setContentView(R.layout.filters_layout);
         btnFilters = findViewById(R.id.btnFilters);
         // End UI Initialization
 
         btnFilters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                filtersDialog.show();
+                FilterDialog dialog = new FilterDialog();
+                dialog.show(getSupportFragmentManager(),"Filters");
+//                filtersDialog.show();
             }
         });
 
@@ -162,6 +164,15 @@ public class HomeActivity extends AppCompatActivity {
         firebaseAuth.removeAuthStateListener(authListener);
         activityDatabase.removeEventListener(activityValueListener);
         super.onDestroy();
+    }
+
+    @Override
+    public void onFiltersApplied(ArrayList<String> filters) {
+        System.out.println("********************************");
+        for(String s:filters){
+            System.out.println(s);
+        }
+        System.out.println("********************************");
     }
 
     @Override
