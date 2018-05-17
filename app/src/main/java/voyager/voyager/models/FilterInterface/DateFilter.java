@@ -11,14 +11,12 @@ import voyager.voyager.models.Activity;
 public class DateFilter implements Filter {
 
     protected String who,how;
-    protected  ArrayList<Activity> filterList;
-    public DateFilter(String how, String who,ArrayList<Activity> filterList){
+    public DateFilter(String how, String who){
         this.who = who;
-        this.filterList = filterList;
         this.how = how;
     }
 
-    public  ArrayList<Activity> Execute() {
+    public  ArrayList<Activity> Execute(ArrayList<Activity> filterList) {
         ArrayList<Activity> newList = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         try{

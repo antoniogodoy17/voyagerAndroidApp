@@ -6,18 +6,18 @@ import voyager.voyager.models.Activity;
 
 public class CategoryFilter implements Filter {
     protected String who;
-    protected  ArrayList<Activity> filterList;
-    public CategoryFilter(String who,ArrayList<Activity> filterList){
+    public CategoryFilter(String who){
         this.who = who;
-        this.filterList = filterList;
     }
 
-    public ArrayList<Activity> Execute(){
+    public ArrayList<Activity> Execute(ArrayList<Activity> filterList){
 
         ArrayList<Activity> newList = new ArrayList<>();
 
+
         for(int i = 0; i < filterList.size(); i++){
-            if(filterList.get(i).getCategory() == who){
+
+            if(filterList.get(i).getCategory().equals(who)){
                 newList.add(filterList.get(i));
             }
         }

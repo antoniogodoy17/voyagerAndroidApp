@@ -7,17 +7,15 @@ import voyager.voyager.models.Activity;
 public class TypeFilter implements Filter {
 
     protected String who;
-    protected  ArrayList<Activity> filterList;
-    public TypeFilter(String who,ArrayList<Activity> filterList){
+    public TypeFilter(String who){
         this.who = who;
-        this.filterList = filterList;
     }
 
-    public  ArrayList<Activity> Execute(){
+    public  ArrayList<Activity> Execute(ArrayList<Activity> filterList){
         ArrayList<Activity> newList = new ArrayList<>();
 
         for(int i = 0; i < filterList.size(); i++){
-            if(filterList.get(i).getType() == who){
+            if(filterList.get(i).getType().equals(who)){
                 newList.add(filterList.get(i));
             }
         }

@@ -5,5 +5,5 @@ import java.util.ArrayList;
 import voyager.voyager.models.Activity;
 
 public interface Filter {
-    public ArrayList<Activity> Execute();
+    public ArrayList<Activity> Execute(ArrayList<Activity> filterList);
 }

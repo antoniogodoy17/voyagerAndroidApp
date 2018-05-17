@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import voyager.voyager.R;
 
@@ -32,7 +33,7 @@ public class FilterDialog extends DialogFragment {
     NoticeDialogListener mListener;
 
     public interface NoticeDialogListener {
-        void onFiltersApplied(ArrayList<String> filters);
+        void onFiltersApplied(HashMap<String,String> filters);
     }
 
     @Override
@@ -88,61 +89,48 @@ public class FilterDialog extends DialogFragment {
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> filters = new ArrayList<>();
+                //ArrayList<String> filters = new ArrayList<>();
+                HashMap<String,String> filters = new HashMap<>();
 
                 // Category Filter
                 if(rbtEntertainment.isChecked()){
-                    filters.add("Entretenimiento");
+                    filters.put("Categories","Entretenimiento");
+                }
+                else if(rbtSocial.isChecked()){
+                    filters.put("Categories","Social");
+                }
+                else if(rbtSports.isChecked()){
+                    filters.put("Categories","Deportivo");
+
+                }
+                else if(rbtCultural.isChecked()){
+                    filters.put("Categories","Cultural");
                 }
                 else{
-                    filters.add("");
-                }
-                if(rbtSocial.isChecked()){
-                    filters.add("Social");
-                }
-                else{
-                    filters.add("");
-                }
-                if(rbtSports.isChecked()){
-                    filters.add("Deportivo");
-                }
-                else{
-                    filters.add("");
-                }
-                if(rbtCultural.isChecked()){
-                    filters.add("Cultural");
-                }
-                else{
-                    filters.add("");
+                    filters.put("Categories","");
                 }
 
                 // Cost Filter
-                filters.add(String.valueOf(costBar.getProgress()+1));
+                filters.put("Cost",String.valueOf(costBar.getProgress()+1));
 
                 // Date Filter
-                filters.add(txtDate.getText().toString().replace('/','-'));
+                filters.put("Date",txtDate.getText().toString().replace('/','-'));
 
                 // Rating Filter
-                filters.add(String.valueOf(ratingBar.getProgress()+1));
+                filters.put("Rating",String.valueOf(ratingBar.getProgress()+1));
 
                 // Type Filter
                 if(rbtAttraction.isChecked()){
-                    filters.add("Atraccion");
+                    filters.put("Type","Atraccion");
+                }
+                else if(rbtRestaurant.isChecked()){
+                    filters.put("Type","Restaurante");
+                }
+                else if(rbtEvent.isChecked()){
+                    filters.put("Type","Evento");
                 }
                 else{
-                    filters.add("");
-                }
-                if(rbtRestaurant.isChecked()){
-                    filters.add("Restaurante");
-                }
-                else{
-                    filters.add("");
-                }
-                if(rbtEvent.isChecked()){
-                    filters.add("Evento");
-                }
-                else{
-                    filters.add("");
+                    filters.put("Type","");
                 }
 
                 mListener.onFiltersApplied(filters);

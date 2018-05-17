@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import voyager.voyager.models.Activity;
 
 public class Invoker {
+    //Class Invoker help us to interact with
     ArrayList<Activity> filteredActivities;
     ArrayList<Filter> filters = new ArrayList();
 
@@ -13,9 +14,9 @@ public class Invoker {
     }
 
     public ArrayList<Activity> applyFilters(){
-        filteredActivities = new ArrayList<>();
+
         for(int i = 0;i<filters.size();i++){
-           filteredActivities = filters.get(i).Execute();
+           filteredActivities = filters.get(i).Execute(filteredActivities);
         }
         cleanFilters();
         return filteredActivities;
@@ -25,6 +26,11 @@ public class Invoker {
         for(int i = 0;i<filters.size();i++){
             filters.remove(i);
         }
+    }
+
+    public void setFilteredActivities(ArrayList<Activity> mylist){
+        filteredActivities = mylist;
+
     }
 
 

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +42,12 @@ import voyager.voyager.R;
 import voyager.voyager.adapters.CardListAdapter;
 import voyager.voyager.models.Activity;
 import voyager.voyager.models.Card;
+import voyager.voyager.models.FilterInterface.CategoryFilter;
+import voyager.voyager.models.FilterInterface.CostFilter;
+import voyager.voyager.models.FilterInterface.DateFilter;
+import voyager.voyager.models.FilterInterface.Invoker;
+import voyager.voyager.models.FilterInterface.ScoreFilter;
+import voyager.voyager.models.FilterInterface.TypeFilter;
 import voyager.voyager.models.User;
 import voyager.voyager.ui.dialogs.FilterDialog;
 
@@ -67,8 +76,9 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
     // Variables Declarations
     private User user;
     private ArrayList<Card> cardsList;
-    private ArrayList<Activity> activities, activitiesBackup;
+    private ArrayList<Activity> activities, activitiesBackup, filteredActivities;
     boolean searched = false;
+    private Invoker myInvoker;
     //
 
     @Override
@@ -76,6 +86,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        myInvoker = new Invoker();
         // UI Initialization
         activities = new ArrayList<>();
         cardsList = new ArrayList<Card>();
@@ -168,12 +179,50 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
     }
 
     @Override
-    public void onFiltersApplied(ArrayList<String> filters) {
-        System.out.println("********************************");
-        for(String s:filters){
-            System.out.println(s);
+    public void onFiltersApplied(HashMap<String,String> filters) {
+        myInvoker.setFilteredActivities(filteredActivities);
+        for(Map.Entry m:filters.entrySet()){
+            switch(m.getKey().toString()){
+                case("Categories"):
+                    if(m.getValue() != ""){
+                        CategoryFilter myCategoryFilter = new CategoryFilter(m.getValue().toString());
+                        myInvoker.setFilter(myCategoryFilter);
+
+
+                    }
+                    break;
+                case("Cost"):
+                    if(Integer.parseInt(m.getValue().toString()) < 5){
+                        CostFilter myCostFilter = new CostFilter(m.getValue().toString());
+                        myInvoker.setFilter(myCostFilter);
+                    }
+                    break;
+                case("Date"):
+                    if(m.getValue() != ""){
+                        DateFilter myDateFilter = new DateFilter("Today",m.getValue().toString());
+                        myInvoker.setFilter(myDateFilter);
+                    }
+                    break;
+                case("Rating"):
+                    if(Integer.parseInt(m.getValue().toString()) > 1){
+                        ScoreFilter myScoreFilter = new ScoreFilter(m.getValue().toString());
+                        myInvoker.setFilter(myScoreFilter);
+                    }
+                    break;
+                case("Type"):
+                    if(m.getValue() != ""){
+                        TypeFilter myTypeFilter = new TypeFilter(m.getValue().toString());
+                        myInvoker.setFilter(myTypeFilter);
+                    }
+                    break;
+
+            }
         }
-        System.out.println("********************************");
+
+        filteredActivities = myInvoker.applyFilters();
+        displayFilteredActivities();
+        filteredActivities = activities;
+
     }
 
     @Override
@@ -217,6 +266,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             activities.add(ds.getValue(Activity.class));
         }
         activitiesBackup = activities;
+        filteredActivities = activities;
         sortDate();
         displayActivities();
     }
@@ -233,6 +283,22 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
     public void displayActivities(){
         cardsList.clear();
         for(Activity activity:activities){
+            cardsList.add(new Card(activity));
+        }
+        cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
+        listView.setAdapter(cardAdapter);
+        HomeActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                cardAdapter.notifyDataSetChanged();
+            }
+        });
+        progressDialog.dismiss();
+    }
+
+    public void displayFilteredActivities(){
+        cardsList.clear();
+        for(Activity activity:filteredActivities){
             cardsList.add(new Card(activity));
         }
         cardAdapter = new CardListAdapter(this, R.layout.card_layout, cardsList);
