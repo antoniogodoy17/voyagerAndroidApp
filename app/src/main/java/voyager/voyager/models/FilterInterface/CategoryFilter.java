@@ -5,8 +5,14 @@ import java.util.ArrayList;
 import voyager.voyager.models.Activity;
 
 public class CategoryFilter implements Filter {
+    protected String who;
+    protected  ArrayList<Activity> filterList;
+    public CategoryFilter(String who,ArrayList<Activity> filterList){
+        this.who = who;
+        this.filterList = filterList;
+    }
 
-    public ArrayList<Activity> Execute(String how, String who, ArrayList<Activity> filterList){
+    public ArrayList<Activity> Execute(){
 
         ArrayList<Activity> newList = new ArrayList<>();
 

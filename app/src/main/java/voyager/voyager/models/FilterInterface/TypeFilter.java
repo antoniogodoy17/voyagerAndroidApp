@@ -5,10 +5,23 @@ import java.util.ArrayList;
 import voyager.voyager.models.Activity;
 
 public class TypeFilter implements Filter {
-    public  ArrayList<Activity> Execute(String how, String who, ArrayList<Activity> filterList){
 
+    protected String who;
+    protected  ArrayList<Activity> filterList;
+    public TypeFilter(String who,ArrayList<Activity> filterList){
+        this.who = who;
+        this.filterList = filterList;
+    }
 
-        return filterList;
+    public  ArrayList<Activity> Execute(){
+        ArrayList<Activity> newList = new ArrayList<>();
+
+        for(int i = 0; i < filterList.size(); i++){
+            if(filterList.get(i).getType() == who){
+                newList.add(filterList.get(i));
+            }
+        }
+        return newList;
     }
 }
 

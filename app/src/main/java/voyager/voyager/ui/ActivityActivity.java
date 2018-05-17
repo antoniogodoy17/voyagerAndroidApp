@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -33,7 +34,7 @@ import voyager.voyager.models.Activity;
 import voyager.voyager.R;
 import voyager.voyager.models.User;
 
-public class ActivityActivity extends AppCompatActivity implements ListSelectorDialog.NoticeDialogListener, ListCreationDialog.NoticeDialogListener {
+public class ActivityActivity extends AppCompatActivity implements ListSelectorDialog.NoticeDialogListener, ListCreationDialog.NoticeDialogListener, ReviewDialog.NoticeDialogListener{
     // Database Setup
     private DatabaseReference userRef, listRef, activitiesReference;
     private ValueEventListener activityListener;
@@ -55,8 +56,7 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
     private ArrayList<HashMap<String,String>> favoriteList;
     private HashMap<String,ArrayList<HashMap<String,String>>> lists;
     private ArrayList<String> listNames;
-    ArrayList<HashMap<String,String>> ratings;
-    HashMap<String,String> userRating;
+    ArrayList<HashMap<String,String>> reviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,18 +68,25 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         Slidr.attach(this, config);
 
         activity = (Activity) getIntent().getSerializableExtra("activity");
-//        activity.updateScore();
         favoriteList = new ArrayList<>();
         listNames = new ArrayList<>();
         lists = new HashMap<>();
-        ratings = new ArrayList<>();
+        reviews = new ArrayList<>();
 
         activityScore = findViewById(R.id.activityScore);
         activityRating = findViewById(R.id.activityRating);
         activityRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                updateUserRating(firebaseAuth.getCurrentUser().getUid(), activity.get_id(),activityRating.getRating());
+                if(fromUser){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title",activity.getTitle());
+                    bundle.putDouble("rating", activityRating.getRating());
+
+                    ReviewDialog dialog = new ReviewDialog();
+                    dialog.setArguments(bundle);
+                    dialog.show(getSupportFragmentManager(),activity.getTitle());
+                }
             }
         });
         progressDialog = new ProgressDialog(this);
@@ -93,14 +100,17 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             public void onDataChange(DataSnapshot dataSnapshot) {
                 activity = dataSnapshot.getValue(Activity.class);
 
-                if(activity.getRatings() != null){
-                    ratings = activity.getRatings();
+                if(activity.getReviews() != null){
+                    reviews = activity.getReviews();
                     ActivityActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             activityScore.setText(Double.toString(Math.round(activity.getScore()*100.0)/100.0));
                         }
                     });
+                }
+                else{
+                    activityScore.setText("0");
                 }
                 activitiesReference.child("score").setValue(activity.getScore());
             }
@@ -208,6 +218,16 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         addToList(list,activity.get_id());
     }
 
+    @Override
+    public void onReviewCreated(String review) {
+        createReview(review,activityRating.getRating());
+    }
+
+    @Override
+    public void onReviewCanceled() {
+        activityRating.setRating(0);
+    }
+
     public void displayProgressDialog(int title, int message){
         progressDialog.setTitle(title);
         progressDialog.setMessage(getApplicationContext().getString(message));
@@ -232,18 +252,18 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             Picasso.get().load(R.drawable.logo512).into(activityHeader);
         }
 
-        if(ratings != null){
-            if(hashMapContains(ratings,FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                for (HashMap hm:ratings){
-                    if(hm.get("id").equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                        activityRating.setRating(Float.valueOf(hm.get("rating").toString()));
-                    }
-                }
-            }
-        }
-        else {
+//        if(ratings != null){
+//            if(hashMapContains(ratings,FirebaseAuth.getInstance().getCurrentUser().getUid())){
+//                for (HashMap hm:ratings){
+//                    if(hm.get("id").equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+//                        activityRating.setRating(Float.valueOf(hm.get("rating").toString()));
+//                    }
+//                }
+//            }
+//        }
+//        else {
             activityRating.setRating(0);
-        }
+//        }
 
 //        if (activity.getImages() != null) activityHeader.setImageURI();
         activityPrice.setText(makeCost(activity.getCost()));
@@ -350,32 +370,48 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         }
     }
 
-    public void updateUserRating(String userId, String activityId, final double rating){
-        HashMap<String,String> newRating = new HashMap<>();
-        newRating.put("id",userId);
-        newRating.put("rating",String.valueOf(rating));
+    public void createReview(String review, double rating){
+        HashMap<String,String> newReview = new HashMap<>();
+        newReview.put("id",FirebaseAuth.getInstance().getCurrentUser().getUid());
+        newReview.put("rating",String.valueOf(rating));
+        newReview.put("review",review);
 
-        if(ratings.isEmpty()){
-            ratings = new ArrayList<>();
-            ratings.add(newRating);
+        if(reviews.isEmpty()){
+            reviews = new ArrayList<>();
+            reviews.add(newReview);
         }
         else{
-            if(hashMapContains(ratings,userId)){
-                ArrayList<HashMap<String,String>> tempRatings = new ArrayList<>();
-                for(HashMap hm:ratings){
-                    if(!hm.get("id").equals(userId)){
-                        tempRatings.add(hm);
-                    }
-                }
-                tempRatings.add(newRating);
-                ratings = tempRatings;
-            }
-            else{
-                ratings.add(newRating);
-            }
+            reviews.add(newReview);
         }
+        activitiesReference.child("reviews").setValue(reviews);
+    }
 
-        activitiesReference.child("ratings").setValue(ratings);
+//    public void updateUserRating(String userId, final double rating){
+//        HashMap<String,String> newRating = new HashMap<>();
+//        newRating.put("id",userId);
+//        newRating.put("rating",String.valueOf(rating));
+//
+//        if(ratings.isEmpty()){
+//            ratings = new ArrayList<>();
+//            ratings.add(newRating);
+//        }
+//        else{
+//            if(hashMapContains(ratings,userId)){
+//                ArrayList<HashMap<String,String>> tempRatings = new ArrayList<>();
+//                for(HashMap hm:ratings){
+//                    if(!hm.get("id").equals(userId)){
+//                        tempRatings.add(hm);
+//                    }
+//                }
+//                tempRatings.add(newRating);
+//                ratings = tempRatings;
+//            }
+//            else{
+//                ratings.add(newRating);
+//            }
+//        }
+//
+//        activitiesReference.child("ratings").setValue(ratings);
 
 //        activitiesReference.addListenerForSingleValueEvent(new ValueEventListener() {
 //            @Override
@@ -399,5 +435,5 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
 //        });
 
 //        activitiesReference.setValue(newRating);
-    }
+//    }
 }
