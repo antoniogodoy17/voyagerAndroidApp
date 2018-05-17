@@ -1,4 +1,4 @@
-package voyager.voyager.ui;
+package voyager.voyager.ui.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -39,7 +39,7 @@ public class ListCreationDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String listName = txtListName.getText().toString();
-                if(!listName.isEmpty() && !listName.equals(getString(R.string.Add_list))){
+                if(!listName.isEmpty() && !listName.equals(getString(R.string.Add_list)) && !listName.equals("favorites") && !listName.matches("\\d+")){
                     mListener.onListCreated(listName);
                     ListCreationDialog.this.getDialog().cancel();
                 }

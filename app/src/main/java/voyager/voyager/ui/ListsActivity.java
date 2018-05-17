@@ -38,8 +38,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import voyager.voyager.adapters.ListsAdapter;
 import voyager.voyager.R;
 import voyager.voyager.models.User;
+import voyager.voyager.ui.dialogs.DeleteItemDialog;
 
-public class ListsActivity extends AppCompatActivity {
+public class ListsActivity extends AppCompatActivity implements DeleteItemDialog.NoticeDialogListener{
     // Database Declarations
     private DatabaseReference listsRef, userRef;
     private ValueEventListener listsListener;
@@ -141,6 +142,12 @@ public class ListsActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         // UI Initialization
     }
+
+    @Override
+    public void onDeleteItem(String listName) {
+        listsRef.child(listName).removeValue();
+    }
+
 
     @Override
     protected void onDestroy() {

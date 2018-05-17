@@ -1,16 +1,11 @@
 package voyager.voyager.models;
 
 import java.io.Serializable;
-import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-
-import voyager.voyager.ui.ListSelectorDialog;
 
 public class Activity implements Serializable, Comparator {
 

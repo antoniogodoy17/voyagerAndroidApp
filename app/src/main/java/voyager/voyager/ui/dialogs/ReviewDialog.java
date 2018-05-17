@@ -1,4 +1,4 @@
-package voyager.voyager.ui;
+package voyager.voyager.ui.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;

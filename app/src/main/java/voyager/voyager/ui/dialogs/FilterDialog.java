@@ -1,4 +1,4 @@
-package voyager.voyager.ui;
+package voyager.voyager.ui.dialogs;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -6,27 +6,20 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.EventListener;
 
 import voyager.voyager.R;
-import voyager.voyager.models.FilterInterface.Filter;
 
 public class FilterDialog extends DialogFragment {
     RadioButton rbtEntertainment,rbtSocial,rbtSports,rbtCultural,rbtAttraction,rbtRestaurant,rbtEvent;

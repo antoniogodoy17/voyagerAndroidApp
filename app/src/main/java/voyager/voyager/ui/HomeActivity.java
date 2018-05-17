@@ -40,6 +40,7 @@ import voyager.voyager.adapters.CardListAdapter;
 import voyager.voyager.models.Activity;
 import voyager.voyager.models.Card;
 import voyager.voyager.models.User;
+import voyager.voyager.ui.dialogs.FilterDialog;
 
 public class HomeActivity extends AppCompatActivity implements FilterDialog.NoticeDialogListener {
     // Database Declarations

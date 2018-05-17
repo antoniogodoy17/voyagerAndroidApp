@@ -5,8 +5,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +43,9 @@ import voyager.voyager.models.Activity;
 import voyager.voyager.models.Card;
 import voyager.voyager.models.User;
 import voyager.voyager.ui.ActivityActivity;
+import voyager.voyager.ui.ListActivity;
+import voyager.voyager.ui.ListsActivity;
+import voyager.voyager.ui.dialogs.DeleteItemDialog;
 
 public class CardListAdapter extends ArrayAdapter<Card> {
     private Context context;
@@ -159,31 +165,43 @@ public class CardListAdapter extends ArrayAdapter<Card> {
                     openCard(card.getActivity());
                 }
             });
-            holder.bookmarkIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    ArrayList<String> listsNamesArray = lists;
-//                    listsNamesArray.add("+");
-//
-//                    final CharSequence listsNames[] = lists.toArray(new CharSequence[lists.size()]);
-//
-//                    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-//                    dialog.setTitle("Selecciona una lista");
-//                    dialog.setItems(listsNames, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            Toast.makeText(context, listsNames[which], Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                    dialog.show();
-                }
-            });
-            holder.favIcon.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    toggleFavorite(card.getActivity());
-                }
-            });
+
+            if(context.getClass().equals(ListActivity.class)){
+                holder.image.setLongClickable(true);
+                holder.image.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("item",card.getActivity().get_id());
+
+                        FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+                        DeleteItemDialog dialog = new DeleteItemDialog();
+                        dialog.setArguments(bundle);
+                        dialog.show(manager,"Delete Item");
+                        return true;
+                    }
+                });
+                holder.title.setLongClickable(true);
+                holder.title.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("id",card.getActivity().get_id());
+
+                        FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+                        DeleteItemDialog dialog = new DeleteItemDialog();
+                        dialog.setArguments(bundle);
+                        dialog.show(manager,"Delete Item");
+                        return true;
+                    }
+                });
+            }
+//            holder.favIcon.setOnClickListener(new View.OnClickListener(){
+//                @Override
+//                public void onClick(View v) {
+//                    toggleFavorite(card.getActivity());
+//                }
+//            });
 
             return convertView;
         }catch (IllegalArgumentException e){

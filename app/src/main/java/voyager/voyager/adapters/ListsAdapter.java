@@ -2,6 +2,9 @@ package voyager.voyager.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +13,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 import voyager.voyager.R;
 import voyager.voyager.ui.ListActivity;
+import voyager.voyager.ui.dialogs.DeleteItemDialog;
 
 public class ListsAdapter extends BaseAdapter {
-
-    private static LayoutInflater inflater = null;
-
     private Context context;
     private int resource;
     private ArrayList<String> lists;
+    private int selectedPos;
 
     public ListsAdapter(Context context, int resource, ArrayList<String> lists){
         this.context = context;
@@ -30,7 +36,7 @@ public class ListsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(R.layout.list_layout, parent, false);
         final String list;
@@ -56,7 +62,13 @@ public class ListsAdapter extends BaseAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v){
-                Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("item",list);
+
+                FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+                DeleteItemDialog dialog = new DeleteItemDialog();
+                dialog.setArguments(bundle);
+                dialog.show(manager,"Delete Item");
                 return true;
             }
 

@@ -39,8 +39,9 @@ import voyager.voyager.models.Card;
 import voyager.voyager.adapters.CardListAdapter;
 import voyager.voyager.R;
 import voyager.voyager.models.User;
+import voyager.voyager.ui.dialogs.DeleteItemDialog;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements DeleteItemDialog.NoticeDialogListener {
     //UI initialization
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -93,6 +94,10 @@ public class ListActivity extends AppCompatActivity {
         drawerUsername = header.findViewById(R.id.drawerUsername);
         drawerProfilePicture = header.findViewById(R.id.drawerProfilePicture);
         btnEditList = findViewById(R.id.btnEditList);
+
+        if(listName.equals("favorites")){
+            btnEditList.setVisibility(View.GONE);
+        }
         btnEditList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +123,7 @@ public class ListActivity extends AppCompatActivity {
         // UI initialization
         editListDialog = new Dialog(ListActivity.this);
         editListDialog.setContentView(R.layout.edit_list_layout);
+        editListDialog.setTitle(R.string.Rename_List);
         txtListName = editListDialog.findViewById(R.id.txtListName);
         btnSaveChanges = editListDialog.findViewById(R.id.btnSaveChanges);
         btnCancel = editListDialog.findViewById(R.id.btnCancel);
@@ -162,7 +168,7 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String newListName = txtListName.getText().toString();
-                if (!newListName.equals("") && !newListName.equals(listName)){
+                if (!newListName.isEmpty() && !newListName.equals(listName) && !newListName.equals("favorites") && !newListName.matches("\\d+")){
                     final DatabaseReference newListReference = userRef.child("lists").child(newListName);
                     moveListChild(listReference, newListReference);
                     startActivity(getIntent().putExtra("list", newListName));
@@ -217,6 +223,22 @@ public class ListActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onDeleteItem(String id) {
+        ArrayList<HashMap<String,String>> temp = new ArrayList<>();
+
+        for (HashMap hm:favoriteList){
+           if(!hm.get("id").equals(id)){
+               temp.add(hm);
+           }
+        }
+
+        DatabaseReference listRef = FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lists").child(listName);
+
+        listRef.setValue(temp);
     }
 
     @Override

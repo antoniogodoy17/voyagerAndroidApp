@@ -1,12 +1,9 @@
 package voyager.voyager.ui;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -33,6 +30,9 @@ import java.util.HashMap;
 import voyager.voyager.models.Activity;
 import voyager.voyager.R;
 import voyager.voyager.models.User;
+import voyager.voyager.ui.dialogs.ListCreationDialog;
+import voyager.voyager.ui.dialogs.ListSelectorDialog;
+import voyager.voyager.ui.dialogs.ReviewDialog;
 
 public class ActivityActivity extends AppCompatActivity implements ListSelectorDialog.NoticeDialogListener, ListCreationDialog.NoticeDialogListener, ReviewDialog.NoticeDialogListener{
     // Database Setup
