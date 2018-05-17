@@ -237,23 +237,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void setUserMarker(LatLng latlng){
+
         if(latlng == null){
             Toast.makeText(this," Unable to Trace your location",Toast.LENGTH_SHORT).show();
         }
         else{
+            if(circle != null){
+                circle.remove();
+            }
             mMap.addMarker(new MarkerOptions().position(latlng).title("User"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
             mMap.animateCamera( CameraUpdateFactory.zoomTo( 11.0f ) );
 
-            circle = mMap.addCircle(new CircleOptions().center(latlng)
-
-                    .radius(10000)
+            circle = mMap.addCircle(new CircleOptions().center(latlng).radius(10000)
                     .strokeColor(Color.argb(0,0,0,0)).fillColor(Color.argb(80,128,203,196)));
+
         }
 
     }
 
     public void getActivitiesLatLon(){
+
         if(activitiesList.size() > 0 || activitiesList != null){
             for(int i = 0 ; i < activitiesList.size(); i++ ){
                 String lat = activitiesList.get(i).getLocation().get("latitude");
@@ -267,7 +271,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if(disResultado[0] < circle.getRadius()){
                     LatLng newMarker = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
-                    mMap.addMarker(new MarkerOptions().position(newMarker));
+                    mMap.addMarker(new MarkerOptions().position(newMarker).title(activitiesList.get(i).getTitle()));
                 }
             }
 
