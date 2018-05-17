@@ -5,7 +5,15 @@ import java.util.ArrayList;
 import voyager.voyager.models.Activity;
 
 public class DateFilter implements Filter {
-    public  ArrayList<Activity> Execute(String how, String who, ArrayList<Activity> filterList){
+
+    protected String who;
+    protected  ArrayList<Activity> filterList;
+    public DateFilter(String who,ArrayList<Activity> filterList){
+        this.who = who;
+        this.filterList = filterList;
+    }
+
+    public  ArrayList<Activity> Execute(){
 
 
         return filterList;
