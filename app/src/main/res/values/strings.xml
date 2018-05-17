@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Voyager</string>
+    <string name="Voyager" translatable="false">Voyager</string>
+    <string name="LogoDescription">Voyager Logo</string>
+    <string name="Log_In">Log In</string>
+    <string name="Enter_your_email">Enter your email</string>
+    <string name="api_key">AIzaSyBsomOW1I0hlz7g90ljSul7fWJ5rxqI394</string>
+    <string name="Last_name">Enter your last name</string>
+    <string name="Password">Password</string>
+    <string name="Enter_your_password">Enter your Password</string>
+    <string name="Confirm_your_password">Confirm your Password</string>
+    <string name="Password_match">Your passwords do not match</string>
+    <string name="Nationality">Select a nationality</string>
+    <string name="Dont_have_account">Don\'t have an account? Sign In.</string>
+    <string name="Profile_picture">Profile picture</string>
+    <string name="Enter_your_phone">Enter your phone number</string>
+    <string name="Enter_your_location">Enter your location</string>
+    <string name="Save_Changes">Save changes</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Name">Enter your name</string>
+    <string name="Birth_Date">Enter your birth date</string>
+    <string name="Sign_In">Sign In</string>
+    <string name="Already_have_account">Already have an account? Log In</string>
+    <string name="profile">Profile</string>
+    <string name="categories">Categories</string>
+    <string name="favorites">Favorites</string>
+    <string name="lists">My Lists</string>
+    <string name="Successful"> User Registered Successfully </string>
+    <string name="Error"> There was a problem registering user </string>
+    <string name="switch_location">Switch Location</string>
+    <string name="logout">Logout</string>
+    <string name="open" translatable="false">Open</string>
+    <string name="close" translatable="false">Close</string>
+    <string name="username">Username</string>
+    <string name="view_profile">View my profile</string>
+    <string name="home">Home</string>
+    <string name="Loading_events">Loading Events</string>
+    <string name="Please_Wait">Please Wait</string>
+    <string name="Logging_In">Logging In</string>
+    <string name="Creating_Account">Creating Account</string>
+    <string name="Error_occurred">Error Occurred</string>
+    <string name="Password_length">Password must contain at least 6 characters</string>
+    <string-array name="countriesList">
+        <item>Country</item>
+    </string-array>
+    <string name="title_activity_maps">Map</string>
+    <string name="nearMe">Near Me</string>
+    <string name="Loading_lists">Loading Your Lists</string>
+    <string name="list_name">List Name</string>
+    <string name="delete">Delete</string>
+    <string name="Select_list">Select a list</string>
+    <string name="Accept">Accept</string>
+    <string name="Add_list">Add new list</string>
+    <string name="Activity_added_to_list">Activity added to selected list</string>
+    <string name="Pleas_fill_listname">Please enter a list name</string>
+    <string name="Activity_already_on_list">This activity is already on the selected list</string>
+    <string name="Activity_removed_from_list">Activity removed from list</string>
+    <string name="Average_score">Average Score</string>
+</resources>
