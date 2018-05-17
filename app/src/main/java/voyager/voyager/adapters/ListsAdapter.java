@@ -53,6 +53,14 @@ public class ListsAdapter extends BaseAdapter {
                 openList(list);
             }
         });
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v){
+                Toast.makeText(context, list, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
+        });
 
         return convertView;
     }

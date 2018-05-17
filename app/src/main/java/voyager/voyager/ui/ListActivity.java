@@ -162,7 +162,7 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String newListName = txtListName.getText().toString();
-                if (!newListName.equals("") | !newListName.equals(listName)){
+                if (!newListName.equals("") && !newListName.equals(listName)){
                     final DatabaseReference newListReference = userRef.child("lists").child(newListName);
                     moveListChild(listReference, newListReference);
                     startActivity(getIntent().putExtra("list", newListName));
