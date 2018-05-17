@@ -158,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="@color/colorSecondary"
-                android:text="@string/Rest" />
+                android:text="@string/Restaurant" />
 
             <CheckBox
                 android:id="@+id/checkBoxEvent"
