@@ -14,7 +14,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,8 @@ public class FilterDialog extends DialogFragment {
     RadioButton rbtEntertainment,rbtSocial,rbtSports,rbtCultural,rbtAttraction,rbtRestaurant,rbtEvent;
     SeekBar costBar,ratingBar;
     Button btnApply, btnCancel;
+    ImageButton btnClose;
+    RadioGroup categoryGroup,typeGroup;
     TextView txtDate;
     DatePickerDialog datePicker;
     NoticeDialogListener mListener;
@@ -47,10 +51,12 @@ public class FilterDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.filters_layout, null);
         builder.setView(view);
 
+        categoryGroup = view.findViewById(R.id.categoryGroup);
         rbtEntertainment = view.findViewById(R.id.checkBoxEntertainment);
         rbtSocial = view.findViewById(R.id.checkBoxSocial);
         rbtSports = view.findViewById(R.id.checkBoxSports);
         rbtCultural = view.findViewById(R.id.checkBoxCultural);
+        typeGroup = view.findViewById(R.id.typeGroup);
         rbtAttraction = view.findViewById(R.id.checkBoxAttraction);
         rbtRestaurant = view.findViewById(R.id.checkBoxRest);
         rbtEvent = view.findViewById(R.id.checkBoxEvent);
@@ -154,12 +160,28 @@ public class FilterDialog extends DialogFragment {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clear();
+            }
+        });
+        btnClose = view.findViewById(R.id.btnClose);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 FilterDialog.this.dismiss();
             }
         });
 
 
+
         return builder.create();
+    }
+
+    private void clear(){
+        categoryGroup.clearCheck();
+        typeGroup.clearCheck();
+        txtDate.setText("");
+        costBar.setProgress(4);
+        ratingBar.setProgress(0);
     }
 
     @Override

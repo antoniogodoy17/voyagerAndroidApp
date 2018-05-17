@@ -30,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import voyager.voyager.R;
@@ -140,8 +142,8 @@ public class SignInActivity extends AppCompatActivity {
         for ( int i = 0; i < countries.size(); i++){
             countriesList.add(countries.get(i).get("nombre_pais_int"));
         }
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, countriesList);
+        Collections.sort(countriesList,String.CASE_INSENSITIVE_ORDER);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, countriesList);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
         spnnationality.setAdapter(adapter);
         progressDialog.dismiss();
