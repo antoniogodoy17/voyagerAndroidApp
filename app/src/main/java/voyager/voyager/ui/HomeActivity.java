@@ -322,6 +322,21 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             searched = false;
             displayActivities();
         }
+        if(categorySelected != null){
+
+            categorySelected = null;
+            if(citySelected != null){
+                myInvoker.setFilteredActivities(activities);
+                CityFilter myCityFilter = new CityFilter(citySelected);
+                myInvoker.setFilter(myCityFilter);
+                filteredActivities = myInvoker.applyFilters();
+                displayFilteredActivities();
+            }
+            else{
+                displayActivities();
+            }
+
+        }
         else {
             super.onBackPressed();
         }
