@@ -1,16 +1,25 @@
 package voyager.voyager.ui;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.Address;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,10 +40,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -76,12 +88,14 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
     private Dialog filtersDialog;
     //
     // Variables Declarations
+    private static final int REQUEST_LOCATION = 1;
     private User user;
     private ArrayList<Card> cardsList;
     private ArrayList<Activity> activities, activitiesBackup, filteredActivities;
     boolean searched = false;
     private Invoker myInvoker;
     private String categorySelected, citySelected;
+    private  Location location;
 
     //
 
@@ -91,6 +105,62 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         setContentView(R.layout.activity_home);
         categorySelected = null;
         citySelected = null;
+        //Get Location and current City
+
+
+        //TO get the location,manifest file is added with 2 permissions
+        //Location Manager is used to figure out which location provider needs to be used.
+        LocationManager locationManager=(LocationManager)getSystemService(LOCATION_SERVICE);
+
+
+        //Best location provider is decided by the criteria
+        Criteria criteria=new Criteria();
+        //location manager will take the best location from the criteria
+        locationManager.getBestProvider(criteria, true);
+
+        //nce you know the name of the LocationProvider, you can call getLastKnownPosition() to find out where you were recently.
+
+        if (ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (HomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
+        } else {
+            location=locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
+        }
+
+
+        Geocoder gcd=new Geocoder(getBaseContext(), Locale.getDefault());
+
+        Log.d("Tag","1");
+        List<Address> addresses;
+
+        try {
+            addresses=gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+            if(addresses.size()>0)
+
+            {
+                //while(locTextView.getText().toString()=="Location") {
+                citySelected = addresses.get(0).getLocality().toString();
+                System.out.println("****************** --->" + citySelected);
+                // }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+
+
+
+        //End Location and Current City
+
+
+
+
+
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             if(bundle.containsKey("Category")) {
