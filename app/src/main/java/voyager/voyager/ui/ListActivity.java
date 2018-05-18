@@ -183,8 +183,10 @@ public class ListActivity extends AppCompatActivity implements DeleteItemDialog.
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeList(listReference);
-                editListDialog.cancel();
+
+                //removeList(listReference);
+                //editListDialog.cancel();
+                txtListName.setText("");
             }
         });
 
