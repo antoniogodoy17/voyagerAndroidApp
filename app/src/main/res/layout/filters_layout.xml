@@ -129,7 +129,7 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
                 android:enabled="false"
-                android:text="@string/rating"
+                android:text="@string/Rating"
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight"
                 android:textSize="24sp"

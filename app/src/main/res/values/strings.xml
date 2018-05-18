@@ -53,7 +53,7 @@
     <string name="Accept">Accept</string>
     <string name="Add_list">Add new list</string>
     <string name="Activity_added_to_list">Activity added to selected list</string>
-    <string name="Pleas_fill_listname">Please enter a list name</string>
+    <string name="Pleas_fill_listname">Please enter a valid list name</string>
     <string name="Activity_already_on_list">This activity is already on the selected list</string>
     <string name="Activity_removed_from_list">Activity removed from list</string>
     <string name="Average_score">Average Score</string>
@@ -63,7 +63,6 @@
     <string name="Restaurant">Restaurant</string>
     <string name="Attraction">Attraction</string>
     <string name="type">Type</string>
-    <string name="rating">Rating</string>
     <string name="Enter_date">Enter date</string>
     <string name="Cultural">Cultural</string>
     <string name="Sports">Sports</string>
