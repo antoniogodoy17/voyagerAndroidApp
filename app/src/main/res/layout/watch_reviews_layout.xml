@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:theme="@style/Base.V7.Widget.AppCompat.EditText"
+            android:textSize="24sp"
+            android:text="@string/Reviews"
+            android:textColor="@color/colorSecondary"
+            android:id="@+id/reviewsTitle"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_close_black_24dp"
+            android:id="@+id/btnCloseReviews"
+            android:paddingBottom="15dp"
+            android:paddingRight="10dp"
+            app:layout_constraintEnd_toEndOf="@id/reviewsTitle"
+            app:layout_constraintBottom_toBottomOf="@id/reviewsTitle"/>
+    </android.support.constraint.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="0dp"
+            android:divider="@null"
+            android:id="@+id/reviewsListView">
+
+        </ListView>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnShowAllReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/colorSecondary"
+        android:text="@string/Show_All_Reviews"
+        android:textColor="@color/white" />
+
+</LinearLayout>

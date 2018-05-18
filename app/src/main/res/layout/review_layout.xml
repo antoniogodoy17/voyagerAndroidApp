@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="5dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="5dp"
+        app:cardBackgroundColor="#f7f7f7">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/reviewHeader"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:padding="18sp"
+                    android:layout_below="@id/CardImage"
+                    android:textColor="@color/colorSecondaryDark"
+                    android:gravity="center_vertical"
+                    android:id="@+id/reviewRatingTitle"
+                    android:text="@string/Rating"/>
+
+                <RatingBar
+                    android:id="@+id/reviewRatingBar"
+                    android:theme="@style/RatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="3dp"
+                    android:numStars="5"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:stepSize="0.5"
+                    android:layout_alignStart="@+id/reviewRatingTitle"
+                    android:isIndicator="true"
+                    android:clickable="false"/>
+            </RelativeLayout>
+
+            <View android:id="@+id/separator"
+                android:background="@color/colorPrimaryDark"
+                android:layout_width="250dp"
+                android:layout_below="@id/reviewHeader"
+                android:layout_height="1dp"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/separator"
+                android:id="@+id/reviewTimestamp"
+                android:textSize="12sp"
+                android:textColor="@color/colorSecondaryLight"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="10dp"
+                android:text="02/05/2018"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_below="@+id/reviewTimestamp"
+                android:id="@+id/reviewText"
+                android:textSize="14sp"
+                android:textColor="@color/colorSecondaryDark" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -27,12 +27,15 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import voyager.voyager.adapters.ReviewAdapter;
 import voyager.voyager.models.Activity;
 import voyager.voyager.R;
+import voyager.voyager.models.Review;
 import voyager.voyager.models.User;
 import voyager.voyager.ui.dialogs.ListCreationDialog;
 import voyager.voyager.ui.dialogs.ListSelectorDialog;
 import voyager.voyager.ui.dialogs.ReviewDialog;
+import voyager.voyager.ui.dialogs.WatchReviewsDialog;
 
 public class ActivityActivity extends AppCompatActivity implements ListSelectorDialog.NoticeDialogListener, ListCreationDialog.NoticeDialogListener, ReviewDialog.NoticeDialogListener{
     // Database Setup
@@ -47,7 +50,7 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
     RatingBar activityRating;
     ImageButton favButton;
     ImageButton bookmarkButton;
-    Button closeButton;
+    Button closeButton, btnActivityShowReviews;
     ProgressDialog progressDialog;
     //
     // Variables Setup
@@ -131,6 +134,14 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        btnActivityShowReviews = findViewById(R.id.btnActivityShowReviews);
+        btnActivityShowReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WatchReviewsDialog dialog = new WatchReviewsDialog();
+                dialog.show(getSupportFragmentManager(),"Watch reviews");
             }
         });
         favButton = findViewById(R.id.favButton);

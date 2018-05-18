@@ -65,7 +65,7 @@
                     android:numStars="5"
                     android:scaleX="0.5"
                     android:scaleY="0.5"
-                    android:stepSize="1"
+                    android:stepSize="0.5"
                     android:layout_marginEnd="-25dp"/>
 
                 <ImageButton
@@ -115,23 +115,49 @@
             </TableRow>
 
             <TextView
-                android:id="@+id/activityDescription"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:text="@string/Activity_Description"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:drawablePadding="10dp"
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="18sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+
+            <TextView
+                android:id="@+id/activityDescription"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/colorSecondary"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/activityDate"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:text="@string/Date_Schedule"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="18sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+
+            <TextView
+                android:id="@+id/activityDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
                 android:backgroundTint="@color/colorSecondary"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_date_range_black_24dp"
@@ -140,31 +166,96 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/activityLocation"
-                android:layout_width="300dp"
+                android:id="@+id/txtCategories"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:text="@string/categories"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:drawablePadding="10dp"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="18sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+
+            <TextView
+                android:id="@+id/activityCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorSecondary"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight"
                 android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Location"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="18sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
 
             <!--<Map -->
             <!--/>-->
 
             <TextView
-                android:id="@+id/activityCategory"
-                android:layout_width="300dp"
+                android:id="@+id/activityLocation"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="20dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/colorSecondary"
                 android:drawablePadding="10dp"
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight"
                 android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tags"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="18sp"
+                android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
+
+            <TextView
+                android:id="@+id/activityTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorSecondary"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorSecondary"
+                android:textColorHint="@color/colorSecondaryLight"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btnActivityShowReviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="@color/colorSecondary"
+                android:text="@string/View_Reviews"
+                android:textColor="@color/white" />
 
         </LinearLayout>
     </ScrollView>
