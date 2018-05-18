@@ -58,11 +58,11 @@ public class SwitchLocationActivity extends AppCompatActivity {// Database Initi
 
         NavigationView navigationView = findViewById(R.id.navigationView);
         cities = new ArrayList<>();
-        cities.add(new City("Ensenada", "https://plentyofmish.files.wordpress.com/2016/09/img_4853.jpg?w=1200"));
-        cities.add(new City("Mexicali", "https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2F1HRhMs9DyFgBOe98jPLLP5ouG162.jpg?alt=media&token=c2968c64-c5d5-4680-9f45-08767a45379c"));
-        cities.add(new City("Rosarito", "https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2F1HRhMs9DyFgBOe98jPLLP5ouG162.jpg?alt=media&token=c2968c64-c5d5-4680-9f45-08767a45379c"));
-        cities.add(new City("Tecate", "https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2F1HRhMs9DyFgBOe98jPLLP5ouG162.jpg?alt=media&token=c2968c64-c5d5-4680-9f45-08767a45379c"));
-        cities.add(new City("Tijuana", "https://media-cdn.tripadvisor.com/media/photo-s/0e/3c/5f/5f/tijuana-sign-on-the-beach.jpg"));
+        cities.add(new City("Ensenada", "http://www.frontera.info/Edicionenlinea/Fotos/Noticias/1394823-N.JPG"));
+        cities.add(new City("Mexicali", "https://elsouvenir.com/wp-content/uploads/2017/02/Mexicali-Baja-California.jpg"));
+        cities.add(new City("Rosarito", "https://i.pinimg.com/originals/03/3a/63/033a63fab4de5c3b0a5bda64df817c50.jpg"));
+        cities.add(new City("Tecate", "https://cadenanoticias.com/assets/article/00013484/20171113_WYEKT9ivpx.jpg"));
+        cities.add(new City("Tijuana", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROMeQe25AefeeUoUFusutJMzRTThScc-5a3Yp-CzxFaAVgvHfC4w"));
         cityAdapter = new CityAdapter(getApplicationContext(), R.layout.city_layout,cities);
 //        for(City c : cities){
 //            cityAdapter.add(c);
