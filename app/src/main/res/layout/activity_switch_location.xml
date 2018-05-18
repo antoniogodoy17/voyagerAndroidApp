@@ -7,6 +7,17 @@
     tools:context=".ui.SwitchLocationActivity"
     android:id="@+id/drawer">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/switchLocationListView">
+
+        </ListView>
+    </FrameLayout>
+
     <android.support.design.widget.NavigationView
         android:id="@+id/navigationView"
         app:headerLayout="@layout/drawerheader"

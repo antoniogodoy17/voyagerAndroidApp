@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.support.v7.widget.SearchView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -79,7 +80,8 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
     private ArrayList<Activity> activities, activitiesBackup, filteredActivities;
     boolean searched = false;
     private Invoker myInvoker;
-    private String categorySelected;
+    private String categorySelected, citySelected;
+
     //
 
     @Override
@@ -87,10 +89,20 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         categorySelected = null;
+        citySelected = null;
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            categorySelected = bundle.getString("Category");
+            if(bundle.containsKey("Category")){
+                categorySelected = bundle.getString("Category");
+            }
+            if(bundle.containsKey("City")){
+                citySelected = bundle.getString("City");
+                Toast.makeText(this, citySelected, Toast.LENGTH_SHORT).show();
+            }
+
+
         }
+
 
         myInvoker = new Invoker();
         filteredActivities = new ArrayList<>();

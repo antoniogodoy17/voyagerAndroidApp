@@ -23,7 +23,7 @@
     <item
         android:id="@+id/nearMeMenu"
         android:title="@string/nearMe"
-        android:icon="@drawable/ic_edit_location_black_24dp"/>
+        android:icon="@drawable/ic_nearme"/>
     <item
         android:id="@+id/logoutMenu"
         android:title="@string/logout"

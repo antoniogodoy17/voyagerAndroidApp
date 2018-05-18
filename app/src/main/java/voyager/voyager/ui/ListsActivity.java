@@ -293,6 +293,9 @@ public class ListsActivity extends AppCompatActivity implements DeleteItemDialog
             case R.id.switchLocationMenu:
                 intentClass = SwitchLocationActivity.class;
                 break;
+            case R.id.nearMeMenu:
+                intentClass = MapsActivity.class;
+                break;
             case R.id.logoutMenu:
                 intentClass = LogInActivity.class;
                 firebaseAuth.signOut();
@@ -300,11 +303,11 @@ public class ListsActivity extends AppCompatActivity implements DeleteItemDialog
         }
         if(intentClass != this.getClass() && intentClass != null){
             Intent nextView = new Intent(this,intentClass);
-            if(intentClass == HomeActivity.class){
-                nextView.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            if(intentClass == ListActivity.class){
+                nextView.putExtra("list","favorites");
             }
             startActivity(nextView);
-            finish();
+            drawerLayout.closeDrawers();
         }
     }
 
