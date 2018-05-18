@@ -44,6 +44,7 @@ import voyager.voyager.adapters.CardListAdapter;
 import voyager.voyager.models.Activity;
 import voyager.voyager.models.Card;
 import voyager.voyager.models.FilterInterface.CategoryFilter;
+import voyager.voyager.models.FilterInterface.CityFilter;
 import voyager.voyager.models.FilterInterface.CostFilter;
 import voyager.voyager.models.FilterInterface.DateFilter;
 import voyager.voyager.models.FilterInterface.Invoker;
@@ -92,10 +93,10 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         citySelected = null;
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            if(bundle.containsKey("Category")){
+            if(bundle.containsKey("Category")) {
                 categorySelected = bundle.getString("Category");
             }
-            if(bundle.containsKey("City")){
+            else if(bundle.containsKey("City")){
                 citySelected = bundle.getString("City");
                 Toast.makeText(this, citySelected, Toast.LENGTH_SHORT).show();
             }
@@ -291,6 +292,13 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             myInvoker.setFilteredActivities(filteredActivities);
             CategoryFilter myCategoryFilter = new CategoryFilter(categorySelected);
             myInvoker.setFilter(myCategoryFilter);
+            filteredActivities = myInvoker.applyFilters();
+            displayFilteredActivities();
+        }
+        else if(citySelected != null){
+            myInvoker.setFilteredActivities(filteredActivities);
+            CityFilter myCityFilter = new CityFilter(citySelected);
+            myInvoker.setFilter(myCityFilter);
             filteredActivities = myInvoker.applyFilters();
             displayFilteredActivities();
         }
