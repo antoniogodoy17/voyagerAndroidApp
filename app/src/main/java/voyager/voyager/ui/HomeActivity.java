@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
     private ArrayList<Activity> activities, activitiesBackup, filteredActivities;
     boolean searched = false;
     private Invoker myInvoker;
-    private String categorySelected, citySelected;
+    private String categorySelected, citySelected,currentCity;
     private  Location location;
 
     //
@@ -105,6 +105,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         setContentView(R.layout.activity_home);
         categorySelected = null;
         citySelected = null;
+        currentCity = null;
         //Get Location and current City
 
 
@@ -142,8 +143,8 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
 
             {
                 //while(locTextView.getText().toString()=="Location") {
-                citySelected = addresses.get(0).getLocality().toString();
-                System.out.println("****************** --->" + citySelected);
+                currentCity = addresses.get(0).getLocality().toString();
+                System.out.println("****************** --->" + currentCity);
                 // }
             }
 
@@ -270,14 +271,13 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
 
     @Override
     public void onFiltersApplied(HashMap<String,String> filters) {
-        myInvoker.setFilteredActivities(filteredActivities);
+        myInvoker.setFilteredActivities(activities);
         for(Map.Entry m:filters.entrySet()){
             switch(m.getKey().toString()){
                 case("Categories"):
                     if(m.getValue() != ""){
                         CategoryFilter myCategoryFilter = new CategoryFilter(m.getValue().toString());
                         myInvoker.setFilter(myCategoryFilter);
-
 
                     }
                     break;
@@ -325,9 +325,11 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         if(categorySelected != null){
 
             categorySelected = null;
-            if(citySelected != null){
+
+            if(currentCity != null){
                 myInvoker.setFilteredActivities(activities);
-                CityFilter myCityFilter = new CityFilter(citySelected);
+
+                CityFilter myCityFilter = new CityFilter(currentCity);
                 myInvoker.setFilter(myCityFilter);
                 filteredActivities = myInvoker.applyFilters();
                 displayFilteredActivities();
@@ -337,8 +339,38 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             }
 
         }
+        else if(citySelected != null){
+            if(!citySelected.equals(currentCity)){
+                citySelected = null;
+                if(currentCity != null){
+                    myInvoker.setFilteredActivities(activities);
+
+                    CityFilter myCityFilter = new CityFilter(currentCity);
+                    myInvoker.setFilter(myCityFilter);
+                    filteredActivities = myInvoker.applyFilters();
+                    displayFilteredActivities();
+                }
+                else{
+                    displayActivities();
+                }
+            }
+
+
+
+        }
+
         else {
-            super.onBackPressed();
+            if(currentCity != null){
+                myInvoker.setFilteredActivities(activities);
+
+                CityFilter myCityFilter = new CityFilter(currentCity);
+                myInvoker.setFilter(myCityFilter);
+                filteredActivities = myInvoker.applyFilters();
+                displayFilteredActivities();
+            }
+            else{
+                displayActivities();
+            }
         }
     }
 
@@ -374,19 +406,26 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         filteredActivities = activities;
         sortDate();
         if(categorySelected!= null){
-            myInvoker.setFilteredActivities(filteredActivities);
+            myInvoker.setFilteredActivities(activities);
             CategoryFilter myCategoryFilter = new CategoryFilter(categorySelected);
             myInvoker.setFilter(myCategoryFilter);
             filteredActivities = myInvoker.applyFilters();
             displayFilteredActivities();
-        }
-        else if(citySelected != null){
-            myInvoker.setFilteredActivities(filteredActivities);
+        }else if(citySelected != null){
+            myInvoker.setFilteredActivities(activities);
             CityFilter myCityFilter = new CityFilter(citySelected);
             myInvoker.setFilter(myCityFilter);
             filteredActivities = myInvoker.applyFilters();
             displayFilteredActivities();
         }
+        else if(currentCity != null){
+            myInvoker.setFilteredActivities(activities);
+            CityFilter myCityFilter = new CityFilter(currentCity);
+            myInvoker.setFilter(myCityFilter);
+            activities = myInvoker.applyFilters();
+            displayActivities();
+        }
+
         else{
             displayActivities();
         }
