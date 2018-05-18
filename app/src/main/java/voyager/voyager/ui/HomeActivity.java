@@ -79,14 +79,21 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
     private ArrayList<Activity> activities, activitiesBackup, filteredActivities;
     boolean searched = false;
     private Invoker myInvoker;
+    private String categorySelected;
     //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        categorySelected = null;
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            categorySelected = bundle.getString("Category");
+        }
 
         myInvoker = new Invoker();
+        filteredActivities = new ArrayList<>();
         // UI Initialization
         activities = new ArrayList<>();
         cardsList = new ArrayList<Card>();
@@ -268,7 +275,16 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         activitiesBackup = activities;
         filteredActivities = activities;
         sortDate();
-        displayActivities();
+        if(categorySelected!= null){
+            myInvoker.setFilteredActivities(filteredActivities);
+            CategoryFilter myCategoryFilter = new CategoryFilter(categorySelected);
+            myInvoker.setFilter(myCategoryFilter);
+            filteredActivities = myInvoker.applyFilters();
+            displayFilteredActivities();
+        }
+        else{
+            displayActivities();
+        }
     }
 
     private void sortDate(){

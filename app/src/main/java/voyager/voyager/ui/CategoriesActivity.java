@@ -61,9 +61,9 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
 
         categories = new ArrayList<>();
-        categories.add(new Category("Titulo 1","Descripcion 1","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2F1HRhMs9DyFgBOe98jPLLP5ouG162.jpg?alt=media&token=c2968c64-c5d5-4680-9f45-08767a45379c"));
-        categories.add(new Category("Titulo 2","Descripcion 2","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FhIlAKCaUzCQ4i6KxgN2vcW2YQlo1.jpg?alt=media&token=9f16f20f-752a-49a8-a1cd-32e0e595d0a0"));
-        categories.add(new Category("Titulo 3","Descripcion 3","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FhIlAKCaUzCQ4i6KxgN2vcW2YQlo1.jpg?alt=media&token=9f16f20f-752a-49a8-a1cd-32e0e595d0a0"));
+        categories.add(new Category("Entretenimiento","Descripcion 1","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2F1HRhMs9DyFgBOe98jPLLP5ouG162.jpg?alt=media&token=c2968c64-c5d5-4680-9f45-08767a45379c"));
+        categories.add(new Category("Deportivo","Descripcion 2","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FhIlAKCaUzCQ4i6KxgN2vcW2YQlo1.jpg?alt=media&token=9f16f20f-752a-49a8-a1cd-32e0e595d0a0"));
+        categories.add(new Category("Social","Descripcion 3","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FhIlAKCaUzCQ4i6KxgN2vcW2YQlo1.jpg?alt=media&token=9f16f20f-752a-49a8-a1cd-32e0e595d0a0"));
         slidePager = findViewById(R.id.slidePager);
         dotsLayout = findViewById(R.id.dotsLayout);
         sliderAdapter = new SliderAdapter(CategoriesActivity.this,categories);

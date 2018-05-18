@@ -19,6 +19,7 @@ public class CategoryFilter implements Filter {
 
             if(filterList.get(i).getCategory().equals(who)){
                 newList.add(filterList.get(i));
+                System.out.println("+++++++++++++++++++++++++++++++++");
             }
         }
         return newList;

@@ -2,7 +2,9 @@ package voyager.voyager.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -18,7 +20,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import voyager.voyager.R;
+import voyager.voyager.models.Activity;
 import voyager.voyager.models.Category;
+import voyager.voyager.ui.HomeActivity;
 
 public class SliderAdapter extends PagerAdapter {
     Context context;
@@ -59,7 +63,10 @@ public class SliderAdapter extends PagerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, categories.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, HomeActivity.class);
+                i.putExtra("Category", categories.get(position).getTitle());
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(i);
             }
         });
         return view;
