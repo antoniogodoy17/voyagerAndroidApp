@@ -94,6 +94,7 @@ public class WatchReviewsDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Intent reviews = new Intent(getContext(), ReviewsActivity.class);
+                reviews.putExtra("activity",myActivity);
                 startActivity(reviews);
                 WatchReviewsDialog.this.dismiss();
             }
