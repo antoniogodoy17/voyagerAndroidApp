@@ -1,5 +1,6 @@
 package voyager.voyager.ui.dialogs;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -33,6 +34,7 @@ import voyager.voyager.R;
 import voyager.voyager.adapters.ReviewAdapter;
 import voyager.voyager.models.Activity;
 import voyager.voyager.models.Review;
+import voyager.voyager.ui.ReviewsActivity;
 
 public class WatchReviewsDialog extends DialogFragment {
     ImageButton btnCloseReviews;
@@ -91,7 +93,8 @@ public class WatchReviewsDialog extends DialogFragment {
         btnShowAllReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // start activity to watch all reviews
+                Intent reviews = new Intent(getContext(), ReviewsActivity.class);
+                startActivity(reviews);
                 WatchReviewsDialog.this.dismiss();
             }
         });
