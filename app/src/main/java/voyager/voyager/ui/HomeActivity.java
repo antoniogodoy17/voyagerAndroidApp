@@ -169,6 +169,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             }
             else if(bundle.containsKey("City")){
                 citySelected = bundle.getString("City");
+                currentCity = citySelected;
                 Toast.makeText(this, citySelected, Toast.LENGTH_SHORT).show();
             }
 
@@ -339,25 +340,6 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             }
 
         }
-        else if(citySelected != null){
-            if(!citySelected.equals(currentCity)){
-                citySelected = null;
-                if(currentCity != null){
-                    myInvoker.setFilteredActivities(activities);
-
-                    CityFilter myCityFilter = new CityFilter(currentCity);
-                    myInvoker.setFilter(myCityFilter);
-                    filteredActivities = myInvoker.applyFilters();
-                    displayFilteredActivities();
-                }
-                else{
-                    displayActivities();
-                }
-            }
-
-
-
-        }
 
         else {
             if(currentCity != null){
@@ -416,6 +398,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             CityFilter myCityFilter = new CityFilter(citySelected);
             myInvoker.setFilter(myCityFilter);
             filteredActivities = myInvoker.applyFilters();
+            activities = filteredActivities;
             displayFilteredActivities();
         }
         else if(currentCity != null){
