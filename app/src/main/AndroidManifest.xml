@@ -86,10 +86,11 @@
         <activity
             android:name=".ui.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <!--<activity-->
-            <!--android:name=".ui.EditListActivity"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar.SliderActivityTheme"/>-->
+        <!-- <activity -->
+        <!-- android:name=".ui.EditListActivity" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/Theme.AppCompat.Light.NoActionBar.SliderActivityTheme"/> -->
+        <activity android:name=".ui.ReviewsActivity"></activity>
     </application>
 
 </manifest>

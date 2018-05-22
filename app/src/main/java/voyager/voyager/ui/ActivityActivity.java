@@ -141,6 +141,9 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             @Override
             public void onClick(View v) {
                 WatchReviewsDialog dialog = new WatchReviewsDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString("id",activity.get_id());
+                dialog.setArguments(bundle);
                 dialog.show(getSupportFragmentManager(),"Watch reviews");
             }
         });
