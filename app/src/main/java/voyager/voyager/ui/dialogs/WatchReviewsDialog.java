@@ -21,12 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -45,7 +41,7 @@ public class WatchReviewsDialog extends DialogFragment {
     Activity myActivity;
     private FirebaseDatabase database;
     private DatabaseReference activityRef;
-    private Date date;
+//    private Date date;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -80,7 +76,7 @@ public class WatchReviewsDialog extends DialogFragment {
         builder.setView(view);
 
         // ArrayList<Review>
-        date = Calendar.getInstance().getTime();
+//        date = Calendar.getInstance().getTime();
 
 
 
@@ -111,8 +107,14 @@ public class WatchReviewsDialog extends DialogFragment {
     }
 
     protected void loadReviews(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
         for(HashMap<String,String> hm:myActivity.getReviews()){
-            reviews.add(new Review(hm.get("review"),Double.parseDouble(hm.get("rating")),date));
+            try{
+                Date activityDate = sdf.parse(hm.get("date"));
+                reviews.add(new Review(hm.get("review"),Double.parseDouble(hm.get("rating")),activityDate));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         reviewAdapter = new ReviewAdapter(getContext(),R.layout.review_layout,reviews);
         reviewsListView.setAdapter(reviewAdapter);

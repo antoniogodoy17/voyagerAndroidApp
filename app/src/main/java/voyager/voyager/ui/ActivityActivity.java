@@ -24,8 +24,15 @@ import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrPosition;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import voyager.voyager.adapters.ReviewAdapter;
 import voyager.voyager.models.Activity;
@@ -140,11 +147,18 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         btnActivityShowReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WatchReviewsDialog dialog = new WatchReviewsDialog();
-                Bundle bundle = new Bundle();
-                bundle.putString("id",activity.get_id());
-                dialog.setArguments(bundle);
-                dialog.show(getSupportFragmentManager(),"Watch reviews");
+                if(activity.getReviews()!=null){
+                    if(activity.getReviews().size()>0){
+                        WatchReviewsDialog dialog = new WatchReviewsDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("id",activity.get_id());
+                        dialog.setArguments(bundle);
+                        dialog.show(getSupportFragmentManager(),"Watch reviews");
+                    }
+                }
+                else{
+                    Toast.makeText(ActivityActivity.this, R.string.No_Reviews, Toast.LENGTH_SHORT).show();
+                }
             }
         });
         favButton = findViewById(R.id.favButton);
@@ -265,32 +279,18 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         else {
             Picasso.get().load(R.drawable.logo512).into(activityHeader);
         }
-
-//        if(ratings != null){
-//            if(hashMapContains(ratings,FirebaseAuth.getInstance().getCurrentUser().getUid())){
-//                for (HashMap hm:ratings){
-//                    if(hm.get("id").equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-//                        activityRating.setRating(Float.valueOf(hm.get("rating").toString()));
-//                    }
-//                }
-//            }
-//        }
-//        else {
-            activityRating.setRating(0);
-//        }
+        activityRating.setRating(0);
 
 //        if (activity.getImages() != null) activityHeader.setImageURI();
         activityPrice.setText(makeCost(activity.getCost()));
-//        activityRating.setRating(activity.getReviews());
         if (activity.getDescription() != "") activityDescription.setText(activity.getDescription());
         else activityCategory.setVisibility(View.GONE);
 
         if (activity.getDate() != "") activityDate.setText(activity.getDate());
         else if (activity.getSchedule() != "") activityDate.setText(activity.getSchedule());
         else activityDate.setVisibility(View.GONE);
-//        activityLocation.setText(activity.getLocation().get("address"));
-
-        activityLocation.setVisibility(View.GONE);
+        activityLocation.setText(activity.getLocation().get("address"));
+//        activityLocation.setVisibility(View.GONE);
         activityCategory.setText(activity.getCategory());
         progressDialog.dismiss();
     }
@@ -385,10 +385,14 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
     }
 
     public void createReview(String review, double rating){
+        DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date today = Calendar.getInstance().getTime();
+        String strDate = sdf.format(today);
         HashMap<String,String> newReview = new HashMap<>();
         newReview.put("id",FirebaseAuth.getInstance().getCurrentUser().getUid());
         newReview.put("rating",String.valueOf(rating));
         newReview.put("review",review);
+        newReview.put("date", strDate);
 
         if(reviews.isEmpty()){
             reviews = new ArrayList<>();

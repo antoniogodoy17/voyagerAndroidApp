@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import voyager.voyager.R;
@@ -22,6 +23,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
     private static class ViewHolder {
         RatingBar ratingBar;
         TextView reviewText;
+        TextView reviewTimestamp;
     }
 
     public ReviewAdapter(Context context, int resource, ArrayList<Review> objects) {
@@ -37,6 +39,8 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         //get the cards information
         String reviewText = getItem(position).getReview();
         float rating = (float)getItem(position).getRating();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+        String reviewDate = sdf.format(getItem(position).getDate()).toString();
 
         try{
             ViewHolder holder;
@@ -47,6 +51,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
                 holder = new ViewHolder();
                 holder.ratingBar = convertView.findViewById(R.id.reviewRatingBar);
                 holder.reviewText = convertView.findViewById(R.id.reviewText);
+                holder.reviewTimestamp = convertView.findViewById(R.id.reviewTimestamp);
                 convertView.setTag(holder);
             }
             else{
@@ -54,6 +59,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
             }
             holder.ratingBar.setRating(rating);
             holder.reviewText.setText(reviewText);
+            holder.reviewTimestamp.setText(reviewDate);
 
             return convertView;
         }catch (IllegalArgumentException e){

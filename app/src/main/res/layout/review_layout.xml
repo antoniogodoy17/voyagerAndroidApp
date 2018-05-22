@@ -68,8 +68,7 @@
                 android:textSize="12sp"
                 android:textColor="@color/colorSecondaryLight"
                 android:layout_marginStart="35dp"
-                android:layout_marginTop="10dp"
-                android:text="02/05/2018"/>
+                android:layout_marginTop="10dp"/>
 
             <TextView
                 android:layout_width="match_parent"
