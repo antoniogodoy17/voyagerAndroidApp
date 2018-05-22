@@ -39,8 +39,8 @@
                 android:text="@string/categories"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/colorSecondary"
+                android:enabled="false"
                 android:textColor="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"
                 android:textSize="24sp"
                 android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
 
@@ -94,7 +94,6 @@
                 android:enabled="false"
                 android:text="@string/Cost"
                 android:textColor="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"
                 android:textSize="24sp"
                 android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
 
@@ -113,11 +112,11 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="40dp"
                 android:backgroundTint="@color/colorSecondary"
+                android:enabled="false"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_date_range_black_24dp"
                 android:hint="@string/Enter_date"
                 android:textColor="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"
                 android:textSize="18sp"
                 android:theme="@style/Base.V7.Widget.AppCompat.EditText"/>
 
@@ -131,7 +130,6 @@
                 android:enabled="false"
                 android:text="@string/Rating"
                 android:textColor="@color/colorSecondary"
-                android:textColorHint="@color/colorSecondaryLight"
                 android:textSize="24sp"
                 android:theme="@style/Base.V7.Widget.AppCompat.EditText" />
 
@@ -151,6 +149,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorSecondary"
+                android:enabled="false"
                 android:textColor="@color/colorSecondary"
                 android:textColorHint="@color/colorSecondaryLight"
                 android:textSize="24sp"

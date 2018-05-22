@@ -14,8 +14,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class ReviewsActivity extends AppCompatActivity {
@@ -53,9 +56,15 @@ public class ReviewsActivity extends AppCompatActivity {
 
     }
 
-    protected void loadReviews(){
+    protected void loadReviews() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
         for(HashMap<String,String> hm:activity.getReviews()){
-            reviews.add(new Review(hm.get("review"),Double.parseDouble(hm.get("rating")), Date.valueOf(hm.get("date"))));
+            try{
+                Date activityDate = sdf.parse(hm.get("date"));
+                reviews.add(new Review(hm.get("review"),Double.parseDouble(hm.get("rating")),activityDate));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         reviewAdapter = new ReviewAdapter(ReviewsActivity.this,R.layout.review_layout,reviews);
         reviewsListView.setAdapter(reviewAdapter);
