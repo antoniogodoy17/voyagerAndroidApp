@@ -465,7 +465,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
                         hideKeyboard();
                     }
                     else{
-                        Toast.makeText(HomeActivity.this, "No Activities Found", Toast.LENGTH_LONG).show();
+                        Toast.makeText(HomeActivity.this, R.string.No_Activities_Found, Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
 

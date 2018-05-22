@@ -84,4 +84,5 @@
     <string name="Show_All_Reviews">Show All Reviews</string>
     <string name="tags">Tags</string>
     <string name="No_Reviews">There are no reviews available</string>
+    <string name="No_Activities_Found">No activities found</string>
 </resources>
