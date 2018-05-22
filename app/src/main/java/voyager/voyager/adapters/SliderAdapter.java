@@ -56,7 +56,7 @@ public class SliderAdapter extends PagerAdapter {
         TextView categoryDescription = view.findViewById(R.id.categoryDescription);
 
         categoryTitle.setText(categories.get(position).getTitle());
-        Picasso.get().load(categories.get(position).getUrl()).into(categoryImage);
+        Picasso.get().load(categories.get(position).getImage()).into(categoryImage);
         categoryDescription.setText(categories.get(position).getDescription());
 
         container.addView(view);

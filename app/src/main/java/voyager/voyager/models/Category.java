@@ -3,14 +3,14 @@ package voyager.voyager.models;
 import java.io.Serializable;
 
 public class Category implements Serializable {
-    String title, description, url;
+    String title, description, image;
 
-
-    public Category(String title, String description, String url){
-        this.title = title;
-        this.description = description;
-        this.url = url;
-    }
+    public Category(){}
+//    public Category(String title, String description, String image){
+//        this.title = title;
+//        this.description = description;
+//        this.image = image;
+//    }
 
     public String getTitle() {
         return title;
@@ -28,11 +28,11 @@ public class Category implements Serializable {
         this.description = description;
     }
 
-    public String getUrl() {
-        return url;
+    public String getImage() {
+        return image;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

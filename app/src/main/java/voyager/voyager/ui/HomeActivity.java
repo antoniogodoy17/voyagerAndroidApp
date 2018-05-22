@@ -137,21 +137,21 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         Log.d("Tag","1");
         List<Address> addresses;
 
-        try {
-            addresses=gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-            if(addresses.size()>0)
-
-            {
-                //while(locTextView.getText().toString()=="Location") {
-                currentCity = addresses.get(0).getLocality().toString();
-                System.out.println("****************** --->" + currentCity);
-                // }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
+//        try {
+//            addresses=gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+//            if(addresses.size()>0)
+//
+//            {
+//                //while(locTextView.getText().toString()=="Location") {
+//                currentCity = addresses.get(0).getLocality().toString();
+//                System.out.println("****************** --->" + currentCity);
+//                // }
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//
+//        }
 
 
 

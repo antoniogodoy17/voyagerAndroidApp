@@ -34,7 +34,7 @@ import voyager.voyager.models.User;
 public class CategoriesActivity extends AppCompatActivity {
     // Database Initialization
     private FirebaseDatabase database;
-    private DatabaseReference userRef, activityDatabase;
+    private DatabaseReference userRef, categoryRef;
     private FirebaseUser fbUser;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -61,18 +61,6 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
 
         categories = new ArrayList<>();
-        categories.add(new Category("Entretenimiento","Descripcion 1","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2F1HRhMs9DyFgBOe98jPLLP5ouG162.jpg?alt=media&token=c2968c64-c5d5-4680-9f45-08767a45379c"));
-        categories.add(new Category("Deportivo","Descripcion 2","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FhIlAKCaUzCQ4i6KxgN2vcW2YQlo1.jpg?alt=media&token=9f16f20f-752a-49a8-a1cd-32e0e595d0a0"));
-        categories.add(new Category("Social","Descripcion 3","https://firebasestorage.googleapis.com/v0/b/proyecto-turista-af346.appspot.com/o/Profile%20pictures%2FhIlAKCaUzCQ4i6KxgN2vcW2YQlo1.jpg?alt=media&token=9f16f20f-752a-49a8-a1cd-32e0e595d0a0"));
-        slidePager = findViewById(R.id.slidePager);
-        dotsLayout = findViewById(R.id.dotsLayout);
-        sliderAdapter = new SliderAdapter(CategoriesActivity.this,categories);
-        slidePager.setAdapter(sliderAdapter);
-
-        addDotsIndicator(0);
-
-        slidePager.addOnPageChangeListener(viewListener);
-
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -117,9 +105,19 @@ public class CategoriesActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+        categoryRef = database.getReference("Category");
+        categoryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                fillCategories(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         // End Database Initialization
-
-
     }
     public void setupDrawerUsername(){
         drawerUsername.setText(user.getName() + " " + user.getLastname());
@@ -144,19 +142,13 @@ public class CategoriesActivity extends AppCompatActivity {
     }
     ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener(){
         @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
         @Override
         public void onPageSelected(int position) {
             addDotsIndicator(position);
         }
-
         @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
+        public void onPageScrollStateChanged(int state) {}
     };
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -220,5 +212,23 @@ public class CategoriesActivity extends AppCompatActivity {
         login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(login);
         finish();
+    }
+
+    protected void fillCategories(DataSnapshot data){
+        for(DataSnapshot ds:data.getChildren()){
+            categories.add(ds.getValue(Category.class));
+        }
+        fillSlidePager();
+    }
+
+    void fillSlidePager(){
+        slidePager = findViewById(R.id.slidePager);
+        dotsLayout = findViewById(R.id.dotsLayout);
+        sliderAdapter = new SliderAdapter(CategoriesActivity.this,categories);
+        slidePager.setAdapter(sliderAdapter);
+
+        addDotsIndicator(0);
+
+        slidePager.addOnPageChangeListener(viewListener);
     }
 }
