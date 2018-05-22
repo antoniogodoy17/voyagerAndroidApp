@@ -112,8 +112,6 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         //TO get the location,manifest file is added with 2 permissions
         //Location Manager is used to figure out which location provider needs to be used.
         LocationManager locationManager=(LocationManager)getSystemService(LOCATION_SERVICE);
-
-
         //Best location provider is decided by the criteria
         Criteria criteria=new Criteria();
         //location manager will take the best location from the criteria
@@ -136,31 +134,6 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
 
         Log.d("Tag","1");
         List<Address> addresses;
-
-//        try {
-//            addresses=gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-//            if(addresses.size()>0)
-//
-//            {
-//                //while(locTextView.getText().toString()=="Location") {
-//                currentCity = addresses.get(0).getLocality().toString();
-//                System.out.println("****************** --->" + currentCity);
-//                // }
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//
-//        }
-
-
-
-
-        //End Location and Current City
-
-
-
-
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
@@ -203,8 +176,6 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         });
         displayProgressDialog(R.string.Loading_events,R.string.Please_Wait);
 
-//        filtersDialog = new Dialog(HomeActivity.this);
-//        filtersDialog.setContentView(R.layout.filters_layout);
         btnFilters = findViewById(R.id.btnFilters);
         // End UI Initialization
 
@@ -489,8 +460,16 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
                 if(!query.isEmpty()){
                     searched = true;
                     activities = searchActivity(query);
-                    displayActivities();
-                    hideKeyboard();
+                    if(activities.size() > 0){
+                        displayActivities();
+                        hideKeyboard();
+                    }
+                    else{
+                        Toast.makeText(HomeActivity.this, "No Activities Found", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                    }
+
+
                 }
                 searchView.setQuery("", false);
                 searchView.setIconified(true);
