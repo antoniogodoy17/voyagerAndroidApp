@@ -48,7 +48,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.CategoriesActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.SliderActivityTheme" />
         <activity
             android:name=".ui.ListActivity"
