@@ -463,13 +463,12 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
                     if(activities.size() > 0){
                         displayActivities();
                         hideKeyboard();
+                        activities = activitiesBackup;
                     }
                     else{
                         Toast.makeText(HomeActivity.this, R.string.No_Activities_Found, Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
-
-
                 }
                 searchView.setQuery("", false);
                 searchView.setIconified(true);
