@@ -107,14 +107,20 @@ public class WatchReviewsDialog extends DialogFragment {
     }
 
     protected void loadReviews(){
+        int contador = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
         for(HashMap<String,String> hm:myActivity.getReviews()){
-            try{
-                Date activityDate = sdf.parse(hm.get("date"));
-                reviews.add(new Review(hm.get("review"),Double.parseDouble(hm.get("rating")),activityDate));
-            }catch (Exception e){
-                e.printStackTrace();
+            if(contador<3){
+                try{
+                    Date activityDate = sdf.parse(hm.get("date"));
+                    reviews.add(new Review(hm.get("review"),Double.parseDouble(hm.get("rating")),activityDate));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else{
+                break;
             }
+            contador++;
         }
         reviewAdapter = new ReviewAdapter(getContext(),R.layout.review_layout,reviews);
         reviewsListView.setAdapter(reviewAdapter);
