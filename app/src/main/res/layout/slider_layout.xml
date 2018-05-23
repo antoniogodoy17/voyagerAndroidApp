@@ -20,22 +20,27 @@
         android:layout_gravity="center"
         android:textColor="@color/white"
         android:shadowColor="@color/colorAccent"
+        android:textAlignment="center"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
-        android:textSize="48sp"/>
+        android:text="Ëntretenimiento"
+        android:textSize="40sp"/>
 
     <TextView
         android:id="@+id/categoryDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
+        android:layout_margin="40dp"
         android:textColor="@color/white"
+        android:background="#8080CBC4"
+        android:textAlignment="center"
         android:shadowColor="@color/colorAccent"
+        android:padding="10dp"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
-        android:textSize="12sp" />
+        android:textSize="22sp" />
 
 </LinearLayout>

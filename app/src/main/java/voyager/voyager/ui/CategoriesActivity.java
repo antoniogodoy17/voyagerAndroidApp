@@ -85,11 +85,11 @@ public class CategoriesActivity extends AppCompatActivity {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8226"));
             dots[i].setTextSize(35);
-            dots[i].setTextColor(getResources().getColor(R.color.colorSecondary));
+            dots[i].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
             dotsLayout.addView(dots[i]);
         }
         if(dots.length > 0){
-            dots[position].setTextColor(getResources().getColor(R.color.colorSecondaryDark));
+            dots[position].setTextColor(getResources().getColor(R.color.colorPrimaryLight));
         }
     }
     ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener(){
