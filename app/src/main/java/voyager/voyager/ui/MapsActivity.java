@@ -156,6 +156,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng coordinates = getLocation();
         setUserMarker(coordinates);
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                return false;
+            }
+        });
 
     }
     private LatLng getLocation() {
@@ -281,7 +288,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if(disResultado[0] < circle.getRadius()){
                     LatLng newMarker = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
-                    mMap.addMarker(new MarkerOptions().position(newMarker).title(activitiesList.get(i).getTitle()));
+                    mMap.addMarker(new MarkerOptions().position(newMarker).title(activitiesList.get(i).getTitle()).snippet(activitiesList.get(i).getDate()+" "+ activitiesList.get(i).getSchedule()));
                 }
             }
 
