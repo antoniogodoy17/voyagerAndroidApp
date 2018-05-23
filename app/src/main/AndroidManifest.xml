@@ -68,7 +68,6 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.ActivityActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.SliderActivityTheme" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
         <!--
