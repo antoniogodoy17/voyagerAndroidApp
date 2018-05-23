@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -64,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Circle circle;
     LatLng latlng;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
@@ -87,7 +89,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         activityValueListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 loadActivities(dataSnapshot);
                 activitiesList.add(dataSnapshot.getValue(Activity.class));
             }
@@ -98,7 +99,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-        activityDatabase.addValueEventListener(activityValueListener);
+//        activityDatabase.addValueEventListener(activityValueListener);
 
         locationListener = new LocationListener() {
             @Override
@@ -145,6 +146,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        activitiesList = new ArrayList<>();
+        activityDatabase.addValueEventListener(activityValueListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activityDatabase.removeEventListener(activityValueListener);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         activityDatabase.removeEventListener(activityValueListener);
@@ -159,8 +173,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                marker.showInfoWindow();
                 return false;
+            }
+        });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+//                sendActivity(marker.getTitle());
+                if(!marker.getTitle().equals("You")){
+                    Intent cardActivity = new Intent(MapsActivity.this,ActivityActivity.class);
+                    cardActivity.putExtra("activity",sendActivity(marker.getTitle()));
+                    MapsActivity.this.startActivity(cardActivity);
+                }
+
             }
         });
 
@@ -311,6 +337,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    private Activity sendActivity(String activityTitle){
+        for(Activity a: activitiesList){
+            if(a.getTitle().equals(activityTitle)){
+                return a;
+            }
+        }
+        return null;
     }
 }
 

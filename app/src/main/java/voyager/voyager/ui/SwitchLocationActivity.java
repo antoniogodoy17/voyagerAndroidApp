@@ -64,16 +64,12 @@ public class SwitchLocationActivity extends AppCompatActivity {// Database Initi
         cities.add(new City("Tecate", "https://cadenanoticias.com/assets/article/00013484/20171113_WYEKT9ivpx.jpg"));
         cities.add(new City("Tijuana", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROMeQe25AefeeUoUFusutJMzRTThScc-5a3Yp-CzxFaAVgvHfC4w"));
         cityAdapter = new CityAdapter(getApplicationContext(), R.layout.city_layout,cities);
-//        for(City c : cities){
-//            cityAdapter.add(c);
-//        }
         drawerLayout = findViewById(R.id.drawer);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
-
         header = navigationView.getHeaderView(0);
         drawerUsername = header.findViewById(R.id.drawerUsername);
         drawerProfilePicture = header.findViewById(R.id.drawerProfilePicture);
@@ -107,7 +103,6 @@ public class SwitchLocationActivity extends AppCompatActivity {// Database Initi
                 }
             }
         });
-
         userRef = database.getReference("User");
         userRef.child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
