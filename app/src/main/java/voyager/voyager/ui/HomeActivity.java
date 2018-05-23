@@ -427,14 +427,22 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
     }
 
     private ArrayList<Activity> searchActivity(String search) {
+        search = search.toLowerCase();
+        String[] words = search.split("\\s+");
         ArrayList<Activity> searchActivity = new ArrayList<>();
-        for (Activity a: activities) {
-            for (int i =0; i < a.getTags().size();i ++){
-                if(search.equals( a.getTags().get(i).get("tag"))){
-                    searchActivity.add(a);
+        for(String s: words){
+            for (Activity a: activities) {
+                for (int i =0; i < a.getTags().size();i ++){
+                    if(a.getTags().get(i).get("tag").toLowerCase().contains(s) || a.getTitle().toLowerCase().contains(s)){
+                        if(!searchActivity.contains(a)){
+                            searchActivity.add(a);
+                        }
+                    }
                 }
             }
         }
+
+
         return searchActivity;
     }
 
