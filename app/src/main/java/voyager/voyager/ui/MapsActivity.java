@@ -145,6 +145,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activityDatabase.removeEventListener(activityValueListener);
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
