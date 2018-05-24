@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Voyager</string>
-    <string name="Voyager" translatable="false">Voyager</string>
     <string name="LogoDescription">Voyager Logo</string>
     <string name="Log_In">Log In</string>
     <string name="Enter_your_email">Enter your email</string>
-    <string name="api_key" translatable="false">AIzaSyBsomOW1I0hlz7g90ljSul7fWJ5rxqI394</string>
     <string name="Last_name">Enter your last name</string>
     <string name="Password">Password</string>
     <string name="Enter_your_password">Enter your Password</string>
@@ -30,8 +27,6 @@
     <string name="Error"> There was a problem registering user </string>
     <string name="switch_location">Switch Location</string>
     <string name="logout">Logout</string>
-    <string name="open" translatable="false">Open</string>
-    <string name="close" translatable="false">Close</string>
     <string name="username">Username</string>
     <string name="view_profile">View my profile</string>
     <string name="home">Home</string>

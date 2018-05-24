@@ -88,7 +88,9 @@
         <!-- android:name=".ui.EditListActivity" -->
         <!-- android:screenOrientation="portrait" -->
         <!-- android:theme="@style/Theme.AppCompat.Light.NoActionBar.SliderActivityTheme"/> -->
-        <activity android:name=".ui.ReviewsActivity"></activity>
+        <activity
+            android:name=".ui.ReviewsActivity"
+            android:label="@string/Reviews"></activity>
     </application>
 
 </manifest>

@@ -80,7 +80,7 @@ public class ListActivity extends AppCompatActivity implements DeleteItemDialog.
             listName = bundle.getString("list");
         }
         //Check the list name and place that as a title
-        setTitle(listName);
+        setTitle(listName.substring(0,1).toUpperCase() + listName.substring(1));
 
         //Header
         NavigationView navigationView = findViewById(R.id.navigationView);

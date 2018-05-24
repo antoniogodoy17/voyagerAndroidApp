@@ -251,7 +251,6 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
                     if(m.getValue() != ""){
                         CategoryFilter myCategoryFilter = new CategoryFilter(m.getValue().toString());
                         myInvoker.setFilter(myCategoryFilter);
-
                     }
                     break;
                 case("Cost"):
@@ -278,14 +277,13 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
                         myInvoker.setFilter(myTypeFilter);
                     }
                     break;
-
             }
         }
         filteredActivities = myInvoker.applyFilters();
         displayFilteredActivities();
         filteredActivities = activities;
-
     }
+
     @Override
     public void onBackPressed() {
         if(searched){
@@ -457,7 +455,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         inflater.inflate(R.menu.searchview, menu);
         searchItem = menu.findItem(R.id.actionSearch);
         searchView = (SearchView)searchItem.getActionView();
-        searchView.setQueryHint("Search an event here");
+        searchView.setQueryHint(getResources().getString(R.string.Search_Event));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -475,8 +473,6 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
                         progressDialog.dismiss();
                     }
                 }
-                searchView.setQuery("", false);
-                searchView.setIconified(true);
                 return true;
             }
             @Override
