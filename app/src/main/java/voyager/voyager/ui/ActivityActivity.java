@@ -283,9 +283,13 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         activityPrice.setText(makeCost(activity.getCost()));
         if (activity.getDescription() != "") activityDescription.setText(activity.getDescription());
         else activityCategory.setVisibility(View.GONE);
-        if (activity.getDate() != "") activityDate.setText(activity.getDate());
-        else if (activity.getSchedule() != "") activityDate.setText(activity.getSchedule());
-        else activityDate.setVisibility(View.GONE);
+
+        if(!activity.getType().equals("Restaurante")){
+            if (!activity.getDate().isEmpty()) activityDate.setText(activity.getDate());
+        }
+        else{
+            activityDate.setText(activity.getSchedule());
+        }
         activityLocation.setText(activity.getLocation().get("address"));
 //        activityLocation.setVisibility(View.GONE);
         activityCategory.setText(activity.getCategory());
