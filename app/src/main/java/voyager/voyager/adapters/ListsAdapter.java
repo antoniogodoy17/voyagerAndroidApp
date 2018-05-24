@@ -50,7 +50,7 @@ public class ListsAdapter extends BaseAdapter {
             listLogo.setImageResource(R.drawable.ic_favorite_black_24dp);
         }
         else {
-            listLogo.setImageResource(R.drawable.ic_format_list_bulleted_black_24dp);
+            listLogo.setImageResource(R.drawable.ic_list);
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {
