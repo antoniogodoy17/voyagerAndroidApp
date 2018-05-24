@@ -63,8 +63,6 @@ public class CityAdapter extends ArrayAdapter<City> {
     public View getView(int position, View convertView, ViewGroup parent) {
         //sets up the image loader library
         setupImageLoader();
-
-
         //get the cards information
         final City city = cities.get(position);
         String title = getItem(position).getName();

@@ -89,7 +89,6 @@ public class FilterDialog extends DialogFragment {
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ArrayList<String> filters = new ArrayList<>();
                 HashMap<String,String> filters = new HashMap<>();
 
                 // Category Filter
@@ -151,8 +150,6 @@ public class FilterDialog extends DialogFragment {
                 FilterDialog.this.dismiss();
             }
         });
-
-
 
         return builder.create();
     }

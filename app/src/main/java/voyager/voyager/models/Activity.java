@@ -94,28 +94,6 @@ public class Activity implements Serializable, Comparator {
 
     public String getDate() { return date; }
 
-    //    public Date getDate() {
-//        Date d = new Date();
-//        String today;
-//        if(date == ""){
-//
-//            today = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-//            try {
-//                d = formatter.parse(today);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//            return d;
-//        }else{
-//            try {
-//                d = formatter.parse(date);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//            return d;
-//        }
-//
-//    }
 
     public String getSchedule() {
         return schedule;

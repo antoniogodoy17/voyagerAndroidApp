@@ -47,7 +47,6 @@ public class WatchReviewsDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         String id = bundle.getString("id");
-        Toast.makeText(getContext(), id, Toast.LENGTH_LONG).show();
         reviews = new ArrayList<Review>();
         //Snapshot fromDatabase
         database = FirebaseDatabase.getInstance();
@@ -74,15 +73,7 @@ public class WatchReviewsDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.watch_reviews_layout, null);
         builder.setView(view);
-
-        // ArrayList<Review>
-//        date = Calendar.getInstance().getTime();
-
-
-
         // ReviewAdapter
-
-
         reviewsListView = view.findViewById(R.id.reviewsListView);
 
         btnShowAllReviews = view.findViewById(R.id.btnShowAllReviews);

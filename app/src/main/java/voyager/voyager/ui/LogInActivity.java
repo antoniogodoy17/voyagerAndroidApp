@@ -32,7 +32,6 @@ public class LogInActivity extends AppCompatActivity {
     Button btnSignIn, btnLogin;
     EditText txtEmail, txtPassword;
     ProgressDialog progressDialog;
-    //
     // Variables Declarations
     String email, password;
     //

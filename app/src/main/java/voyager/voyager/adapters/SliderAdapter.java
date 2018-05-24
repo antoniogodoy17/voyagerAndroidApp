@@ -29,8 +29,6 @@ public class SliderAdapter extends PagerAdapter {
     LayoutInflater layoutInflater;
     ArrayList<Category> categories;
 
-
-
     public SliderAdapter(Context context, ArrayList<Category> categories){
         this.context = context;
         this.categories = categories;
@@ -71,7 +69,6 @@ public class SliderAdapter extends PagerAdapter {
         });
         return view;
     }
-
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((LinearLayout)object);

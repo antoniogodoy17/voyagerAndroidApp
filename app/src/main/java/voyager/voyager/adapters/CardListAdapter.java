@@ -106,8 +106,6 @@ public class CardListAdapter extends ArrayAdapter<Card> {
     public View getView(int position, View convertView, ViewGroup parent) {
         //sets up the image loader library
         setupImageLoader();
-
-
         //get the cards information
         final Card card = cards.get(position);
         String title = getItem(position).getTitle();
@@ -139,9 +137,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
             //create the imageloader object
             ImageLoader imageLoader = ImageLoader.getInstance();
-
             int defaultImage = context.getResources().getIdentifier("@drawable/image_failed",null, context.getPackageName());
-
             //create display options
             DisplayImageOptions options = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
@@ -152,7 +148,6 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
             //download and display image from url
             imageLoader.displayImage(imgUrl, holder.image, options);
-
             holder.image.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {

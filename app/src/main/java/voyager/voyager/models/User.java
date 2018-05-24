@@ -22,11 +22,8 @@ public class User {
         this.name = name;
         this.lastname = lastname;
         this.email = email;
-        //this.password = password;
         this.birth_date = birth_date;
         this.nationality = nationality;
-//        this.state = state;
-//        this.city = city;
     }
     public User(){}
     public void setId(String id) {

@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,7 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.nostra13.universalimageloader.utils.L;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -80,7 +78,6 @@ public class SwitchLocationActivity extends AppCompatActivity {// Database Initi
             }
         });
         listView = findViewById(R.id.switchLocationListView);
-
         listView.setAdapter(cityAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

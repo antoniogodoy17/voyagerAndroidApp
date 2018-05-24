@@ -99,8 +99,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-//        activityDatabase.addValueEventListener(activityValueListener);
-
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -109,9 +107,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 latlng = new LatLng(latti, longi);
                 lattitude = String.valueOf(latti);
                 longitude = String.valueOf(longi);
-
-                System.out.println("----------------> Your current location is " + "\n" + "Lattitude = " + lattitude
-                        + "\n" + "Longitude = " + longitude);
                 setUserMarker(latlng);
             }
 
@@ -238,7 +233,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         latlng = null;
         return latlng;
     }
-//
+
     protected void buildAlertMessageNoGps() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -287,7 +282,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if(circle != null){
                 circle.remove();
             }
-//            BitmapDescriptorFactory icony = BitmapDescriptorFactory.fromResource(R.drawable.ic_usermarker);
             mMap.addMarker(new MarkerOptions().position(latlng).title("You").icon(bitmapDescriptorFromVector(this, R.drawable.ic_nearme)));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
             mMap.animateCamera( CameraUpdateFactory.zoomTo( 11.0f ) );
@@ -327,7 +321,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         getActivitiesLatLon();
-
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
@@ -338,7 +331,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-
     private Activity sendActivity(String activityTitle){
         for(Activity a: activitiesList){
             if(a.getTitle().equals(activityTitle)){
