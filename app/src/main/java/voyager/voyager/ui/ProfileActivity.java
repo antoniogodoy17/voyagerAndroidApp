@@ -57,11 +57,10 @@ public class ProfileActivity extends AppCompatActivity {
     TextView drawerUsername;
     CircleImageView imgProfilePicture;
     CircleImageView drawerProfilePicture;
-    EditText txtNameProfile, txtLastNameProfile, txtEmailProfile, txtPhoneProfile, txtPasswordProfile, txtLocationProfile;
+    EditText txtNameProfile, txtLastNameProfile, txtPhoneProfile;
     TextView txtBirthDateProfile;
     Button btnSaveChanges, btnCancel;
     ImageButton btnEditProfile;
-    Spinner sprCountryProfile, sprStateProfile, sprCityProfile;
     DatePickerDialog datePicker;
     //
     // Variables Setup
@@ -97,13 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
         imgProfilePicture = findViewById(R.id.imgProfilePicture);
         txtNameProfile = findViewById(R.id.txtNameProfile);
         txtLastNameProfile = findViewById(R.id.txtLastNameProfile);
-        txtEmailProfile = findViewById(R.id.txtEmailProfile);
         txtPhoneProfile = findViewById(R.id.txtPhoneProfile);
-        txtPasswordProfile = findViewById(R.id.txtPasswordProfile);
-        txtLocationProfile = findViewById(R.id.txtLocationProfile);
-        sprCountryProfile = findViewById(R.id.sprCountryProfile);
-        sprStateProfile = findViewById(R.id.sprStateProfile);
-        sprCityProfile = findViewById(R.id.sprCityProfile);
         btnEditProfile = findViewById(R.id.btnEditProfile);
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,7 +259,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void fillFields(){
         txtNameProfile.setText(user.getName());
         txtLastNameProfile.setText(user.getLastname());
-        txtEmailProfile.setText(user.getEmail());
         txtPhoneProfile.setText(user.getPhone());
 //        txtPasswordProfile
         txtBirthDateProfile.setText(user.getBirth_date());
@@ -279,7 +271,6 @@ public class ProfileActivity extends AppCompatActivity {
         displayProgressDialog(R.string.Please_Wait,R.string.Please_Wait);
         user.setName(txtNameProfile.getText().toString().trim());
         user.setLastname(txtLastNameProfile.getText().toString().trim());
-        user.setEmail(txtEmailProfile.getText().toString().trim());
         user.setPhone(txtPhoneProfile.getText().toString().trim());
         //password pendiente
         user.setBirth_date(txtBirthDateProfile.getText().toString().trim());
@@ -341,23 +332,13 @@ public class ProfileActivity extends AppCompatActivity {
         txtLastNameProfile.setVisibility(View.VISIBLE);
         txtLastNameProfile.setEnabled(true);
 
-        txtEmailProfile.setVisibility(View.VISIBLE);
-        txtEmailProfile.setEnabled(true);
 
         txtPhoneProfile.setVisibility(View.VISIBLE);
         txtPhoneProfile.setEnabled(true);
 
-        txtPasswordProfile.setVisibility(View.VISIBLE);
-        txtPasswordProfile.setEnabled(true);
 
         txtBirthDateProfile.setVisibility(View.VISIBLE);
         txtBirthDateProfile.setEnabled(true);
-
-        txtLocationProfile.setVisibility(View.GONE);
-
-        sprCountryProfile.setVisibility(View.VISIBLE);
-        sprStateProfile.setVisibility(View.VISIBLE);
-        sprCityProfile.setVisibility(View.VISIBLE);
 
         imgProfilePicture.setEnabled(true);
         btnEditProfile.setVisibility(View.INVISIBLE);
@@ -371,31 +352,15 @@ public class ProfileActivity extends AppCompatActivity {
             txtNameProfile.setVisibility(View.GONE);
         else txtNameProfile.setEnabled(false);
 
-        if (txtEmailProfile.getText().toString().isEmpty())
-            txtEmailProfile.setVisibility(View.GONE);
-        else txtEmailProfile.setEnabled(false);
-
         if (txtPhoneProfile.getText().toString().isEmpty())
             txtPhoneProfile.setVisibility(View.GONE);
         else txtPhoneProfile.setEnabled(false);
-
-        if (txtPasswordProfile.getText().toString().isEmpty())
-            txtPasswordProfile.setVisibility(View.GONE);
-        else txtPasswordProfile.setEnabled(false);
 
         if (txtBirthDateProfile.getText().toString().isEmpty())
             txtBirthDateProfile.setVisibility(View.GONE);
         else txtBirthDateProfile.setEnabled(false);
 
-        if (txtLocationProfile.getText().toString().isEmpty())
-            txtLocationProfile.setVisibility(View.GONE);
-        else txtLocationProfile.setEnabled(false);
-
         txtLastNameProfile.setVisibility(View.GONE);
-        sprCountryProfile.setVisibility(View.GONE);
-        sprStateProfile.setVisibility(View.GONE);
-        sprCityProfile.setVisibility(View.GONE);
-
         imgProfilePicture.setEnabled(false);
         btnEditProfile.setVisibility(View.VISIBLE);
         btnSaveChanges.setVisibility(View.GONE);

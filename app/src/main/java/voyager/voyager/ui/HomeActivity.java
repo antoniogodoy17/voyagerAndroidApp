@@ -117,7 +117,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         //location manager will take the best location from the criteria
         locationManager.getBestProvider(criteria, true);
 
-        //nce you know the name of the LocationProvider, you can call getLastKnownPosition() to find out where you were recently.
+        //Once you know the name of the LocationProvider, you can call getLastKnownPosition() to find out where you were recently.
 
         if (ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
@@ -129,12 +129,17 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             location=locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
         }
 
-
-        Geocoder gcd=new Geocoder(getBaseContext(), Locale.getDefault());
+        Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
 
         Log.d("Tag","1");
         List<Address> addresses;
 
+        try{
+            addresses = gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+            currentCity = addresses.get(0).getLocality().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             if(bundle.containsKey("Category")) {
@@ -145,11 +150,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
                 currentCity = citySelected;
                 Toast.makeText(this, citySelected, Toast.LENGTH_SHORT).show();
             }
-
-
         }
-
-
         myInvoker = new Invoker();
         filteredActivities = new ArrayList<>();
         // UI Initialization
@@ -280,13 +281,11 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
 
             }
         }
-
         filteredActivities = myInvoker.applyFilters();
         displayFilteredActivities();
         filteredActivities = activities;
 
     }
-
     @Override
     public void onBackPressed() {
         if(searched){
@@ -441,8 +440,6 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
                 }
             }
         }
-
-
         return searchActivity;
     }
 

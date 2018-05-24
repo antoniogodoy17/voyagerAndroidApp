@@ -30,18 +30,13 @@ public class CategoriesActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference categoryRef;
     private FirebaseAuth.AuthStateListener authListener;
-    //
     // UI Initialization
     private ViewPager slidePager;
     private LinearLayout dotsLayout;
     private SliderAdapter sliderAdapter;
     private TextView[] dots;
     private Button closeButton;
-    //
-    //
     ArrayList<Category> categories;
-    //
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +112,6 @@ public class CategoriesActivity extends AppCompatActivity {
         slidePager.setAdapter(sliderAdapter);
 
         addDotsIndicator(0);
-
         slidePager.addOnPageChangeListener(viewListener);
     }
 }

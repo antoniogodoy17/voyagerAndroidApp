@@ -59,7 +59,6 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
     ImageButton bookmarkButton;
     Button closeButton, btnActivityShowReviews;
     ProgressDialog progressDialog;
-    //
     // Variables Setup
     private User user;
     Activity activity;
@@ -129,7 +128,6 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         };
 
         activitiesReference.addValueEventListener(activityListener);
-
         activityHeader = findViewById(R.id.activityHeader);
         activityPrice = findViewById(R.id.activityPrice);
         activityDescription = findViewById(R.id.activityDescription);
@@ -285,7 +283,6 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
         activityPrice.setText(makeCost(activity.getCost()));
         if (activity.getDescription() != "") activityDescription.setText(activity.getDescription());
         else activityCategory.setVisibility(View.GONE);
-
         if (activity.getDate() != "") activityDate.setText(activity.getDate());
         else if (activity.getSchedule() != "") activityDate.setText(activity.getSchedule());
         else activityDate.setVisibility(View.GONE);
@@ -357,7 +354,6 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             bookmarkedList.add(listItem);
             HashMap<String,ArrayList<HashMap<String,String>>> list = new HashMap<>();
             list.put(listName,bookmarkedList);
-
             userRef.child("lists").setValue(list);
             Toast.makeText(this, getResources().getString(R.string.Activity_added_to_list), Toast.LENGTH_SHORT).show();
             finish();
