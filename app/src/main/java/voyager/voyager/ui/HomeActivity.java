@@ -123,23 +123,28 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                 (HomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+
             ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
-        } else {
-            location=locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
         }
+
+        location=locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
 
         Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
 
         Log.d("Tag","1");
-        List<Address> addresses;
+        List<Address> addresses = new ArrayList<>();
 
-//        try{
-//            addresses = gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-//            currentCity = addresses.get(0).getLocality().toString();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try{
+            addresses = gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+            if(addresses.size() > 0){
+
+                currentCity = addresses.get(0).getLocality().toString();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             if(bundle.containsKey("Category")) {
