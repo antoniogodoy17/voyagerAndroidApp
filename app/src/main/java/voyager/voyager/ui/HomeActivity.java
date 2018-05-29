@@ -136,10 +136,14 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         List<Address> addresses = new ArrayList<>();
 
         try{
-            addresses = gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-            if(addresses.size() > 0){
 
+
+            if(addresses.size() > 0){
+                addresses = gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
                 currentCity = addresses.get(0).getLocality().toString();
+            }
+            else{
+                currentCity = "Tijuana";
             }
 
         } catch (IOException e) {
