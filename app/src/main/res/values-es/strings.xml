@@ -78,4 +78,5 @@
     <string name="No_Reviews">No hay reseñas disponibles</string>
     <string name="No_Activities_Found">No se encontraron actividades</string>
     <string name="Search_Event">Busca un evento</string>
+    <string name="New_Location_Selected">Nueva ubicación seleccionada:</string>
 </resources>

@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             else if(bundle.containsKey("City")){
                 citySelected = bundle.getString("City");
                 currentCity = citySelected;
-                Toast.makeText(this, citySelected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.New_Location_Selected + " " + citySelected, Toast.LENGTH_SHORT).show();
             }
         }
         myInvoker = new Invoker();

@@ -81,4 +81,5 @@
     <string name="No_Reviews">There are no reviews available</string>
     <string name="No_Activities_Found">No activities found</string>
     <string name="Search_Event">Search for an event</string>
+    <string name="New_Location_Selected">New location selected:</string>
 </resources>
