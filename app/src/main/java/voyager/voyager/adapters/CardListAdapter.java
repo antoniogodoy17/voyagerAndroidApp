@@ -137,7 +137,7 @@ public class CardListAdapter extends ArrayAdapter<Card> {
 
             //create the imageloader object
             ImageLoader imageLoader = ImageLoader.getInstance();
-            int defaultImage = context.getResources().getIdentifier("@drawable/image_failed",null, context.getPackageName());
+            int defaultImage = context.getResources().getIdentifier("@drawable/icon_transparent",null, context.getPackageName());
             //create display options
             DisplayImageOptions options = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)

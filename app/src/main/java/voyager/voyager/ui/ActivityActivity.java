@@ -271,7 +271,7 @@ public class ActivityActivity extends AppCompatActivity implements ListSelectorD
             favButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }
 
-        if (activity.getImage_principal() != null){
+        if (activity.getImage_principal() != null && !activity.getImage_principal().isEmpty()){
             Picasso.get().load(activity.getImage_principal()).into(activityHeader);
         }
         else {
