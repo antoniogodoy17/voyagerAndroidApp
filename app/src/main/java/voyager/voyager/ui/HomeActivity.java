@@ -19,7 +19,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +26,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,8 +105,6 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         citySelected = null;
         currentCity = null;
         //Get Location and current City
-
-
         //TO get the location,manifest file is added with 2 permissions
         //Location Manager is used to figure out which location provider needs to be used.
         LocationManager locationManager=(LocationManager)getSystemService(LOCATION_SERVICE);
@@ -116,28 +112,18 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         Criteria criteria=new Criteria();
         //location manager will take the best location from the criteria
         locationManager.getBestProvider(criteria, true);
-
         //Once you know the name of the LocationProvider, you can call getLastKnownPosition() to find out where you were recently.
 
         if (ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
                 (HomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-
             ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-
         }
-
         location=locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
-
         Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-
-        Log.d("Tag","1");
         List<Address> addresses = new ArrayList<>();
 
         try{
-
-
             if(addresses.size() > 0){
                 addresses = gcd.getFromLocation(location.getLatitude(),location.getLongitude(),1);
                 currentCity = addresses.get(0).getLocality().toString();
@@ -164,7 +150,7 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
         filteredActivities = new ArrayList<>();
         // UI Initialization
         activities = new ArrayList<>();
-        cardsList = new ArrayList<Card>();
+        cardsList = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
         NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawer);
@@ -194,7 +180,6 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             public void onClick(View v) {
                 FilterDialog dialog = new FilterDialog();
                 dialog.show(getSupportFragmentManager(),"Filters");
-//                filtersDialog.show();
             }
         });
 
@@ -301,12 +286,10 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             displayActivities();
         }
         if(categorySelected != null){
-
             categorySelected = null;
 
             if(currentCity != null){
                 myInvoker.setFilteredActivities(activities);
-
                 CityFilter myCityFilter = new CityFilter(currentCity);
                 myInvoker.setFilter(myCityFilter);
                 filteredActivities = myInvoker.applyFilters();
@@ -315,13 +298,11 @@ public class HomeActivity extends AppCompatActivity implements FilterDialog.Noti
             else{
                 displayActivities();
             }
-
         }
 
         else {
             if(currentCity != null){
                 myInvoker.setFilteredActivities(activities);
-
                 CityFilter myCityFilter = new CityFilter(currentCity);
                 myInvoker.setFilter(myCityFilter);
                 filteredActivities = myInvoker.applyFilters();

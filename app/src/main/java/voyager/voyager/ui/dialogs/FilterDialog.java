@@ -54,9 +54,7 @@ public class FilterDialog extends DialogFragment {
         rbtAttraction = view.findViewById(R.id.checkBoxAttraction);
         rbtRestaurant = view.findViewById(R.id.checkBoxRest);
         rbtEvent = view.findViewById(R.id.checkBoxEvent);
-
         costBar = view.findViewById(R.id.seekBarCost);
-
         txtDate = view.findViewById(R.id.txtDate);
         txtDate.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -72,7 +70,6 @@ public class FilterDialog extends DialogFragment {
                         txtDate.setText(dayOfMonth + "/"+ (monthOfYear + 1) + "/" + year);
                     }
                 }, year, month, day);
-
                 //User must have at least 10 years to sign up
                 c.add(Calendar.YEAR,-10);
                 datePicker.getDatePicker().setMaxDate(c.getTimeInMillis());
@@ -82,9 +79,7 @@ public class FilterDialog extends DialogFragment {
                 datePicker.show();
             }
         });
-
         ratingBar = view.findViewById(R.id.seekBarRating);
-
         btnApply = view.findViewById(R.id.btnApplyFilters);
         btnApply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +95,6 @@ public class FilterDialog extends DialogFragment {
                 }
                 else if(rbtSports.isChecked()){
                     filters.put("Categories","Deportivo");
-
                 }
                 else if(rbtCultural.isChecked()){
                     filters.put("Categories","Cultural");
