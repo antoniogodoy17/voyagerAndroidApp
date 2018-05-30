@@ -71,8 +71,8 @@ public class FilterDialog extends DialogFragment {
                     }
                 }, year, month, day);
                 //User must have at least 10 years to sign up
-                c.add(Calendar.YEAR,-10);
-                datePicker.getDatePicker().setMaxDate(c.getTimeInMillis());
+//                c.add(Calendar.YEAR,-10);
+//                datePicker.getDatePicker().setMaxDate(c.getTimeInMillis());
                 //User must not have more than 100 years to sign up
                 c.add(Calendar.YEAR, -100);
                 datePicker.getDatePicker().setMinDate(c.getTimeInMillis());

@@ -112,7 +112,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="40dp"
                 android:backgroundTint="@color/colorSecondary"
-                android:enabled="false"
                 android:drawablePadding="10dp"
                 android:drawableStart="@drawable/ic_date_range_black_24dp"
                 android:hint="@string/Enter_date"
